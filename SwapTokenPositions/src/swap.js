@@ -1,6 +1,6 @@
 import { SILENT_MANAGEMENT_FLAGS } from "./constants.js";
 import { spawnPointFx, spawnTravelFx } from "./effects.js";
-import { whisperSender, whisperSenderError } from "./messages.js";
+import { getSafeTokenName, whisperSender, whisperSenderError } from "./messages.js";
 
 /**
  * Validates selection and resolves the two tokens targeted for swapping.
@@ -105,9 +105,11 @@ export function performSwap(
 
   const verifyThenFinalize = () => {
     if (hasVerifiedSwapPosition(token1, token2, pos1, pos2)) {
+      const token1Name = getSafeTokenName(token1, "Token 1");
+      const token2Name = getSafeTokenName(token2, "Token 2");
       whisperSender(
         msg,
-        `<strong>Swap Successful!</strong><br>${token1.get("name") || "Token 1"} ↔ ${token2.get("name") || "Token 2"}`,
+        `<strong>Swap Successful!</strong><br>${token1Name} ↔ ${token2Name}`,
         "Success",
       );
       if (typeof onVerified === "function") {
@@ -183,9 +185,11 @@ function runInvisibleTravelPhase(context) {
     token1.set({ left: pos2.left, top: pos2.top });
     token2.set({ left: pos1.left, top: pos1.top });
 
+    const token1Name = getSafeTokenName(token1, "Token 1");
+    const token2Name = getSafeTokenName(token2, "Token 2");
     whisperSender(
       msg,
-      `<strong>Swap Successful!</strong><br>${token1.get("name") || "Token 1"} ↔ ${token2.get("name") || "Token 2"}`,
+      `<strong>Swap Successful!</strong><br>${token1Name} ↔ ${token2Name}`,
       "Success",
     );
 

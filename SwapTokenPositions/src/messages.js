@@ -15,6 +15,33 @@ import {
 } from "./constants.js";
 
 /**
+ * Escapes HTML-sensitive characters for safe chat rendering.
+ *
+ * @param {string} value Text to escape.
+ * @returns {string} Escaped text.
+ */
+export function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+/**
+ * Builds a safe display name for a token in chat output.
+ *
+ * @param {object} token Roll20 graphic token object.
+ * @param {string} fallback Fallback label when token has no name.
+ * @returns {string} Escaped token display name.
+ */
+export function getSafeTokenName(token, fallback) {
+  const name = token.get("name");
+  return escapeHtml(name?.trim() ? name : fallback);
+}
+
+/**
  * Builds the standard styled chat message container.
  *
  * @param {string} msg Message body as HTML.

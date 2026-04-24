@@ -31,6 +31,15 @@ export function getSelectedTokens(msg) {
     return null;
   }
 
+  if (token1.get("pageid") !== token2.get("pageid")) {
+    whisperSenderError(
+      msg,
+      "Please select two tokens on the same page to perform a swap.",
+      "Selection Error",
+    );
+    return null;
+  }
+
   return [token1, token2];
 }
 

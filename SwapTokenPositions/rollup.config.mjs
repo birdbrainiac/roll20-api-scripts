@@ -40,7 +40,6 @@ function formatOutputPlugin() {
      * @returns {Promise<void>}
      */
     async generateBundle(options, bundle) {
-      void options;
       for (const output of Object.values(bundle)) {
         if (output.type !== "chunk") {
           continue;

@@ -162,21 +162,20 @@ export function handleSwapTokens(msg) {
   };
 
   if (FLAG_INSTANT.test(msg.content)) {
-    performSwap(token1, token2, pos1, pos2, "none", msg);
+    performSwap(token1, token2, pos1, pos2, msg);
     return;
   }
 
   const updateTracker = { valid: 0, invalid: 0 };
   const config = buildSwapConfig(msg, updateTracker);
 
-  if (processPersistence(msg, isGM, updateTracker, config)) {
-    return;
-  }
+  processPersistence(msg, isGM, updateTracker, config);
 
   if (updateTracker.valid > 0 && (!FLAG_SAVE.test(msg.content) || !isGM)) {
     const overrideDetails = [
       `<strong>Origin FX:</strong> ${config.originFx}`,
       `<strong>Travel FX:</strong> ${config.travelFx}`,
+      `<strong>Travel Mode:</strong> ${config.travelMode}`,
       `<strong>Destination FX:</strong> ${config.destinationFx}`,
       `<strong>Origin Time:</strong> ${config.originTime}s`,
       `<strong>Travel Time:</strong> ${config.travelTime}s`,
@@ -197,7 +196,7 @@ export function handleSwapTokens(msg) {
     config.destinationDelay === 0;
 
   if (hasNoFx && hasNoTiming) {
-    performSwap(token1, token2, pos1, pos2, "none", msg);
+    performSwap(token1, token2, pos1, pos2, msg);
     return;
   }
 

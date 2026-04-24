@@ -13,9 +13,13 @@ export function parseStringFlag(content, flagRegex, allowedValues) {
   if (!match) {
     return { found: false, valid: false, value: null };
   }
-  const lower = match[1].toLowerCase();
-  if (allowedValues.includes(lower)) {
-    return { found: true, valid: true, value: lower };
+  const normalized = match[1]
+    .trim()
+    .replaceAll(/(^['"]|['"]$)/g, "")
+    .replaceAll(/[.,;]+$/g, "")
+    .toLowerCase();
+  if (allowedValues.includes(normalized)) {
+    return { found: true, valid: true, value: normalized };
   }
   return { found: true, valid: false, value: match[1] };
 }

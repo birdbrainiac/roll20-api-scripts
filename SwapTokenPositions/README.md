@@ -5,15 +5,16 @@
 ## Features
 
 - **Seamless Swapping**: Select exactly two tokens on the same page and run `!swap-tokens` to switch their positions.
-- **Animation Styles**:
-  - `beams`: Spawns arcane beams back and forth between the tokens before they swap.
-  - `transport`: Spawns vertical light columns and shimmer effects at both locations.
-- **Customizable FX**: Choose from a wide variety of beam and burst effects.
-- **Persistent Settings**: GMs can customize the global defaults (duration, mode, FX) and save them permanently.
+- **Staged Animation Pipeline**:
+  - `origin`: Point FX at starting positions.
+  - `travel`: Beam FX and optional travel visibility behavior.
+  - `destination`: Point FX after swap completes.
+- **Customizable FX**: Choose from a wide variety of point and beam effects.
+- **Persistent Settings**: GMs can customize staged defaults (FX, travel mode, timing/delays) and save them permanently.
 - **One-Time Overrides**: Players and GMs can use command flags to customize a single swap without changing global defaults.
 - **Styled Feedback**: Professional arcane-themed message boxes for success, errors, and settings.
 - **Macro Installation**: Automatically create a global "SwapTokens" macro for your game.
-- **Preset Support**: Includes `portal`, `lightning`, `shadow`, `fire`, `magic`, and `none` presets.
+- **Preset Support**: Includes `portal`, `lightning`, `shadow`, `fire`, `magic`, `transport`, and `none` presets.
 - **Legacy Compatibility**: Supports deprecated `--duration`, `--beam-fx`, and `--burst-fx` flags with warnings.
 
 ## Development
@@ -84,10 +85,12 @@ Swaps the two currently selected tokens using the default settings.
 - `--help`: Displays the help menu.
 - `--instant`: Skips all FX and timing and swaps immediately.
 - `--preset <value>`: Applies a preset.
-  - Values: `portal`, `lightning`, `shadow`, `fire`, `magic`, `none`
+  - Values: `portal`, `lightning`, `shadow`, `fire`, `magic`, `transport`, `none`
 - `--origin-fx <value>`: Point FX at both origin positions.
 - `--travel-fx <value>`: Beam FX between positions during travel stage.
 - `--destination-fx <value>`: Point FX at both destination positions.
+- `--travel-mode <value>`: Visibility behavior during travel stage.
+  - Values: `normal`, `invisible`
 - `--origin-time <0-10>`: Seconds to wait after origin FX.
 - `--travel-time <0-10>`: Seconds to wait after travel FX.
 - `--destination-time <0-10>`: Stored destination timing value.
@@ -97,6 +100,8 @@ Swaps the two currently selected tokens using the default settings.
 ### Examples of Customization
 
 - `!swap-tokens --preset portal` Applies the portal preset for one swap.
+- `!swap-tokens --preset transport` Applies a Star Trek-style transporter shimmer preset with hidden travel.
+- `!swap-tokens --preset transport --travel-mode normal` Uses transport visuals but keeps tokens visible during travel.
 - `!swap-tokens --preset lightning --travel-time 1` Applies lightning preset with explicit travel timing override.
 - `!swap-tokens --origin-fx nova-magic --travel-fx beam-fire --destination-fx explode-fire` Uses custom FX for each stage.
 - `!swap-tokens --origin-time 1 --swap-delay 0.5 --destination-delay 1` Uses explicit stage timing.

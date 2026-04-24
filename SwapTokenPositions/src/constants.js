@@ -1,6 +1,7 @@
-export const SCRIPT_NAME = "SwapTokenPositions";
-export const SWAP_TOKEN_POSITIONS_VERSION = "2.0.0";
-export const SWAP_TOKEN_POSITIONS_LAST_UPDATED = "2026-04-23";
+export const SCRIPT_NAME = "__SCRIPT_NAME__";
+export const SCRIPT_FILE = "__SCRIPT_FILE__";
+export const SWAP_TOKEN_POSITIONS_VERSION = "__BUILD_VERSION__";
+export const SWAP_TOKEN_POSITIONS_LAST_UPDATED = "__BUILD_DATE__";
 
 export const COLOR_GLOW_PURPLE = "#B388FF";
 export const COLOR_BG_SOFT_BLACK = "#0A0A12";
@@ -33,6 +34,8 @@ export const ALLOWED_TRAVEL_FX = [
   "beam-energy",
   "beam-lightning",
 ];
+
+export const ALLOWED_TRAVEL_MODES = ["normal", "invisible"];
 
 export const ALLOWED_POINT_FX = [
   "none",
@@ -93,26 +96,29 @@ export const FX_PRESETS = {
     destinationTime: 0.5,
     swapDelay: 0.5,
     destinationDelay: 1,
+    travelMode: "normal",
   },
   lightning: {
     originFx: "none",
-    travelFx: "beam-lightning",
-    destinationFx: "burst-energy",
+    travelFx: "beam-holy",
+    destinationFx: "burst-holy",
     originTime: 0,
     travelTime: 0.3,
     destinationTime: 0,
     swapDelay: 0,
     destinationDelay: 0.3,
+    travelMode: "normal",
   },
   shadow: {
-    originFx: "splatter-dark",
+    originFx: "burst-smoke",
     travelFx: "none",
-    destinationFx: "splatter-dark",
+    destinationFx: "burst-smoke",
     originTime: 0.5,
     travelTime: 0,
     destinationTime: 0,
     swapDelay: 0.5,
     destinationDelay: 0.5,
+    travelMode: "normal",
   },
   fire: {
     originFx: "explode-fire",
@@ -123,6 +129,7 @@ export const FX_PRESETS = {
     destinationTime: 0,
     swapDelay: 0.5,
     destinationDelay: 0.5,
+    travelMode: "normal",
   },
   magic: {
     originFx: "nova-magic",
@@ -133,6 +140,18 @@ export const FX_PRESETS = {
     destinationTime: 0,
     swapDelay: 0.5,
     destinationDelay: 0.5,
+    travelMode: "normal",
+  },
+  transport: {
+    originFx: "glow-magic",
+    travelFx: "none",
+    destinationFx: "glow-magic",
+    originTime: 0.55,
+    travelTime: 0,
+    destinationTime: 0,
+    swapDelay: 0.15,
+    destinationDelay: 0.05,
+    travelMode: "invisible",
   },
   none: {
     originFx: "none",
@@ -143,6 +162,7 @@ export const FX_PRESETS = {
     destinationTime: 0,
     swapDelay: 0,
     destinationDelay: 0,
+    travelMode: "normal",
   },
 };
 
@@ -157,6 +177,7 @@ export const FACTORY_DEFAULTS = {
   destinationTime: 0,
   swapDelay: 0,
   destinationDelay: 0,
+  travelMode: "normal",
 };
 
 export const FLAG_HELP = /--help\b/i;
@@ -173,6 +194,7 @@ export const FLAG_TRAVEL_FX = /--travel-fx\b/i;
 export const FLAG_DESTINATION_FX = /--destination-fx\b/i;
 export const FLAG_ORIGIN_TIME = /--origin-time\b/i;
 export const FLAG_TRAVEL_TIME = /--travel-time\b/i;
+export const FLAG_TRAVEL_MODE = /--travel-mode\b/i;
 export const FLAG_DESTINATION_TIME = /--destination-time\b/i;
 export const FLAG_SWAP_DELAY = /--swap-delay\b/i;
 export const FLAG_DESTINATION_DELAY = /--destination-delay\b/i;

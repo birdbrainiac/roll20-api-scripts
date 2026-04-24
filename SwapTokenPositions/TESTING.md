@@ -98,6 +98,34 @@ npm run build
      - Matching stage FX at each phase.
      - Successful swap and confirmation whisper.
 
+## Travel Mode Validation
+
+1. **Invisible travel mode behavior**
+    - Action: `!swap-tokens --travel-mode invisible --origin-time 0 --travel-time 1 --destination-delay 0`
+    - Expected:
+       - Tokens are hidden during travel phase.
+       - Tokens are restored and visible after swap completes.
+
+2. **Normal travel mode behavior**
+    - Action: `!swap-tokens --travel-mode normal --origin-time 0 --travel-time 1 --destination-delay 0`
+    - Expected:
+       - Tokens remain visible throughout travel phase.
+       - Swap completes without visibility flicker.
+
+3. **Preset default + override**
+    - Action: `!swap-tokens --preset transport`
+    - Expected:
+       - Transport preset uses `travel-mode invisible` by default.
+    - Action: `!swap-tokens --preset transport --travel-mode normal`
+    - Expected:
+       - Explicit travel mode override is honored.
+
+4. **Invalid travel mode value**
+    - Action: `!swap-tokens --travel-mode phase`
+    - Expected:
+       - Invalid input whisper for travel mode.
+       - Script remains stable and does not crash.
+
 ## Timing and Range Validation
 
 1. **Boundary minimum values**

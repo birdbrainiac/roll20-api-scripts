@@ -145,6 +145,16 @@
       "description": "Seconds to wait after travel FX before continuing (0-10)."
     },
     {
+      "name": "travel-mode",
+      "type": "select",
+      "options": [
+        "normal",
+        "invisible"
+      ],
+      "default": "normal",
+      "description": "Controls whether tokens remain visible during travel stage."
+    },
+    {
       "name": "destination-time",
       "type": "number",
       "default": "0",

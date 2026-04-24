@@ -1,6 +1,7 @@
 import {
   ALLOWED_POINT_FX,
   ALLOWED_TRAVEL_FX,
+  ALLOWED_TRAVEL_MODES,
   DELAY_MAX,
   DELAY_MIN,
   FACTORY_DEFAULTS,
@@ -44,6 +45,7 @@ export function showSettings() {
   const settingsMsg = [
     `<strong>Origin FX:</strong> ${settings.originFx}<br>`,
     `<strong>Travel FX:</strong> ${settings.travelFx}<br>`,
+    `<strong>Travel Mode:</strong> ${settings.travelMode}<br>`,
     `<strong>Destination FX:</strong> ${settings.destinationFx}<br>`,
     `<strong>Origin Time:</strong> ${settings.originTime}s<br>`,
     `<strong>Travel Time:</strong> ${settings.travelTime}s<br>`,
@@ -83,6 +85,9 @@ export function validateSettings(silentOnSuccess = false) {
   }
   if (!ALLOWED_TRAVEL_FX.includes(settings.travelFx)) {
     errors.push(`Travel FX '${settings.travelFx}' is no longer valid.`);
+  }
+  if (!ALLOWED_TRAVEL_MODES.includes(settings.travelMode)) {
+    errors.push(`Travel Mode '${settings.travelMode}' is no longer valid.`);
   }
   if (!ALLOWED_POINT_FX.includes(settings.destinationFx)) {
     errors.push(`Destination FX '${settings.destinationFx}' is no longer valid.`);

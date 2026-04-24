@@ -2,6 +2,7 @@ import {
   ALLOWED_POINT_FX,
   ALLOWED_PRESETS,
   ALLOWED_TRAVEL_FX,
+  ALLOWED_TRAVEL_MODES,
   DELAY_MAX,
   DELAY_MIN,
   FLAG_DESTINATION_DELAY,
@@ -15,6 +16,7 @@ import {
   FLAG_PRESET,
   FLAG_SWAP_DELAY,
   FLAG_TRAVEL_FX,
+  FLAG_TRAVEL_MODE,
   FLAG_TRAVEL_TIME,
   FX_PRESETS,
   TIME_MAX,
@@ -155,6 +157,12 @@ export function buildSwapConfig(msg, updateTracker) {
       key: "travelFx",
       allowed: ALLOWED_TRAVEL_FX,
       label: "Travel FX",
+    },
+    {
+      flag: FLAG_TRAVEL_MODE,
+      key: "travelMode",
+      allowed: ALLOWED_TRAVEL_MODES,
+      label: "Travel Mode",
     },
     {
       flag: FLAG_DESTINATION_FX,

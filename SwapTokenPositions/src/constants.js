@@ -7,15 +7,20 @@ export const COLOR_GLOW_PURPLE = "#B388FF";
 export const COLOR_BG_SOFT_BLACK = "#0A0A12";
 export const COLOR_TEXT_ARCANE_SILVER = "#E6DFFF";
 export const COLOR_TEXT_DIM_SILVER = "#B8AFCF";
-export const COLOR_ACCENT_PINK = "#FF4D6D";
-export const COLOR_ACCENT_BLUE = "#3D5AFE";
+export const COLOR_ACCENT_PURPLE_LIGHT = "#FF4D6D";
+export const COLOR_ACCENT_PURPLE_DARK = "#5B21B6";
+export const COLOR_HEADER_PURPLE_LIGHT = "#E9D5FF";
 
+export const COLOR_INFO_LIGHT = "#DBEAFE";
+export const COLOR_INFO_DARK = "#1E40AF";
 export const COLOR_ERROR_RED = "#D32F2F";
 export const COLOR_ERROR_DARK = "#B71C1C";
 export const COLOR_ERROR_LIGHT = "#FFCDD2";
+export const COLOR_ERROR_BG_LIGHT = "#FFEBEE";
 export const COLOR_SUCCESS_GREEN = "#2E7D32";
 export const COLOR_SUCCESS_DARK = "#1B5E20";
 export const COLOR_SUCCESS_LIGHT = "#E8F5E9";
+export const COLOR_SUCCESS_BG_LIGHT = "#F1F5FE";
 
 export const TIME_MIN = 0;
 export const TIME_MAX = 10;

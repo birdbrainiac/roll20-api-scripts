@@ -1,14 +1,18 @@
 import {
-  COLOR_ACCENT_BLUE,
-  COLOR_ACCENT_PINK,
+  COLOR_ACCENT_PURPLE_LIGHT,
+  COLOR_ACCENT_PURPLE_DARK,
   COLOR_BG_SOFT_BLACK,
   COLOR_ERROR_DARK,
   COLOR_ERROR_LIGHT,
   COLOR_ERROR_RED,
-  COLOR_GLOW_PURPLE,
+  COLOR_ERROR_BG_LIGHT,
+  COLOR_HEADER_PURPLE_LIGHT,
+  COLOR_INFO_LIGHT,
+  COLOR_INFO_DARK,
   COLOR_SUCCESS_DARK,
   COLOR_SUCCESS_GREEN,
   COLOR_SUCCESS_LIGHT,
+  COLOR_SUCCESS_BG_LIGHT,
   COLOR_TEXT_ARCANE_SILVER,
   COLOR_TEXT_DIM_SILVER,
   SCRIPT_NAME,
@@ -51,6 +55,12 @@ export function getSafeTokenName(token, fallback) {
  */
 export function generateStyledMessage(msg, align = "center", header = "") {
   const padding = align === "center" ? "3px 0px" : "3px 8px";
+  const isScriptReadyHeader = header === "Script Ready";
+  const headerBackground = isScriptReadyHeader
+    ? COLOR_HEADER_PURPLE_LIGHT
+    : COLOR_INFO_LIGHT;
+  const headerTextColor = isScriptReadyHeader ? COLOR_BG_SOFT_BLACK : COLOR_INFO_DARK;
+  const headerLabel = isScriptReadyHeader ? `😎 ${header} 😎` : `ℹ️ ${header}`;
   const mainStyle = [
     "width:100%",
     "border-radius:4px",
@@ -60,12 +70,12 @@ export function generateStyledMessage(msg, align = "center", header = "") {
     "margin:0px auto",
     `border:1px solid ${COLOR_BG_SOFT_BLACK}`,
     `color:${COLOR_TEXT_ARCANE_SILVER}`,
-    `background-image:-webkit-linear-gradient(-45deg,${COLOR_ACCENT_BLUE} 0%,${COLOR_ACCENT_PINK} 100%)`,
+    `background-image:-webkit-linear-gradient(-45deg,${COLOR_ACCENT_PURPLE_DARK} 0%,${COLOR_ACCENT_PURPLE_LIGHT} 100%)`,
     "overflow:hidden",
   ].join(";");
 
   const headerHtml = header
-    ? `<div style="background:${COLOR_BG_SOFT_BLACK}; color:${COLOR_GLOW_PURPLE}; padding:2px 5px; border-bottom:1px solid ${COLOR_BG_SOFT_BLACK}; font-variant:small-caps; font-weight:bold; text-align:center">${header}</div>`
+    ? `<div style="background:${headerBackground}; color:${headerTextColor}; padding:2px 5px; border-bottom:1px solid ${COLOR_BG_SOFT_BLACK}; font-variant:small-caps; font-weight:bold; text-align:center">${headerLabel}</div>`
     : "";
   const contentHtml = `<div style="padding:${padding}"><strong>${msg}</strong></div>`;
 
@@ -95,7 +105,7 @@ export function generateStyledErrorMessage(msg, header = "Error", align = "left"
     "overflow:hidden",
   ].join(";");
 
-  const headerHtml = `<div style="background:${COLOR_ERROR_DARK}; color:${COLOR_ERROR_LIGHT}; padding:2px 5px; border-bottom:1px solid ${COLOR_ERROR_DARK}; font-variant:small-caps; font-weight:bold; text-align:center">[!] ${header}</div>`;
+  const headerHtml = `<div style="background:${COLOR_ERROR_BG_LIGHT}; color:${COLOR_ERROR_DARK}; padding:2px 5px; border-bottom:1px solid ${COLOR_ERROR_DARK}; font-variant:small-caps; font-weight:bold; text-align:center">⚠️ ${header}</div>`;
   const contentHtml = `<div style="padding:3px 8px"><strong>${msg}</strong></div>`;
 
   return `<div style='${mainStyle}'>${headerHtml}${contentHtml}</div>`;
@@ -122,7 +132,7 @@ export function generateStyledSuccessMessage(msg, header = "Success") {
     "overflow:hidden",
   ].join(";");
 
-  const headerHtml = `<div style="background:${COLOR_SUCCESS_DARK}; color:${COLOR_SUCCESS_LIGHT}; padding:2px 5px; border-bottom:1px solid ${COLOR_SUCCESS_DARK}; font-variant:small-caps; font-weight:bold; text-align:center">✅ ${header}</div>`;
+  const headerHtml = `<div style="background:${COLOR_SUCCESS_BG_LIGHT}; color:${COLOR_SUCCESS_DARK}; padding:2px 5px; border-bottom:1px solid ${COLOR_SUCCESS_DARK}; font-variant:small-caps; font-weight:bold; text-align:center">✅ ${header}</div>`;
   const contentHtml = `<div style="padding:3px 8px"><strong>${msg}</strong></div>`;
 
   return `<div style='${mainStyle}'>${headerHtml}${contentHtml}</div>`;

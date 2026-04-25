@@ -1462,7 +1462,7 @@
   };
 
   on("ready", () => {
-    gmWhisper("API READY");
+    gmWhisper(`MOD READY (v${VERSION})`);
     checkInstall();
     registerEventHandlers();
   });

@@ -98,22 +98,24 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source}, {target}{subject} karşısında dezavantajlı",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} {past}",
       standard: "{emoji} {target} {source} tarafından {past}",
     },
     apply: {
       custom: "{source}, {target} üzerine {effect} etkisi uygular.",
       advantage: "{source}, {target}{subject} karşısında avantajlıdır.",
       disadvantage: "{source}, {target}{subject} karşısında dezavantajlıdır.",
+      self: "{target} {past}.",
       withSuffix: "{source} {target} {suffix} {verb}.",
       standard: "{source} {target} {verb}.",
     },
     remove: {
       custom: "{target} artık {effect} etkisi altında değil.",
-      advantage:
-        "{source} artık {target}{subject} karşısında avantajlı değil.",
+      advantage: "{source} artık {target}{subject} karşısında avantajlı değil.",
       disadvantage:
         "{source} artık {target}{subject} karşısında dezavantajlı değil.",
       noBy: "{target} artık {past} değil.",
+      self: "{target} artık {past} değil.",
       standard: "{target} artık {source} tarafından {past} değil.",
     },
   },
@@ -131,11 +133,10 @@ const TRANSLATION = {
       confirmBtn: "Hedef listesini onayla",
       enterDetails: "Etki ayrıntılarını girin",
       noneBtn: "Hiçbiri",
+      noneOrSourceBtn: "Hiçbiri veya kaynağa uygula",
       subjectDesc: "Etkiyi kimin veya neyin yarattığını seçin.",
-      sourceDesc:
-        "Durumu veya etkiyi oluşturan yaratığı seçin.",
-      targetDesc:
-        "Durumu veya etkiyi alacak yaratığı seçin.",
+      sourceDesc: "Durumu veya etkiyi oluşturan yaratığı seçin.",
+      targetDesc: "Durumu veya etkiyi alacak yaratığı seçin.",
       otherText: "Özel durum metni",
       effectDetails: "{condition} ayrıntıları",
     },
@@ -224,8 +225,7 @@ const TRANSLATION = {
       macroReinstalled:
         "{wizard} ve {multiTarget} makroları tüm mevcut GM oyuncuları için yeniden yüklendi.",
       handoutReinstalled: "Yardım el ilanı {handout} yeniden yüklendi.",
-      duplicate:
-        "Aynı kaynak, özne, hedef, durum ve özel metin zaten aktif.",
+      duplicate: "Aynı kaynak, özne, hedef, durum ve özel metin zaten aktif.",
       noTargets: "Çoklu hedef uygulaması için hedef token belirtilmedi.",
       noSelection:
         "--multi-target kullanmadan önce tabloda en az bir token seçin.",
@@ -264,15 +264,14 @@ const TRANSLATION = {
       markerApplied: "İşaretçi uygulandı: {marker}",
       markerPresent: "İşaretçi zaten mevcut: {marker}",
       langSet: "Dil {locale} olarak ayarlandı.",
-      invalidLocale: "Geçersiz yerel ayar. Desteklenen yerel ayarlar: {locales}.",
+      invalidLocale:
+        "Geçersiz yerel ayar. Desteklenen yerel ayarlar: {locales}.",
       otherDurationRequiresRounds:
         "Diğer süre, sayısal bir tur sayısı gerektirir; örneğin --duration 5 rounds.",
       invalidDuration:
         "Süre; Kaldırılana kadar, bir tur sonu seçeneği veya pozitif bir tur sayısı olmalıdır.",
-      zeroHpNoConditions:
-        "{name} 0 KP'ye ulaştı ve aktif durumu yok.",
-      zeroHpConditions:
-        "{name} 0 KP'ye ulaştı. Kaldırılacak durumları seçin:",
+      zeroHpNoConditions: "{name} 0 KP'ye ulaştı ve aktif durumu yok.",
+      zeroHpConditions: "{name} 0 KP'ye ulaştı. Kaldırılacak durumları seçin:",
       removeAllBtn: "{name} için Tüm Durumları Kaldır",
       markIncapacitated: "Etkisiz Olarak İşaretle",
       removeFromTurnOrder: "Tur Sırasından Kaldır",
@@ -285,8 +284,7 @@ const TRANSLATION = {
       tokenMoved: "{name} harita katmanına taşındı.",
       tokenNotFound: "Token bulunamadı.",
       noActiveConditions: "{name} kaldırılacak aktif durumu yok.",
-      deadNoConditions:
-        "{name} ölü olarak işaretlendi. Aktif durum yoktu.",
+      deadNoConditions: "{name} ölü olarak işaretlendi. Aktif durum yoktu.",
       scriptReady: "{name} aktif ve {version} sürümünü kullanıyorsunuz.",
       reachedZeroHp: "{name} 0 KP'ye ulaştı",
       manuallyRemoved: "manuel olarak kaldırıldı",
@@ -316,8 +314,7 @@ const TRANSLATION = {
       unusedMarkers: "Kullanılmayan işaretçiler",
     },
     apply: {
-      turnAppended:
-        "Hedef tur sırasında değildi; durum satırı sona eklendi.",
+      turnAppended: "Hedef tur sırasında değildi; durum satırı sona eklendi.",
       turnInserted: "Durum satırı hedef tokenın altına eklendi.",
     },
   },
@@ -429,10 +426,7 @@ const TRANSLATION = {
           "⬇️ Dezavantaj",
           "Uygulanan dezavantajı kaydedin; inisiyatifte kaynakla gruplandırılır",
         ],
-        [
-          "📝 Diğer",
-          "Serbest biçimli özel etiket — bir açıklama sorulacak",
-        ],
+        ["📝 Diğer", "Serbest biçimli özel etiket — bir açıklama sorulacak"],
       ],
     },
     durationOptions: {

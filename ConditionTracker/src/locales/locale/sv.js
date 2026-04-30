@@ -100,21 +100,23 @@ const TRANSLATION = {
       advantage: "{emoji} {source} har fördel mot {target}{subject}",
       disadvantage: "{emoji} {source} har nackdel mot {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} är {past}",
       standard: "{emoji} {target} {past} av {source}",
     },
     apply: {
       custom: "{source} applicerar {effect} på {target}.",
       advantage: "{source} har fördel mot {target}{subject}.",
       disadvantage: "{source} har nackdel mot {target}{subject}.",
+      self: "{target} är {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} är inte längre påverkad av {effect}.",
       advantage: "{source} har inte längre fördel mot {target}{subject}.",
-      disadvantage:
-        "{source} har inte längre nackdel mot {target}{subject}.",
+      disadvantage: "{source} har inte längre nackdel mot {target}{subject}.",
       noBy: "{target} är inte längre {past}.",
+      self: "{target} är inte längre {past}.",
       standard: "{target} är inte längre {past} av {source}.",
     },
   },
@@ -132,6 +134,7 @@ const TRANSLATION = {
       confirmBtn: "Bekräfta mållista",
       enterDetails: "Ange effektdetaljer",
       noneBtn: "Ingen",
+      noneOrSourceBtn: "Ingen eller applicera på källa",
       subjectDesc: "Välj vem eller vad som levererar effekten.",
       sourceDesc:
         "Välj det väsen som skapar/genererar tillståndet eller effekten.",
@@ -270,8 +273,7 @@ const TRANSLATION = {
         "Annan varaktighet kräver ett numeriskt antal rundor, till exempel --duration 5 rounds.",
       invalidDuration:
         "Varaktigheten måste vara Tills borttagen, ett turslut-alternativ eller ett positivt antal rundor.",
-      zeroHpNoConditions:
-        "{name} har nått 0 HP och har inga aktiva tillstånd.",
+      zeroHpNoConditions: "{name} har nått 0 HP och har inga aktiva tillstånd.",
       zeroHpConditions: "{name} har nått 0 HP. Välj tillstånd att ta bort:",
       removeAllBtn: "Ta bort alla tillstånd för {name}",
       markIncapacitated: "Markera som oskadliggjord",
@@ -315,7 +317,8 @@ const TRANSLATION = {
       unusedMarkers: "Oanvända markörer",
     },
     apply: {
-      turnAppended: "Målet var inte i turordningen; tillståndsrad lades till sist.",
+      turnAppended:
+        "Målet var inte i turordningen; tillståndsrad lades till sist.",
       turnInserted: "Tillståndsrad infogad under måltoken.",
     },
   },

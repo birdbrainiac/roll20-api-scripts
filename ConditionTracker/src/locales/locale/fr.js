@@ -101,12 +101,14 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source} a le désavantage contre {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} est {past}",
       standard: "{emoji} {target} {past} par {source}",
     },
     apply: {
       custom: "{source} applique {effect} à {target}.",
       advantage: "{source} a l’avantage contre {target}{subject}.",
       disadvantage: "{source} a le désavantage contre {target}{subject}.",
+      self: "{target} est {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -116,6 +118,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} n’a plus le désavantage contre {target}{subject}.",
       noBy: "{target} n’est plus {past}.",
+      self: "{target} n’est plus {past}.",
       standard: "{target} n’est plus {past} par {source}.",
     },
   },
@@ -133,6 +136,7 @@ const TRANSLATION = {
       confirmBtn: "Confirmer la liste de cibles",
       enterDetails: "Saisir les détails de l’effet",
       noneBtn: "Aucun",
+      noneOrSourceBtn: "Aucun ou appliquer à la source",
       subjectDesc: "Sélectionnez qui ou quoi délivre l’effet.",
       sourceDesc:
         "Sélectionnez la créature qui crée ou génère la condition ou l’effet.",

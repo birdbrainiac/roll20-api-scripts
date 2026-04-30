@@ -87,6 +87,7 @@ export function getConditionEmoji(condition) {
  * @param {string} details.customText Custom effect text.
  * @param {string} details.sourceName Source token name.
  * @param {string} details.targetName Target token name.
+ * @param {boolean} [details.isSelfTarget] Whether source and target are the same token.
  * @param {string} [details.subjectName] Subject name for advantage types.
  * @param {string} [locale] Output locale.
  * @returns {string} Turn Tracker display text.
@@ -131,6 +132,14 @@ export function buildDisplayText(details, locale) {
     });
   }
 
+  if (details.isSelfTarget) {
+    return t("templates.display.self", locale, {
+      emoji,
+      target: details.targetName,
+      past: getLocalizedPast(details.condition, locale),
+    });
+  }
+
   return t("templates.display.standard", locale, {
     emoji,
     target: details.targetName,
@@ -149,6 +158,8 @@ export function buildDisplayText(details, locale) {
  * @param {string} details.customText Custom effect text.
  * @param {string} details.sourceName Source token name.
  * @param {string} details.targetName Target token name.
+ * @param {string} [details.sourceTokenId] Source token id.
+ * @param {string} [details.targetTokenId] Target token id.
  * @param {string} [details.subjectName] Subject name.
  * @param {boolean} details.useIcons Whether icons are enabled.
  * @param {string} [locale] Output locale.
@@ -183,6 +194,16 @@ export function buildApplyMessage(details, locale) {
 
   const localData = getConditionLocalData(details.condition, locale);
   const data = localData || CONDITION_DATA[details.condition];
+
+  if (isSelfTarget(details)) {
+    return (
+      prefix +
+      t("templates.apply.self", locale, {
+        target: tgt,
+        past: escapeHtml(getLocalizedPast(details.condition, locale)),
+      })
+    );
+  }
 
   if (data?.suffix) {
     return (
@@ -253,6 +274,16 @@ export function buildRemovalMessage(condition, useIcons, locale) {
     );
   }
 
+  if (isSelfTarget(condition)) {
+    return (
+      prefix +
+      t("templates.remove.self", locale, {
+        target: tgt,
+        past: escapeHtml(getLocalizedPast(condition.condition, locale)),
+      })
+    );
+  }
+
   return (
     prefix +
     t("templates.remove.standard", locale, {
@@ -292,6 +323,20 @@ function buildIconPrefix(condition, useIcons) {
 function isAdvantageType(condition) {
   return (
     condition === CONDITION_ADVANTAGE || condition === CONDITION_DISADVANTAGE
+  );
+}
+
+/**
+ * Returns true when a condition source and target are the same token.
+ *
+ * @param {object} details Display details.
+ * @returns {boolean} True for self-targeted condition application.
+ */
+function isSelfTarget(details) {
+  const sourceTokenId = toText(details.sourceTokenId);
+  const targetTokenId = toText(details.targetTokenId);
+  return Boolean(
+    sourceTokenId && targetTokenId && sourceTokenId === targetTokenId,
   );
 }
 

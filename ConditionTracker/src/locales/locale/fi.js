@@ -98,24 +98,25 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} vaikutuksen alainen: {effect} ({source})",
       advantage: "{emoji} {source} on etu {target}{subject} vastaan",
-      disadvantage:
-        "{emoji} {source} on haitta {target}{subject} vastaan",
+      disadvantage: "{emoji} {source} on haitta {target}{subject} vastaan",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} on {past}",
       standard: "{emoji} {target} {past} — {source}",
     },
     apply: {
       custom: "{source} soveltaa {effect} kohteeseen {target}.",
       advantage: "{source} on etu {target}{subject} vastaan.",
       disadvantage: "{source} on haitta {target}{subject} vastaan.",
+      self: "{target} on {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} ei enää ole {effect} vaikutuksen alainen.",
       advantage: "{source} ei enää ole etu {target}{subject} vastaan.",
-      disadvantage:
-        "{source} ei enää ole haitta {target}{subject} vastaan.",
+      disadvantage: "{source} ei enää ole haitta {target}{subject} vastaan.",
       noBy: "{target} ei enää ole {past}.",
+      self: "{target} ei enää ole {past}.",
       standard: "{target} ei enää ole {past} — {source}.",
     },
   },
@@ -133,11 +134,10 @@ const TRANSLATION = {
       confirmBtn: "Vahvista kohdelista",
       enterDetails: "Syötä vaikutuksen tiedot",
       noneBtn: "Ei mitään",
+      noneOrSourceBtn: "Ei mitään tai käytä lähteeseen",
       subjectDesc: "Valitse kuka tai mikä tuottaa vaikutuksen.",
-      sourceDesc:
-        "Valitse olento, joka luo tai tuottaa tilan tai vaikutuksen.",
-      targetDesc:
-        "Valitse olento, joka vastaanottaa tilan tai vaikutuksen.",
+      sourceDesc: "Valitse olento, joka luo tai tuottaa tilan tai vaikutuksen.",
+      targetDesc: "Valitse olento, joka vastaanottaa tilan tai vaikutuksen.",
       otherText: "Mukautettu tilateksti",
       effectDetails: "{condition}-tiedot",
     },
@@ -253,8 +253,7 @@ const TRANSLATION = {
         "Merkkimäärityksen muoto: --config marker Grappled=grab",
       markerPredefinedRequired:
         "Merkkimääritys edellyttää ennalta määritettyä tilanimeä.",
-      markerNameRequired:
-        "Merkkimääritys edellyttää ei-tyhjää merkin nimeä.",
+      markerNameRequired: "Merkkimääritys edellyttää ei-tyhjää merkin nimeä.",
       markerSet: "Tilan {condition} merkiksi asetettu {marker}.",
       healthBarSet: "Elämäpalkki asetettu: {bar}.",
       boolSet: "{key} asetettu arvoon {value}.",
@@ -273,8 +272,7 @@ const TRANSLATION = {
         "Keston on oltava Kunnes poistetaan, vuoron loppuvaihtoehto tai positiivinen kierrosmäärä.",
       zeroHpNoConditions:
         "{name} saavutti 0 HP eikä sillä ole aktiivisia tiloja.",
-      zeroHpConditions:
-        "{name} saavutti 0 HP. Valitse poistettavat tilat:",
+      zeroHpConditions: "{name} saavutti 0 HP. Valitse poistettavat tilat:",
       removeAllBtn: "Poista kaikki {name}-tilat",
       markIncapacitated: "Merkitse toimintakyvyttömäksi",
       removeFromTurnOrder: "Poista vuorojärjestyksestä",
@@ -357,10 +355,7 @@ const TRANSLATION = {
       colDesc: "Kuvaus",
       rows: [
         ["--prompt", "Vuorovaikutteinen vaiheittainen ohjaustoiminto"],
-        [
-          "--multi-target",
-          "Sovella tila useisiin kohde-tokeneihin kerralla",
-        ],
+        ["--multi-target", "Sovella tila useisiin kohde-tokeneihin kerralla"],
         ["--menu", "Näytä päävalikko (lisää remove poistovalikkoa varten)"],
         [
           "--source X --target Y --condition Z",

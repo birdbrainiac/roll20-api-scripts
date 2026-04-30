@@ -100,12 +100,14 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source} 이(가) {target}{subject} 에 대해 불이익을 가짐",
       noBy: "{emoji} {target} 이(가) {past} ({source})",
+      self: "{target} 이(가) {past}",
       standard: "{emoji} {target} 이(가) {source} 에 의해 {past}",
     },
     apply: {
       custom: "{source} 이(가) {target} 에게 {effect} 효과를 적용함.",
       advantage: "{source} 이(가) {target}{subject} 에 대해 이점을 가짐.",
       disadvantage: "{source} 이(가) {target}{subject} 에 대해 불이익을 가짐.",
+      self: "{target} 이(가) {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -116,6 +118,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} 이(가) {target}{subject} 에 대해 더 이상 불이익을 가지지 않음.",
       noBy: "{target} 이(가) 더 이상 {past} 상태가 아님.",
+      self: "{target} 이(가) 더 이상 {past} 상태가 아님.",
       standard: "{target} 이(가) 더 이상 {source} 에 의해 {past} 상태가 아님.",
     },
   },
@@ -133,6 +136,7 @@ const TRANSLATION = {
       confirmBtn: "대상 목록 확인",
       enterDetails: "효과 상세 내용 입력",
       noneBtn: "없음",
+      noneOrSourceBtn: "없음 또는 시전자에게 적용",
       subjectDesc: "효과를 전달하는 대상이나 항목을 선택하세요.",
       sourceDesc: "상태나 효과를 생성하는 생명체를 선택하세요.",
       targetDesc: "상태나 효과를 받을 생명체를 선택하세요.",
@@ -293,8 +297,7 @@ const TRANSLATION = {
       markedAsDead: "{name} 이(가) 사망으로 표시됨",
       conditionReorder:
         "턴 순서가 변경되어 {count}개의 추적된 조건 행이 잘못된 위치에 있을 수 있습니다. 아래를 클릭하여 지정된 토큰 뒤에 복원하세요.",
-      conditionsReordered:
-        "조건 행이 지정된 토큰 뒤로 재배치되었습니다.",
+      conditionsReordered: "조건 행이 지정된 토큰 뒤로 재배치되었습니다.",
     },
     removal: {
       conditionField: "상태",
@@ -371,7 +374,10 @@ const TRANSLATION = {
           "이 명령어에 대해서만 subjectPromptBypass 재정의 (--subject-prompt-bypass 도 지원)",
         ],
         ["--cleanup", "상태 조정 — 연결이 끊긴 상태 및 턴 추적기 행 제거"],
-        ["--reorder-conditions", "턴 순서에서 조건 행을 할당된 토큰 뒤로 수동으로 재배치"],
+        [
+          "--reorder-conditions",
+          "턴 순서에서 조건 행을 할당된 토큰 뒤로 수동으로 재배치",
+        ],
         ["--reinstall-macro", "GM 매크로 재생성 또는 업데이트"],
         ["--reinstall-handout", "현지화된 도움말 유인물 재생성 또는 업데이트"],
         [

@@ -5,7 +5,7 @@
  * Name: Condition Tracker
  * Script: ConditionTracker.js
  * Version: 1.0.0
- * Built: 2026-04-30T11:04:32.612Z
+ * Built: 2026-04-30T12:20:54.036Z
  */
 const ConditionTrackerMod = (() => {
   'use strict';
@@ -260,7 +260,7 @@ const ConditionTrackerMod = (() => {
 
   const SCRIPT_NAME = 'Condition Tracker';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-04-30T11:04:32.612Z';
+  const SCRIPT_LAST_UPDATED = '2026-04-30T12:20:54.036Z';
 
   const COLOR_BG_SOFT_BLACK = '#0A0A12';
   const COLOR_TEXT_ARCANE_SILVER = '#E6DFFF';
@@ -549,12 +549,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} het voordeel teen {target}{subject}',
         disadvantage: '{emoji} {source} het nadeel teen {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} is {past}',
         standard: '{emoji} {target} {past} deur {source}',
       },
       apply: {
         custom: '{source} pas {effect} toe op {target}.',
         advantage: '{source} het voordeel teen {target}{subject}.',
         disadvantage: '{source} het nadeel teen {target}{subject}.',
+        self: '{target} is {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -564,6 +566,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} het nie meer nadeel teen {target}{subject} nie.',
         noBy: '{target} is nie meer {past} nie.',
+        self: '{target} is nie meer {past} nie.',
         standard: '{target} word nie meer {past} deur {source} nie.',
       },
     },
@@ -581,6 +584,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Bevestig teikenslys',
         enterDetails: 'Voer effekbesonderhede in',
         noneBtn: 'Geen',
+        noneOrSourceBtn: 'Geen of pas op bron toe',
         subjectDesc: 'Kies wie of wat die effek toepas.',
         sourceDesc: 'Kies die wese wat die toestand of effek skep.',
         targetDesc: 'Kies die wese wat die toestand of effek ontvang.',
@@ -1070,12 +1074,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} té desavantatge contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} està {past}',
         standard: '{emoji} {target} {past} per {source}',
       },
       apply: {
         custom: '{source} aplica {effect} a {target}.',
         advantage: '{source} té avantatge contra {target}{subject}.',
         disadvantage: '{source} té desavantatge contra {target}{subject}.',
+        self: '{target} està {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -1085,6 +1091,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} ja no té desavantatge contra {target}{subject}.',
         noBy: '{target} ja no {past}.',
+        self: '{target} ja no està {past}.',
         standard: '{target} ja no està {past} per {source}.',
       },
     },
@@ -1102,6 +1109,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirma la llista de destinataris',
         enterDetails: "Introdueix els detalls de l'efecte",
         noneBtn: 'Cap',
+        noneOrSourceBtn: "Cap o aplica a l'origen",
         subjectDesc: "Selecciona qui o què aplica l'efecte.",
         sourceDesc:
           "Selecciona la criatura que crea o genera la condició o l'efecte.",
@@ -1629,6 +1637,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: '確認目標列表',
         enterDetails: '輸入效果詳細資料',
         noneBtn: '無',
+        noneOrSourceBtn: '無或套用至來源',
         subjectDesc: '選擇由誰或什麼造成此效果。',
         sourceDesc: '選擇產生此狀態或效果的生物。',
         targetDesc: '選擇要受到此狀態或效果影響的生物。',
@@ -1958,12 +1967,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} 對 {target}{subject} 具有優勢',
         disadvantage: '{emoji} {source} 對 {target}{subject} 具有劣勢',
         noBy: '{emoji} {target} {past}（{source}）',
+        self: '{target} {past}',
         standard: '{emoji} {target} 因 {source} 而{past}',
       },
       apply: {
         custom: '{source} 對 {target} 施加 {effect}。',
         advantage: '{source} 對 {target}{subject} 具有優勢。',
         disadvantage: '{source} 對 {target}{subject} 具有劣勢。',
+        self: '{target} {past}。',
         withSuffix: '{source} {verb} {target} {suffix}。',
         standard: '{source} {verb} {target}。',
       },
@@ -1972,6 +1983,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} 不再對 {target}{subject} 具有優勢。',
         disadvantage: '{source} 不再對 {target}{subject} 具有劣勢。',
         noBy: '{target} 不再{past}。',
+        self: '{target} 不再{past}。',
         standard: '{target} 不再因 {source} 而{past}。',
       },
     },
@@ -2079,12 +2091,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} má výhodu proti {target}{subject}',
         disadvantage: '{emoji} {source} má nevýhodu proti {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} je {past}',
         standard: '{emoji} {target} {past} od {source}',
       },
       apply: {
         custom: '{source} uplatní {effect} na {target}.',
         advantage: '{source} má výhodu proti {target}{subject}.',
         disadvantage: '{source} má nevýhodu proti {target}{subject}.',
+        self: '{target} je {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -2093,6 +2107,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} již nemá výhodu proti {target}{subject}.',
         disadvantage: '{source} již nemá nevýhodu proti {target}{subject}.',
         noBy: '{target} již není {past}.',
+        self: '{target} již není {past}.',
         standard: '{target} již není {past} od {source}.',
       },
     },
@@ -2111,6 +2126,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Potvrdit seznam cílů',
         enterDetails: 'Zadat podrobnosti efektu',
         noneBtn: 'Žádný',
+        noneOrSourceBtn: 'Žádný nebo použít na zdroj',
         subjectDesc: 'Vyberte, kdo nebo co efekt způsobuje.',
         sourceDesc: 'Vyberte bytost, která stav nebo efekt vytváří.',
         targetDesc: 'Vyberte bytost, která stav nebo efekt obdrží.',
@@ -2594,12 +2610,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} har fordel mod {target}{subject}',
         disadvantage: '{emoji} {source} har ulempe mod {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} er {past}',
         standard: '{emoji} {target} {past} af {source}',
       },
       apply: {
         custom: '{source} påfører {effect} på {target}.',
         advantage: '{source} har fordel mod {target}{subject}.',
         disadvantage: '{source} har ulempe mod {target}{subject}.',
+        self: '{target} er {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -2608,6 +2626,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} har ikke længere fordel mod {target}{subject}.',
         disadvantage: '{source} har ikke længere ulempe mod {target}{subject}.',
         noBy: '{target} er ikke længere {past}.',
+        self: '{target} er ikke længere {past}.',
         standard: '{target} er ikke længere {past} af {source}.',
       },
     },
@@ -2625,6 +2644,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Bekræft målliste',
         enterDetails: 'Indtast effektdetaljer',
         noneBtn: 'Ingen',
+        noneOrSourceBtn: 'Ingen eller anvend på kilde',
         subjectDesc: 'Vælg hvem eller hvad der leverer effekten.',
         sourceDesc:
           'Vælg den skabning, der opretter/genererer tilstanden eller effekten.',
@@ -3111,12 +3131,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} heeft voordeel tegen {target}{subject}',
         disadvantage: '{emoji} {source} heeft nadeel tegen {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} is {past}',
         standard: '{emoji} {target} {past} door {source}',
       },
       apply: {
         custom: '{source} past {effect} toe op {target}.',
         advantage: '{source} heeft voordeel tegen {target}{subject}.',
         disadvantage: '{source} heeft nadeel tegen {target}{subject}.',
+        self: '{target} is {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -3127,6 +3149,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} heeft niet langer nadeel tegen {target}{subject}.',
         noBy: '{target} is niet langer {past}.',
+        self: '{target} is niet langer {past}.',
         standard: '{target} wordt niet langer {past} door {source}.',
       },
     },
@@ -3144,6 +3167,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Bevestig doellijst',
         enterDetails: 'Voer effectdetails in',
         noneBtn: 'Geen',
+        noneOrSourceBtn: 'Geen of toepassen op bron',
         subjectDesc: 'Selecteer wie of wat het effect veroorzaakt.',
         sourceDesc:
           'Selecteer het wezen dat de conditie of het effect creëert.',
@@ -3634,12 +3658,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} has disadvantage against {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} is {past}',
         standard: '{emoji} {target} {past} by {source}',
       },
       apply: {
         custom: '{source} applies {effect} to {target}.',
         advantage: '{source} has advantage against {target}{subject}.',
         disadvantage: '{source} has disadvantage against {target}{subject}.',
+        self: '{target} is {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -3650,6 +3676,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} no longer has disadvantage against {target}{subject}.',
         noBy: '{target} no longer {past}.',
+        self: '{target} is no longer {past}.',
         standard: '{target} is no longer {past} by {source}.',
       },
     },
@@ -3667,6 +3694,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirm target list',
         enterDetails: 'Enter effect details',
         noneBtn: 'None',
+        noneOrSourceBtn: 'None or Apply to Source',
         subjectDesc: 'Select who or what delivers the effect.',
         sourceDesc:
           'Select the creature that is creating / generating the condition or effect.',
@@ -4154,12 +4182,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} on etu {target}{subject} vastaan',
         disadvantage: '{emoji} {source} on haitta {target}{subject} vastaan',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} on {past}',
         standard: '{emoji} {target} {past} — {source}',
       },
       apply: {
         custom: '{source} soveltaa {effect} kohteeseen {target}.',
         advantage: '{source} on etu {target}{subject} vastaan.',
         disadvantage: '{source} on haitta {target}{subject} vastaan.',
+        self: '{target} on {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -4168,6 +4198,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} ei enää ole etu {target}{subject} vastaan.',
         disadvantage: '{source} ei enää ole haitta {target}{subject} vastaan.',
         noBy: '{target} ei enää ole {past}.',
+        self: '{target} ei enää ole {past}.',
         standard: '{target} ei enää ole {past} — {source}.',
       },
     },
@@ -4185,6 +4216,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Vahvista kohdelista',
         enterDetails: 'Syötä vaikutuksen tiedot',
         noneBtn: 'Ei mitään',
+        noneOrSourceBtn: 'Ei mitään tai käytä lähteeseen',
         subjectDesc: 'Valitse kuka tai mikä tuottaa vaikutuksen.',
         sourceDesc:
           'Valitse olento, joka luo tai tuottaa tilan tai vaikutuksen.',
@@ -4669,12 +4701,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} a le désavantage contre {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} est {past}',
         standard: '{emoji} {target} {past} par {source}',
       },
       apply: {
         custom: '{source} applique {effect} à {target}.',
         advantage: '{source} a l’avantage contre {target}{subject}.',
         disadvantage: '{source} a le désavantage contre {target}{subject}.',
+        self: '{target} est {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -4684,6 +4718,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} n’a plus le désavantage contre {target}{subject}.',
         noBy: '{target} n’est plus {past}.',
+        self: '{target} n’est plus {past}.',
         standard: '{target} n’est plus {past} par {source}.',
       },
     },
@@ -4701,6 +4736,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirmer la liste de cibles',
         enterDetails: 'Saisir les détails de l’effet',
         noneBtn: 'Aucun',
+        noneOrSourceBtn: 'Aucun ou appliquer à la source',
         subjectDesc: 'Sélectionnez qui ou quoi délivre l’effet.',
         sourceDesc:
           'Sélectionnez la créature qui crée ou génère la condition ou l’effet.',
@@ -5194,12 +5230,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} hat Vorteil gegen {target}{subject}',
         disadvantage: '{emoji} {source} hat Nachteil gegen {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} ist {past}',
         standard: '{emoji} {target} {past} durch {source}',
       },
       apply: {
         custom: '{source} wendet {effect} auf {target} an.',
         advantage: '{source} hat Vorteil gegen {target}{subject}.',
         disadvantage: '{source} hat Nachteil gegen {target}{subject}.',
+        self: '{target} ist {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -5209,6 +5247,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} hat keinen Nachteil mehr gegen {target}{subject}.',
         noBy: '{target} ist nicht mehr {past}.',
+        self: '{target} ist nicht mehr {past}.',
         standard: '{target} ist nicht mehr {past} durch {source}.',
       },
     },
@@ -5227,6 +5266,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Zielliste bestätigen',
         enterDetails: 'Effektdetails eingeben',
         noneBtn: 'Keines',
+        noneOrSourceBtn: 'Keines oder auf Quelle anwenden',
         subjectDesc: 'Wähle aus, wer oder was den Effekt auslöst.',
         sourceDesc:
           'Wähle das Wesen, das die Bedingung oder den Effekt erzeugt.',
@@ -5720,12 +5760,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} έχει μειονέκτημα εναντίον {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} είναι {past}',
         standard: '{emoji} {target} {past} από {source}',
       },
       apply: {
         custom: '{source} εφαρμόζει {effect} στον {target}.',
         advantage: '{source} έχει πλεονέκτημα εναντίον {target}{subject}.',
         disadvantage: '{source} έχει μειονέκτημα εναντίον {target}{subject}.',
+        self: '{target} είναι {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -5736,6 +5778,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} δεν έχει πλέον μειονέκτημα εναντίον {target}{subject}.',
         noBy: '{target} δεν είναι πλέον {past}.',
+        self: '{target} δεν είναι πλέον {past}.',
         standard: '{target} δεν είναι πλέον {past} από {source}.',
       },
     },
@@ -5753,6 +5796,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Επιβεβαίωση λίστας στόχων',
         enterDetails: 'Εισαγωγή λεπτομερειών εφέ',
         noneBtn: 'Κανένα',
+        noneOrSourceBtn: 'Κανένα ή εφαρμογή στην πηγή',
         subjectDesc: 'Επιλέξτε ποιος ή τι παράγει το εφέ.',
         sourceDesc:
           'Επιλέξτε το πλάσμα που δημιουργεί ή παράγει την κατάσταση ή το εφέ.',
@@ -6242,12 +6286,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} ל־{source} יש יתרון נגד {target}{subject}',
         disadvantage: '{emoji} ל־{source} יש חיסרון נגד {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} {past}',
         standard: '{emoji} {target} {past} על ידי {source}',
       },
       apply: {
         custom: '{source} מחיל את {effect} על {target}.',
         advantage: 'ל־{source} יש יתרון נגד {target}{subject}.',
         disadvantage: 'ל־{source} יש חיסרון נגד {target}{subject}.',
+        self: '{target} {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -6256,6 +6302,7 @@ const ConditionTrackerMod = (() => {
         advantage: 'ל־{source} אין עוד יתרון נגד {target}{subject}.',
         disadvantage: 'ל־{source} אין עוד חיסרון נגד {target}{subject}.',
         noBy: '{target} כבר לא {past}.',
+        self: '{target} כבר לא {past}.',
         standard: '{target} כבר לא {past} על ידי {source}.',
       },
     },
@@ -6273,6 +6320,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'אשר רשימת יעדים',
         enterDetails: 'הזן פרטי אפקט',
         noneBtn: 'ללא',
+        noneOrSourceBtn: 'ללא או החל על המקור',
         subjectDesc: 'בחר מי או מה מספק את האפקט.',
         sourceDesc: 'בחר את היצור שיוצר או מפעיל את המצב או האפקט.',
         targetDesc: 'בחר את היצור שיקבל את המצב או האפקט.',
@@ -6686,12 +6734,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} hátránnyal támad {target}{subject} ellen',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} {past}',
         standard: '{emoji} {target} {past} — {source}',
       },
       apply: {
         custom: '{source} alkalmazza a(z) {effect} hatást {target} célpontra.',
         advantage: '{source} előnnyel támad {target}{subject} ellen.',
         disadvantage: '{source} hátránnyal támad {target}{subject} ellen.',
+        self: '{target} {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -6702,6 +6752,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} már nem rendelkezik hátránnyal {target}{subject} ellen.',
         noBy: '{target} már nem {past}.',
+        self: '{target} már nem {past}.',
         standard: '{target} már nem {past} — {source}.',
       },
     },
@@ -6719,6 +6770,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Célpontlista megerősítése',
         enterDetails: 'Hatás részleteinek megadása',
         noneBtn: 'Egyik sem',
+        noneOrSourceBtn: 'Egyik sem vagy alkalmazás a forrásra',
         subjectDesc: 'Válassza ki, ki vagy mi hozza létre a hatást.',
         sourceDesc:
           'Válassza ki azt a lényt, amely létrehozza vagy előidézi az állapotot vagy hatást.',
@@ -7211,12 +7263,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} ha vantaggio contro {target}{subject}',
         disadvantage: '{emoji} {source} ha svantaggio contro {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} è {past}',
         standard: '{emoji} {target} {past} da {source}',
       },
       apply: {
         custom: '{source} applica {effect} a {target}.',
         advantage: '{source} ha vantaggio contro {target}{subject}.',
         disadvantage: '{source} ha svantaggio contro {target}{subject}.',
+        self: '{target} è {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -7226,6 +7280,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} non ha più svantaggio contro {target}{subject}.',
         noBy: '{target} non è più {past}.',
+        self: '{target} non è più {past}.',
         standard: '{target} non è più {past} da {source}.',
       },
     },
@@ -7243,6 +7298,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Conferma lista bersagli',
         enterDetails: 'Inserisci dettagli effetto',
         noneBtn: 'Nessuno',
+        noneOrSourceBtn: 'Nessuno o applica alla fonte',
         subjectDesc: "Seleziona chi o cosa applica l'effetto.",
         sourceDesc:
           "Seleziona la creatura che crea o genera la condizione o l'effetto.",
@@ -7736,12 +7792,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source}は{target}{subject}に対して有利を持つ',
         disadvantage: '{emoji} {source}は{target}{subject}に対して不利を持つ',
         noBy: '{emoji} {target}は{past}（{source}）',
+        self: '{target}は{past}',
         standard: '{emoji} {target}は{source}によって{past}',
       },
       apply: {
         custom: '{source}は{target}に{effect}を適用した。',
         advantage: '{source}は{target}{subject}に対して有利を持つ。',
         disadvantage: '{source}は{target}{subject}に対して不利を持つ。',
+        self: '{target}は{past}。',
         withSuffix: '{source}は{target}を{suffix}状態にした（{verb}）。',
         standard: '{source}は{target}を{verb}。',
       },
@@ -7751,6 +7809,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source}はもはや{target}{subject}に対して不利を持たない。',
         noBy: '{target}はもはや{past}ではない。',
+        self: '{target}はもはや{past}ではない。',
         standard: '{target}はもはや{source}によって{past}ではない。',
       },
     },
@@ -7768,6 +7827,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'ターゲットリストを確認',
         enterDetails: '効果の詳細を入力',
         noneBtn: 'なし',
+        noneOrSourceBtn: 'なし、または発生源に適用',
         subjectDesc: '効果をもたらすものを選択してください。',
         sourceDesc: '状態または効果を生み出すクリーチャーを選択してください。',
         targetDesc: '状態または効果を受け取るクリーチャーを選択してください。',
@@ -8240,6 +8300,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} 이(가) {target}{subject} 에 대해 불이익을 가짐',
         noBy: '{emoji} {target} 이(가) {past} ({source})',
+        self: '{target} 이(가) {past}',
         standard: '{emoji} {target} 이(가) {source} 에 의해 {past}',
       },
       apply: {
@@ -8247,6 +8308,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} 이(가) {target}{subject} 에 대해 이점을 가짐.',
         disadvantage:
           '{source} 이(가) {target}{subject} 에 대해 불이익을 가짐.',
+        self: '{target} 이(가) {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -8257,6 +8319,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} 이(가) {target}{subject} 에 대해 더 이상 불이익을 가지지 않음.',
         noBy: '{target} 이(가) 더 이상 {past} 상태가 아님.',
+        self: '{target} 이(가) 더 이상 {past} 상태가 아님.',
         standard:
           '{target} 이(가) 더 이상 {source} 에 의해 {past} 상태가 아님.',
       },
@@ -8275,6 +8338,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: '대상 목록 확인',
         enterDetails: '효과 상세 내용 입력',
         noneBtn: '없음',
+        noneOrSourceBtn: '없음 또는 시전자에게 적용',
         subjectDesc: '효과를 전달하는 대상이나 항목을 선택하세요.',
         sourceDesc: '상태나 효과를 생성하는 생명체를 선택하세요.',
         targetDesc: '상태나 효과를 받을 생명체를 선택하세요.',
@@ -8742,12 +8806,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} ma utrudnienie przeciwko {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} jest {past}',
         standard: '{emoji} {target} {past} przez {source}',
       },
       apply: {
         custom: '{source} nakłada {effect} na {target}.',
         advantage: '{source} ma ułatwienie przeciwko {target}{subject}.',
         disadvantage: '{source} ma utrudnienie przeciwko {target}{subject}.',
+        self: '{target} jest {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -8758,6 +8824,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} nie ma już utrudnienia przeciwko {target}{subject}.',
         noBy: '{target} nie jest już {past}.',
+        self: '{target} nie jest już {past}.',
         standard: '{target} nie jest już {past} przez {source}.',
       },
     },
@@ -8775,6 +8842,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Potwierdź listę celów',
         enterDetails: 'Wprowadź szczegóły efektu',
         noneBtn: 'Żaden',
+        noneOrSourceBtn: 'Żaden lub zastosuj do źródła',
         subjectDesc: 'Wybierz, kto lub co wywołuje efekt.',
         sourceDesc:
           'Wybierz stworzenie, które tworzy lub generuje stan albo efekt.',
@@ -9259,12 +9327,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} tem desvantagem contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} está {past}',
         standard: '{emoji} {target} {past} por {source}',
       },
       apply: {
         custom: '{source} aplica {effect} a {target}.',
         advantage: '{source} tem vantagem contra {target}{subject}.',
         disadvantage: '{source} tem desvantagem contra {target}{subject}.',
+        self: '{target} está {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -9274,6 +9344,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} já não tem desvantagem contra {target}{subject}.',
         noBy: '{target} já não {past}.',
+        self: '{target} já não está {past}.',
         standard: '{target} já não está {past} por {source}.',
       },
     },
@@ -9291,6 +9362,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirmar lista de alvos',
         enterDetails: 'Introduzir detalhes do efeito',
         noneBtn: 'Nenhum',
+        noneOrSourceBtn: 'Nenhum ou aplicar à origem',
         subjectDesc: 'Selecione quem ou o que aplica o efeito.',
         sourceDesc:
           'Selecione a criatura que cria ou gera a condição ou o efeito.',
@@ -9784,12 +9856,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} tem desvantagem contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} está {past}',
         standard: '{emoji} {target} {past} por {source}',
       },
       apply: {
         custom: '{source} aplica {effect} em {target}.',
         advantage: '{source} tem vantagem contra {target}{subject}.',
         disadvantage: '{source} tem desvantagem contra {target}{subject}.',
+        self: '{target} está {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -9799,6 +9873,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} não tem mais desvantagem contra {target}{subject}.',
         noBy: '{target} não está mais {past}.',
+        self: '{target} não está mais {past}.',
         standard: '{target} não está mais {past} por {source}.',
       },
     },
@@ -9817,6 +9892,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirmar lista de alvos',
         enterDetails: 'Inserir detalhes do efeito',
         noneBtn: 'Nenhum',
+        noneOrSourceBtn: 'Nenhum ou aplicar à origem',
         subjectDesc: 'Selecione quem ou o que aplica o efeito.',
         sourceDesc:
           'Selecione a criatura que está criando ou gerando a condição ou efeito.',
@@ -10304,12 +10380,14 @@ const ConditionTrackerMod = (() => {
           '{emoji} {source} имеет преимущество против {target}{subject}',
         disadvantage: '{emoji} {source} имеет помеху против {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} {past}',
         standard: '{emoji} {target} {past} от {source}',
       },
       apply: {
         custom: '{source} накладывает {effect} на {target}.',
         advantage: '{source} имеет преимущество против {target}{subject}.',
         disadvantage: '{source} имеет помеху против {target}{subject}.',
+        self: '{target} {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -10320,6 +10398,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} больше не имеет помехи против {target}{subject}.',
         noBy: '{target} больше не {past}.',
+        self: '{target} больше не {past}.',
         standard: '{target} больше не {past} от {source}.',
       },
     },
@@ -10337,6 +10416,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Подтвердить список целей',
         enterDetails: 'Ввести подробности эффекта',
         noneBtn: 'Нет',
+        noneOrSourceBtn: 'Нет или применить к источнику',
         subjectDesc: 'Выберите, кто или что вызывает эффект.',
         sourceDesc:
           'Выберите существо, создающее или генерирующее состояние или эффект.',
@@ -10826,12 +10906,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source} tiene desventaja contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} está {past}',
         standard: '{emoji} {target} {past} por {source}',
       },
       apply: {
         custom: '{source} aplica {effect} a {target}.',
         advantage: '{source} tiene ventaja contra {target}{subject}.',
         disadvantage: '{source} tiene desventaja contra {target}{subject}.',
+        self: '{target} está {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -10841,6 +10923,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} ya no tiene desventaja contra {target}{subject}.',
         noBy: '{target} ya no está {past}.',
+        self: '{target} ya no está {past}.',
         standard: '{target} ya no está {past} por {source}.',
       },
     },
@@ -10858,6 +10941,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Confirmar lista de objetivos',
         enterDetails: 'Introducir detalles del efecto',
         noneBtn: 'Ninguno',
+        noneOrSourceBtn: 'Ninguno o aplicar al origen',
         subjectDesc: 'Selecciona quién o qué aplica el efecto.',
         sourceDesc:
           'Selecciona la criatura que crea o genera la condición o efecto.',
@@ -11352,12 +11436,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} har fördel mot {target}{subject}',
         disadvantage: '{emoji} {source} har nackdel mot {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} är {past}',
         standard: '{emoji} {target} {past} av {source}',
       },
       apply: {
         custom: '{source} applicerar {effect} på {target}.',
         advantage: '{source} har fördel mot {target}{subject}.',
         disadvantage: '{source} har nackdel mot {target}{subject}.',
+        self: '{target} är {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -11366,6 +11452,7 @@ const ConditionTrackerMod = (() => {
         advantage: '{source} har inte längre fördel mot {target}{subject}.',
         disadvantage: '{source} har inte längre nackdel mot {target}{subject}.',
         noBy: '{target} är inte längre {past}.',
+        self: '{target} är inte längre {past}.',
         standard: '{target} är inte längre {past} av {source}.',
       },
     },
@@ -11383,6 +11470,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Bekräfta mållista',
         enterDetails: 'Ange effektdetaljer',
         noneBtn: 'Ingen',
+        noneOrSourceBtn: 'Ingen eller applicera på källa',
         subjectDesc: 'Välj vem eller vad som levererar effekten.',
         sourceDesc:
           'Välj det väsen som skapar/genererar tillståndet eller effekten.',
@@ -11867,12 +11955,14 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{emoji} {source}, {target}{subject} karşısında dezavantajlı',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} {past}',
         standard: '{emoji} {target} {source} tarafından {past}',
       },
       apply: {
         custom: '{source}, {target} üzerine {effect} etkisi uygular.',
         advantage: '{source}, {target}{subject} karşısında avantajlıdır.',
         disadvantage: '{source}, {target}{subject} karşısında dezavantajlıdır.',
+        self: '{target} {past}.',
         withSuffix: '{source} {target} {suffix} {verb}.',
         standard: '{source} {target} {verb}.',
       },
@@ -11883,6 +11973,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} artık {target}{subject} karşısında dezavantajlı değil.',
         noBy: '{target} artık {past} değil.',
+        self: '{target} artık {past} değil.',
         standard: '{target} artık {source} tarafından {past} değil.',
       },
     },
@@ -11900,6 +11991,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Hedef listesini onayla',
         enterDetails: 'Etki ayrıntılarını girin',
         noneBtn: 'Hiçbiri',
+        noneOrSourceBtn: 'Hiçbiri veya kaynağa uygula',
         subjectDesc: 'Etkiyi kimin veya neyin yarattığını seçin.',
         sourceDesc: 'Durumu veya etkiyi oluşturan yaratığı seçin.',
         targetDesc: 'Durumu veya etkiyi alacak yaratığı seçin.',
@@ -12414,6 +12506,7 @@ const ConditionTrackerMod = (() => {
         confirmBtn: 'Підтвердити список цілей',
         enterDetails: 'Введіть подробиці ефекту',
         noneBtn: 'Немає',
+        noneOrSourceBtn: 'Немає або застосувати до джерела',
         subjectDesc: 'Виберіть, хто або що спричиняє ефект.',
         sourceDesc: 'Виберіть істоту, яка створює стан або ефект.',
         targetDesc: 'Виберіть істоту, яка отримає стан або ефект.',
@@ -12796,12 +12889,14 @@ const ConditionTrackerMod = (() => {
         advantage: '{emoji} {source} має перевагу проти {target}{subject}',
         disadvantage: '{emoji} {source} має перешкоду проти {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
+        self: '{target} {past}',
         standard: '{emoji} {target} {past} від {source}',
       },
       apply: {
         custom: '{source} застосовує {effect} до {target}.',
         advantage: '{source} має перевагу проти {target}{subject}.',
         disadvantage: '{source} має перешкоду проти {target}{subject}.',
+        self: '{target} {past}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
@@ -12811,6 +12906,7 @@ const ConditionTrackerMod = (() => {
         disadvantage:
           '{source} більше не має перешкоди проти {target}{subject}.',
         noBy: '{target} більше не {past}.',
+        self: '{target} більше не {past}.',
         standard: '{target} більше не {past} від {source}.',
       },
     },
@@ -14285,6 +14381,7 @@ const ConditionTrackerMod = (() => {
    * @param {string} details.customText Custom effect text.
    * @param {string} details.sourceName Source token name.
    * @param {string} details.targetName Target token name.
+   * @param {boolean} [details.isSelfTarget] Whether source and target are the same token.
    * @param {string} [details.subjectName] Subject name for advantage types.
    * @param {string} [locale] Output locale.
    * @returns {string} Turn Tracker display text.
@@ -14329,6 +14426,14 @@ const ConditionTrackerMod = (() => {
       });
     }
 
+    if (details.isSelfTarget) {
+      return t('templates.display.self', locale, {
+        emoji,
+        target: details.targetName,
+        past: getLocalizedPast(details.condition, locale),
+      });
+    }
+
     return t('templates.display.standard', locale, {
       emoji,
       target: details.targetName,
@@ -14347,6 +14452,8 @@ const ConditionTrackerMod = (() => {
    * @param {string} details.customText Custom effect text.
    * @param {string} details.sourceName Source token name.
    * @param {string} details.targetName Target token name.
+   * @param {string} [details.sourceTokenId] Source token id.
+   * @param {string} [details.targetTokenId] Target token id.
    * @param {string} [details.subjectName] Subject name.
    * @param {boolean} details.useIcons Whether icons are enabled.
    * @param {string} [locale] Output locale.
@@ -14381,6 +14488,16 @@ const ConditionTrackerMod = (() => {
 
     const localData = getConditionLocalData(details.condition, locale);
     const data = localData || CONDITION_DATA[details.condition];
+
+    if (isSelfTarget(details)) {
+      return (
+        prefix +
+        t('templates.apply.self', locale, {
+          target: tgt,
+          past: escapeHtml(getLocalizedPast(details.condition, locale)),
+        })
+      );
+    }
 
     if (data?.suffix) {
       return (
@@ -14451,6 +14568,16 @@ const ConditionTrackerMod = (() => {
       );
     }
 
+    if (isSelfTarget(condition)) {
+      return (
+        prefix +
+        t('templates.remove.self', locale, {
+          target: tgt,
+          past: escapeHtml(getLocalizedPast(condition.condition, locale)),
+        })
+      );
+    }
+
     return (
       prefix +
       t('templates.remove.standard', locale, {
@@ -14490,6 +14617,20 @@ const ConditionTrackerMod = (() => {
   function isAdvantageType(condition) {
     return (
       condition === CONDITION_ADVANTAGE || condition === CONDITION_DISADVANTAGE
+    );
+  }
+
+  /**
+   * Returns true when a condition source and target are the same token.
+   *
+   * @param {object} details Display details.
+   * @returns {boolean} True for self-targeted condition application.
+   */
+  function isSelfTarget(details) {
+    const sourceTokenId = toText(details.sourceTokenId);
+    const targetTokenId = toText(details.targetTokenId);
+    return Boolean(
+      sourceTokenId && targetTokenId && sourceTokenId === targetTokenId,
     );
   }
 
@@ -16451,7 +16592,7 @@ const ConditionTrackerMod = (() => {
    *
    * @param {object} token Token entry.
    * @param {object} args Current wizard args.
-   * @param {"source"|"target"} slot Which slot to fill.
+   * @param {"source"|"target"|"subject"} slot Which slot to fill.
    * @returns {object} Trusted HTML button.
    */
   function buildTokenChoiceButton(token, args, slot) {
@@ -16776,7 +16917,7 @@ const ConditionTrackerMod = (() => {
    * @param {string} playerId GM player id.
    * @param {string} title Step heading.
    * @param {object} args Current wizard args.
-   * @param {"source"|"target"} slot Which slot to fill.
+   * @param {"source"|"target"|"subject"} slot Which slot to fill.
    * @param {string} [description] Optional context shown above the token list.
    * @returns {void}
    */
@@ -16811,6 +16952,17 @@ const ConditionTrackerMod = (() => {
           buildWizardBase({ ...args, subject: SUBJECT_NONE }),
         ),
       );
+    }
+    if (slot === 'target') {
+      const sourceId = toText(args.source);
+      if (sourceId) {
+        body.push(
+          buildButton(
+            t('ui.wizard.noneOrSourceBtn', locale),
+            buildWizardBase({ ...args, target: sourceId }),
+          ),
+        );
+      }
     }
     body.push(
       htmlTable(
@@ -17487,6 +17639,7 @@ const ConditionTrackerMod = (() => {
       sourceName,
       subjectName,
       targetName,
+      isSelfTarget: validation.sourceToken.id === validation.targetToken.id,
       condition: validation.condition,
       customText: validation.customText,
       useIcons: config.useIcons,

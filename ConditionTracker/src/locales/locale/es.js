@@ -100,12 +100,14 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source} tiene desventaja contra {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} está {past}",
       standard: "{emoji} {target} {past} por {source}",
     },
     apply: {
       custom: "{source} aplica {effect} a {target}.",
       advantage: "{source} tiene ventaja contra {target}{subject}.",
       disadvantage: "{source} tiene desventaja contra {target}{subject}.",
+      self: "{target} está {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -114,6 +116,7 @@ const TRANSLATION = {
       advantage: "{source} ya no tiene ventaja contra {target}{subject}.",
       disadvantage: "{source} ya no tiene desventaja contra {target}{subject}.",
       noBy: "{target} ya no está {past}.",
+      self: "{target} ya no está {past}.",
       standard: "{target} ya no está {past} por {source}.",
     },
   },
@@ -131,6 +134,7 @@ const TRANSLATION = {
       confirmBtn: "Confirmar lista de objetivos",
       enterDetails: "Introducir detalles del efecto",
       noneBtn: "Ninguno",
+      noneOrSourceBtn: "Ninguno o aplicar al origen",
       subjectDesc: "Selecciona quién o qué aplica el efecto.",
       sourceDesc:
         "Selecciona la criatura que crea o genera la condición o efecto.",

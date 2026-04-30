@@ -97,24 +97,25 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} afectat per {effect} ({source})",
       advantage: "{emoji} {source} té avantatge contra {target}{subject}",
-      disadvantage:
-        "{emoji} {source} té desavantatge contra {target}{subject}",
+      disadvantage: "{emoji} {source} té desavantatge contra {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} està {past}",
       standard: "{emoji} {target} {past} per {source}",
     },
     apply: {
       custom: "{source} aplica {effect} a {target}.",
       advantage: "{source} té avantatge contra {target}{subject}.",
       disadvantage: "{source} té desavantatge contra {target}{subject}.",
+      self: "{target} està {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} ja no està afectat per {effect}.",
       advantage: "{source} ja no té avantatge contra {target}{subject}.",
-      disadvantage:
-        "{source} ja no té desavantatge contra {target}{subject}.",
+      disadvantage: "{source} ja no té desavantatge contra {target}{subject}.",
       noBy: "{target} ja no {past}.",
+      self: "{target} ja no està {past}.",
       standard: "{target} ja no està {past} per {source}.",
     },
   },
@@ -132,11 +133,11 @@ const TRANSLATION = {
       confirmBtn: "Confirma la llista de destinataris",
       enterDetails: "Introdueix els detalls de l'efecte",
       noneBtn: "Cap",
+      noneOrSourceBtn: "Cap o aplica a l'origen",
       subjectDesc: "Selecciona qui o què aplica l'efecte.",
       sourceDesc:
         "Selecciona la criatura que crea o genera la condició o l'efecte.",
-      targetDesc:
-        "Selecciona la criatura que rebrà la condició o l'efecte.",
+      targetDesc: "Selecciona la criatura que rebrà la condició o l'efecte.",
       otherText: "Text de condició personalitzat",
       effectDetails: "Detalls de {condition}",
     },
@@ -263,11 +264,13 @@ const TRANSLATION = {
       invalidHealthBar:
         "La barra de salut ha de ser bar1_value, bar2_value o bar3_value.",
       markersDisabled: "Els marcadors estan desactivats.",
-      noMarkerConfigured: "No hi ha cap marcador configurat per a aquesta condició.",
+      noMarkerConfigured:
+        "No hi ha cap marcador configurat per a aquesta condició.",
       markerApplied: "Marcador aplicat: {marker}",
       markerPresent: "Marcador ja present: {marker}",
       langSet: "Idioma establert a {locale}.",
-      invalidLocale: "Configuració regional no vàlida. Configuracions regionals admeses: {locales}.",
+      invalidLocale:
+        "Configuració regional no vàlida. Configuracions regionals admeses: {locales}.",
       otherDurationRequiresRounds:
         "La durada Altre requereix un nombre de rondes, per exemple --duration 5 rounds.",
       invalidDuration:

@@ -133,6 +133,7 @@ const TRANSLATION = {
       confirmBtn: "確認目標列表",
       enterDetails: "輸入效果詳細資料",
       noneBtn: "無",
+      noneOrSourceBtn: "無或套用至來源",
       subjectDesc: "選擇由誰或什麼造成此效果。",
       sourceDesc: "選擇產生此狀態或效果的生物。",
       targetDesc: "選擇要受到此狀態或效果影響的生物。",
@@ -281,8 +282,7 @@ const TRANSLATION = {
       markedAsDead: "{name} 已標記為死亡",
       conditionReorder:
         "行動順序已變更，{count} 個追蹤中的狀態列可能已不在正確位置。點擊下方將其還原至指定代幣之後。",
-      conditionsReordered:
-        "狀態列已重新排列至其指定代幣之後。",
+      conditionsReordered: "狀態列已重新排列至其指定代幣之後。",
     },
     removal: {
       conditionField: "狀態",
@@ -451,12 +451,14 @@ const TRANSLATION = {
       advantage: "{emoji} {source} 對 {target}{subject} 具有優勢",
       disadvantage: "{emoji} {source} 對 {target}{subject} 具有劣勢",
       noBy: "{emoji} {target} {past}（{source}）",
+      self: "{target} {past}",
       standard: "{emoji} {target} 因 {source} 而{past}",
     },
     apply: {
       custom: "{source} 對 {target} 施加 {effect}。",
       advantage: "{source} 對 {target}{subject} 具有優勢。",
       disadvantage: "{source} 對 {target}{subject} 具有劣勢。",
+      self: "{target} {past}。",
       withSuffix: "{source} {verb} {target} {suffix}。",
       standard: "{source} {verb} {target}。",
     },
@@ -465,6 +467,7 @@ const TRANSLATION = {
       advantage: "{source} 不再對 {target}{subject} 具有優勢。",
       disadvantage: "{source} 不再對 {target}{subject} 具有劣勢。",
       noBy: "{target} 不再{past}。",
+      self: "{target} 不再{past}。",
       standard: "{target} 不再因 {source} 而{past}。",
     },
   },

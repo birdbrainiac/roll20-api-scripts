@@ -99,12 +99,14 @@ const TRANSLATION = {
       advantage: "{emoji} {source} tem vantagem contra {target}{subject}",
       disadvantage: "{emoji} {source} tem desvantagem contra {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} está {past}",
       standard: "{emoji} {target} {past} por {source}",
     },
     apply: {
       custom: "{source} aplica {effect} em {target}.",
       advantage: "{source} tem vantagem contra {target}{subject}.",
       disadvantage: "{source} tem desvantagem contra {target}{subject}.",
+      self: "{target} está {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -114,6 +116,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} não tem mais desvantagem contra {target}{subject}.",
       noBy: "{target} não está mais {past}.",
+      self: "{target} não está mais {past}.",
       standard: "{target} não está mais {past} por {source}.",
     },
   },
@@ -132,6 +135,7 @@ const TRANSLATION = {
       confirmBtn: "Confirmar lista de alvos",
       enterDetails: "Inserir detalhes do efeito",
       noneBtn: "Nenhum",
+      noneOrSourceBtn: "Nenhum ou aplicar à origem",
       subjectDesc: "Selecione quem ou o que aplica o efeito.",
       sourceDesc:
         "Selecione a criatura que está criando ou gerando a condição ou efeito.",
@@ -383,7 +387,10 @@ const TRANSLATION = {
           "Substituir subjectPromptBypass somente para este comando (também aceita --subject-prompt-bypass)",
         ],
         ["--cleanup", "Reconciliar estado — remover condições e linhas órfãs"],
-        ["--reorder-conditions", "Reposicionar manualmente as linhas de condição após os tokens atribuídos na ordem de iniciativa"],
+        [
+          "--reorder-conditions",
+          "Reposicionar manualmente as linhas de condição após os tokens atribuídos na ordem de iniciativa",
+        ],
         ["--reinstall-macro", "Recriar ou atualizar as macros do GM"],
         [
           "--reinstall-handout",

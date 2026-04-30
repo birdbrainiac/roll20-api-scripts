@@ -544,7 +544,11 @@ export function reorderAllConditionRows() {
 
   for (const condition of activeConditions) {
     const anchorTokenId = getConditionAnchorTokenId(condition);
-    const insertIndex = getInsertIndex(workingRows, anchorTokenId, anchorLookup);
+    const insertIndex = getInsertIndex(
+      workingRows,
+      anchorTokenId,
+      anchorLookup,
+    );
     workingRows.splice(insertIndex.index, 0, createConditionRow(condition));
   }
 

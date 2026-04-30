@@ -101,12 +101,14 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source} has disadvantage against {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} is {past}",
       standard: "{emoji} {target} {past} by {source}",
     },
     apply: {
       custom: "{source} applies {effect} to {target}.",
       advantage: "{source} has advantage against {target}{subject}.",
       disadvantage: "{source} has disadvantage against {target}{subject}.",
+      self: "{target} is {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -116,6 +118,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} no longer has disadvantage against {target}{subject}.",
       noBy: "{target} no longer {past}.",
+      self: "{target} is no longer {past}.",
       standard: "{target} is no longer {past} by {source}.",
     },
   },
@@ -133,6 +136,7 @@ const TRANSLATION = {
       confirmBtn: "Confirm target list",
       enterDetails: "Enter effect details",
       noneBtn: "None",
+      noneOrSourceBtn: "None or Apply to Source",
       subjectDesc: "Select who or what delivers the effect.",
       sourceDesc:
         "Select the creature that is creating / generating the condition or effect.",

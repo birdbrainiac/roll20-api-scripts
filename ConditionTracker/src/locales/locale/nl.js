@@ -101,22 +101,24 @@ const TRANSLATION = {
       advantage: "{emoji} {source} heeft voordeel tegen {target}{subject}",
       disadvantage: "{emoji} {source} heeft nadeel tegen {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} is {past}",
       standard: "{emoji} {target} {past} door {source}",
     },
     apply: {
       custom: "{source} past {effect} toe op {target}.",
       advantage: "{source} heeft voordeel tegen {target}{subject}.",
       disadvantage: "{source} heeft nadeel tegen {target}{subject}.",
+      self: "{target} is {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} wordt niet langer beïnvloed door {effect}.",
-      advantage:
-        "{source} heeft niet langer voordeel tegen {target}{subject}.",
+      advantage: "{source} heeft niet langer voordeel tegen {target}{subject}.",
       disadvantage:
         "{source} heeft niet langer nadeel tegen {target}{subject}.",
       noBy: "{target} is niet langer {past}.",
+      self: "{target} is niet langer {past}.",
       standard: "{target} wordt niet langer {past} door {source}.",
     },
   },
@@ -134,11 +136,10 @@ const TRANSLATION = {
       confirmBtn: "Bevestig doellijst",
       enterDetails: "Voer effectdetails in",
       noneBtn: "Geen",
+      noneOrSourceBtn: "Geen of toepassen op bron",
       subjectDesc: "Selecteer wie of wat het effect veroorzaakt.",
-      sourceDesc:
-        "Selecteer het wezen dat de conditie of het effect creëert.",
-      targetDesc:
-        "Selecteer het wezen dat de conditie of het effect ontvangt.",
+      sourceDesc: "Selecteer het wezen dat de conditie of het effect creëert.",
+      targetDesc: "Selecteer het wezen dat de conditie of het effect ontvangt.",
       otherText: "Aangepaste conditietekst",
       effectDetails: "{condition}-details",
     },
@@ -263,7 +264,8 @@ const TRANSLATION = {
       invalidHealthBar:
         "Gezondheidsbalk moet bar1_value, bar2_value of bar3_value zijn.",
       markersDisabled: "Markeringen zijn uitgeschakeld.",
-      noMarkerConfigured: "Er is geen markering geconfigureerd voor deze conditie.",
+      noMarkerConfigured:
+        "Er is geen markering geconfigureerd voor deze conditie.",
       markerApplied: "Markering toegepast: {marker}",
       markerPresent: "Markering al aanwezig: {marker}",
       langSet: "Taal ingesteld op {locale}.",
@@ -287,7 +289,8 @@ const TRANSLATION = {
       moveTokenBtn: "Verplaats {name} naar Kaartlaag",
       tokenMoved: "{name} is verplaatst naar de kaartlaag.",
       tokenNotFound: "Token niet gevonden.",
-      noActiveConditions: "{name} heeft geen actieve condities om te verwijderen.",
+      noActiveConditions:
+        "{name} heeft geen actieve condities om te verwijderen.",
       deadNoConditions:
         "{name} is gemarkeerd als dood. Er waren geen actieve condities.",
       scriptReady: "{name} is actief en je gebruikt versie {version}.",

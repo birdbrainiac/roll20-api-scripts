@@ -96,14 +96,17 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} pod wpływem {effect} ({source})",
       advantage: "{emoji} {source} ma ułatwienie przeciwko {target}{subject}",
-      disadvantage: "{emoji} {source} ma utrudnienie przeciwko {target}{subject}",
+      disadvantage:
+        "{emoji} {source} ma utrudnienie przeciwko {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} jest {past}",
       standard: "{emoji} {target} {past} przez {source}",
     },
     apply: {
       custom: "{source} nakłada {effect} na {target}.",
       advantage: "{source} ma ułatwienie przeciwko {target}{subject}.",
       disadvantage: "{source} ma utrudnienie przeciwko {target}{subject}.",
+      self: "{target} jest {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -113,6 +116,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} nie ma już utrudnienia przeciwko {target}{subject}.",
       noBy: "{target} nie jest już {past}.",
+      self: "{target} nie jest już {past}.",
       standard: "{target} nie jest już {past} przez {source}.",
     },
   },
@@ -130,8 +134,10 @@ const TRANSLATION = {
       confirmBtn: "Potwierdź listę celów",
       enterDetails: "Wprowadź szczegóły efektu",
       noneBtn: "Żaden",
+      noneOrSourceBtn: "Żaden lub zastosuj do źródła",
       subjectDesc: "Wybierz, kto lub co wywołuje efekt.",
-      sourceDesc: "Wybierz stworzenie, które tworzy lub generuje stan albo efekt.",
+      sourceDesc:
+        "Wybierz stworzenie, które tworzy lub generuje stan albo efekt.",
       targetDesc: "Wybierz stworzenie, które otrzyma stan lub efekt.",
       otherText: "Własny tekst stanu",
       effectDetails: "Szczegóły {condition}",
@@ -220,13 +226,15 @@ const TRANSLATION = {
         "Nieznana opcja konfiguracji. Użyj --config, aby wyświetlić obsługiwane ustawienia.",
       macroReinstalled:
         "Makra {wizard} i {multiTarget} zostały ponownie zainstalowane dla wszystkich obecnych graczy z rolą MG.",
-      handoutReinstalled: "Handout pomocy {handout} został ponownie zainstalowany.",
+      handoutReinstalled:
+        "Handout pomocy {handout} został ponownie zainstalowany.",
       duplicate:
         "Ta dokładna kombinacja źródła, podmiotu, celu, stanu i własnego tekstu jest już aktywna.",
       noTargets: "Nie podano żetonów celu dla zastosowania wielu celów.",
       noSelection:
         "Wybierz przynajmniej jeden żeton na planszy przed użyciem --multi-target.",
-      invalidIds: "Nie znaleziono prawidłowych identyfikatorów żetonów w bieżącym zaznaczeniu.",
+      invalidIds:
+        "Nie znaleziono prawidłowych identyfikatorów żetonów w bieżącym zaznaczeniu.",
       reSelectTokens:
         "Żaden z pierwotnie wybranych żetonów nie mógł zostać znaleziony. Wybierz żetony ponownie i spróbuj jeszcze raz.",
       conditionNotFound: "Nie znaleziono identyfikatora stanu.",
@@ -257,7 +265,8 @@ const TRANSLATION = {
       invalidHealthBar:
         "Pasek zdrowia musi być bar1_value, bar2_value lub bar3_value.",
       markersDisabled: "Znaczniki są wyłączone.",
-      noMarkerConfigured: "Dla tego stanu nie skonfigurowano żadnego znacznika.",
+      noMarkerConfigured:
+        "Dla tego stanu nie skonfigurowano żadnego znacznika.",
       markerApplied: "Znacznik zastosowany: {marker}",
       markerPresent: "Znacznik już obecny: {marker}",
       langSet: "Język ustawiony na {locale}.",
@@ -266,8 +275,7 @@ const TRANSLATION = {
         "Czas trwania Inne wymaga numerycznej liczby rund, na przykład --duration 5 rounds.",
       invalidDuration:
         "Czas trwania musi być Do usunięcia, opcją końca tury lub dodatnią liczbą rund.",
-      zeroHpNoConditions:
-        "{name} osiągnął 0 PŻ i nie ma aktywnych stanów.",
+      zeroHpNoConditions: "{name} osiągnął 0 PŻ i nie ma aktywnych stanów.",
       zeroHpConditions: "{name} osiągnął 0 PŻ. Wybierz stany do usunięcia:",
       removeAllBtn: "Usuń wszystkie stany dla {name}",
       markIncapacitated: "Oznacz jako ubezwłasnowolnionego",
@@ -281,7 +289,8 @@ const TRANSLATION = {
       tokenMoved: "{name} został przeniesiony na warstwę mapy.",
       tokenNotFound: "Nie znaleziono żetonu.",
       noActiveConditions: "{name} nie ma aktywnych stanów do usunięcia.",
-      deadNoConditions: "{name} został oznaczony jako martwy. Nie było aktywnych stanów.",
+      deadNoConditions:
+        "{name} został oznaczony jako martwy. Nie było aktywnych stanów.",
       scriptReady: "{name} jest aktywny i używasz wersji {version}.",
       reachedZeroHp: "{name} osiągnął 0 PŻ",
       manuallyRemoved: "zostało ręcznie usunięte",
@@ -311,7 +320,8 @@ const TRANSLATION = {
       unusedMarkers: "Nieużywane znaczniki",
     },
     apply: {
-      turnAppended: "Cel nie był w kolejności tur; wiersz stanu został dołączony na końcu.",
+      turnAppended:
+        "Cel nie był w kolejności tur; wiersz stanu został dołączony na końcu.",
       turnInserted: "Wiersz stanu wstawiony poniżej żetonu celu.",
     },
   },
@@ -349,10 +359,7 @@ const TRANSLATION = {
       colDesc: "Opis",
       rows: [
         ["--prompt", "Interaktywny kreator krok po kroku"],
-        [
-          "--multi-target",
-          "Zastosuj stan do wielu żetonów celu naraz",
-        ],
+        ["--multi-target", "Zastosuj stan do wielu żetonów celu naraz"],
         ["--menu", "Pokaż główne menu (dodaj remove dla menu usuwania)"],
         [
           "--source X --target Y --condition Z",

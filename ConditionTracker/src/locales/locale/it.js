@@ -98,24 +98,25 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} influenzato da {effect} ({source})",
       advantage: "{emoji} {source} ha vantaggio contro {target}{subject}",
-      disadvantage:
-        "{emoji} {source} ha svantaggio contro {target}{subject}",
+      disadvantage: "{emoji} {source} ha svantaggio contro {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} è {past}",
       standard: "{emoji} {target} {past} da {source}",
     },
     apply: {
       custom: "{source} applica {effect} a {target}.",
       advantage: "{source} ha vantaggio contro {target}{subject}.",
       disadvantage: "{source} ha svantaggio contro {target}{subject}.",
+      self: "{target} è {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} non è più influenzato da {effect}.",
       advantage: "{source} non ha più vantaggio contro {target}{subject}.",
-      disadvantage:
-        "{source} non ha più svantaggio contro {target}{subject}.",
+      disadvantage: "{source} non ha più svantaggio contro {target}{subject}.",
       noBy: "{target} non è più {past}.",
+      self: "{target} non è più {past}.",
       standard: "{target} non è più {past} da {source}.",
     },
   },
@@ -133,6 +134,7 @@ const TRANSLATION = {
       confirmBtn: "Conferma lista bersagli",
       enterDetails: "Inserisci dettagli effetto",
       noneBtn: "Nessuno",
+      noneOrSourceBtn: "Nessuno o applica alla fonte",
       subjectDesc: "Seleziona chi o cosa applica l'effetto.",
       sourceDesc:
         "Seleziona la creatura che crea o genera la condizione o l'effetto.",
@@ -225,10 +227,12 @@ const TRANSLATION = {
         "Opzione di configurazione sconosciuta. Usa --config per visualizzare le impostazioni supportate.",
       macroReinstalled:
         "Le macro {wizard} e {multiTarget} sono state reinstallate per tutti i GM attivi.",
-      handoutReinstalled: "Il documento di aiuto {handout} è stato reinstallato.",
+      handoutReinstalled:
+        "Il documento di aiuto {handout} è stato reinstallato.",
       duplicate:
         "Questa combinazione esatta di sorgente, soggetto, bersaglio, condizione e testo personalizzato è già attiva.",
-      noTargets: "Nessun token bersaglio specificato per l'applicazione multi-bersaglio.",
+      noTargets:
+        "Nessun token bersaglio specificato per l'applicazione multi-bersaglio.",
       noSelection:
         "Seleziona almeno un token sulla mappa prima di usare --multi-target.",
       invalidIds: "Nessun ID token valido trovato nella selezione corrente.",
@@ -262,7 +266,8 @@ const TRANSLATION = {
       invalidHealthBar:
         "La barra della salute deve essere bar1_value, bar2_value o bar3_value.",
       markersDisabled: "Gli indicatori sono disabilitati.",
-      noMarkerConfigured: "Nessun indicatore configurato per questa condizione.",
+      noMarkerConfigured:
+        "Nessun indicatore configurato per questa condizione.",
       markerApplied: "Indicatore applicato: {marker}",
       markerPresent: "Indicatore già presente: {marker}",
       langSet: "Lingua impostata su {locale}.",

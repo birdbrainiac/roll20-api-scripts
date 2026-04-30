@@ -95,15 +95,16 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} {effect} hatása alatt ({source})",
       advantage: "{emoji} {source} előnnyel támad {target}{subject} ellen",
-      disadvantage:
-        "{emoji} {source} hátránnyal támad {target}{subject} ellen",
+      disadvantage: "{emoji} {source} hátránnyal támad {target}{subject} ellen",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} {past}",
       standard: "{emoji} {target} {past} — {source}",
     },
     apply: {
       custom: "{source} alkalmazza a(z) {effect} hatást {target} célpontra.",
       advantage: "{source} előnnyel támad {target}{subject} ellen.",
       disadvantage: "{source} hátránnyal támad {target}{subject} ellen.",
+      self: "{target} {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -114,6 +115,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} már nem rendelkezik hátránnyal {target}{subject} ellen.",
       noBy: "{target} már nem {past}.",
+      self: "{target} már nem {past}.",
       standard: "{target} már nem {past} — {source}.",
     },
   },
@@ -131,6 +133,7 @@ const TRANSLATION = {
       confirmBtn: "Célpontlista megerősítése",
       enterDetails: "Hatás részleteinek megadása",
       noneBtn: "Egyik sem",
+      noneOrSourceBtn: "Egyik sem vagy alkalmazás a forrásra",
       subjectDesc: "Válassza ki, ki vagy mi hozza létre a hatást.",
       sourceDesc:
         "Válassza ki azt a lényt, amely létrehozza vagy előidézi az állapotot vagy hatást.",
@@ -223,8 +226,7 @@ const TRANSLATION = {
         "Ismeretlen beállítási lehetőség. Használja a --config parancsot a támogatott beállítások megtekintéséhez.",
       macroReinstalled:
         "A(z) {wizard} és {multiTarget} makrók újra lettek telepítve az összes jelenlegi GM-játékos számára.",
-      handoutReinstalled:
-        "A(z) {handout} súgó-handout újra lett telepítve.",
+      handoutReinstalled: "A(z) {handout} súgó-handout újra lett telepítve.",
       duplicate:
         "Pontosan ugyanez a forrás, alany, célpont, állapot és egyéni szöveg már aktív.",
       noTargets:
@@ -272,8 +274,7 @@ const TRANSLATION = {
         "Az egyéni időtartamhoz numerikus körmegjelölés szükséges, például --duration 5 rounds.",
       invalidDuration:
         "Az időtartamnak Eltávolításig, kör-végi beállítás vagy pozitív körszám kell lennie.",
-      zeroHpNoConditions:
-        "{name} 0 ÉP-re jutott, és nincs aktív állapota.",
+      zeroHpNoConditions: "{name} 0 ÉP-re jutott, és nincs aktív állapota.",
       zeroHpConditions:
         "{name} 0 ÉP-re jutott. Válassza ki az eltávolítandó állapotokat:",
       removeAllBtn: "Minden állapot eltávolítása ({name})",
@@ -287,7 +288,8 @@ const TRANSLATION = {
       moveTokenBtn: "{name} áthelyezése a térképrétegre",
       tokenMoved: "{name} áthelyezve a térképrétegre.",
       tokenNotFound: "A token nem található.",
-      noActiveConditions: "{name}-nek nincsenek aktív állapotai az eltávolításhoz.",
+      noActiveConditions:
+        "{name}-nek nincsenek aktív állapotai az eltávolításhoz.",
       deadNoConditions:
         "{name} halottnak lett jelölve. Nem volt aktív állapot.",
       scriptReady: "{name} aktív, és a(z) {version} verziót használja.",
@@ -432,10 +434,7 @@ const TRANSLATION = {
           "⬇️ Hátrány",
           "Kirótt hátrány rögzítése; az iniciativában a forrással csoportosítva",
         ],
-        [
-          "📝 Egyéb",
-          "Szabad formátumú egyéni címke — leírás bekérésre kerül",
-        ],
+        ["📝 Egyéb", "Szabad formátumú egyéni címke — leírás bekérésre kerül"],
       ],
     },
     durationOptions: {

@@ -100,12 +100,14 @@ const TRANSLATION = {
       advantage: "{emoji} ל־{source} יש יתרון נגד {target}{subject}",
       disadvantage: "{emoji} ל־{source} יש חיסרון נגד {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} {past}",
       standard: "{emoji} {target} {past} על ידי {source}",
     },
     apply: {
       custom: "{source} מחיל את {effect} על {target}.",
       advantage: "ל־{source} יש יתרון נגד {target}{subject}.",
       disadvantage: "ל־{source} יש חיסרון נגד {target}{subject}.",
+      self: "{target} {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -114,6 +116,7 @@ const TRANSLATION = {
       advantage: "ל־{source} אין עוד יתרון נגד {target}{subject}.",
       disadvantage: "ל־{source} אין עוד חיסרון נגד {target}{subject}.",
       noBy: "{target} כבר לא {past}.",
+      self: "{target} כבר לא {past}.",
       standard: "{target} כבר לא {past} על ידי {source}.",
     },
   },
@@ -131,6 +134,7 @@ const TRANSLATION = {
       confirmBtn: "אשר רשימת יעדים",
       enterDetails: "הזן פרטי אפקט",
       noneBtn: "ללא",
+      noneOrSourceBtn: "ללא או החל על המקור",
       subjectDesc: "בחר מי או מה מספק את האפקט.",
       sourceDesc: "בחר את היצור שיוצר או מפעיל את המצב או האפקט.",
       targetDesc: "בחר את היצור שיקבל את המצב או האפקט.",
@@ -283,8 +287,7 @@ const TRANSLATION = {
       markedAsDead: "{name} סומן כמת",
       conditionReorder:
         "סדר התורות השתנה ו-{count} שורת/שורות תנאי עקובות עשויות להיות כעת במיקום שגוי. לחץ למטה כדי לשחזר אותן אחרי הטוקנים שהוקצו להן.",
-      conditionsReordered:
-        "שורות התנאי מוקמו מחדש אחרי הטוקנים שהוקצו להן.",
+      conditionsReordered: "שורות התנאי מוקמו מחדש אחרי הטוקנים שהוקצו להן.",
     },
     removal: {
       conditionField: "מצב",
@@ -354,7 +357,10 @@ const TRANSLATION = {
           "עקיפת שלב הנושא לפקודה זו בלבד",
         ],
         ["--cleanup", "ניקוי רשומות ושורות יתומות"],
-        ["--reorder-conditions", "מיקום מחדש ידני של שורות תנאי אחרי הטוקנים המוקצים בסדר התורות"],
+        [
+          "--reorder-conditions",
+          "מיקום מחדש ידני של שורות תנאי אחרי הטוקנים המוקצים בסדר התורות",
+        ],
         ["--reinstall-macro", "יצירה או עדכון של מאקרואים ל־GM"],
         ["--reinstall-handout", "יצירה או עדכון של דף העזרה המקומי"],
         ["--lang &lt;locale&gt;", "פלט נוסף באזור שפה אחר"],

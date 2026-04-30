@@ -100,12 +100,14 @@ const TRANSLATION = {
       advantage: "{emoji} {source} má výhodu proti {target}{subject}",
       disadvantage: "{emoji} {source} má nevýhodu proti {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} je {past}",
       standard: "{emoji} {target} {past} od {source}",
     },
     apply: {
       custom: "{source} uplatní {effect} na {target}.",
       advantage: "{source} má výhodu proti {target}{subject}.",
       disadvantage: "{source} má nevýhodu proti {target}{subject}.",
+      self: "{target} je {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -114,6 +116,7 @@ const TRANSLATION = {
       advantage: "{source} již nemá výhodu proti {target}{subject}.",
       disadvantage: "{source} již nemá nevýhodu proti {target}{subject}.",
       noBy: "{target} již není {past}.",
+      self: "{target} již není {past}.",
       standard: "{target} již není {past} od {source}.",
     },
   },
@@ -131,6 +134,7 @@ const TRANSLATION = {
       confirmBtn: "Potvrdit seznam cílů",
       enterDetails: "Zadat podrobnosti efektu",
       noneBtn: "Žádný",
+      noneOrSourceBtn: "Žádný nebo použít na zdroj",
       subjectDesc: "Vyberte, kdo nebo co efekt způsobuje.",
       sourceDesc: "Vyberte bytost, která stav nebo efekt vytváří.",
       targetDesc: "Vyberte bytost, která stav nebo efekt obdrží.",
@@ -249,8 +253,7 @@ const TRANSLATION = {
         "Formát konfigurace značky: --config marker Grappled=grab",
       markerPredefinedRequired:
         "Konfigurace značky vyžaduje předdefinovaný název stavu.",
-      markerNameRequired:
-        "Konfigurace značky vyžaduje neprázdný název značky.",
+      markerNameRequired: "Konfigurace značky vyžaduje neprázdný název značky.",
       markerSet: "Značka {condition} nastavena na {marker}.",
       healthBarSet: "Lišta zdraví nastavena na {bar}.",
       boolSet: "{key} nastaveno na {value}.",
@@ -267,8 +270,7 @@ const TRANSLATION = {
         "Jiné trvání vyžaduje číselný počet kol, například --duration 5 rounds.",
       invalidDuration:
         "Trvání musí být Do odebrání, možnost konce tahu nebo kladný počet kol.",
-      zeroHpNoConditions:
-        "{name} dosáhl 0 životů a nemá žádné aktivní stavy.",
+      zeroHpNoConditions: "{name} dosáhl 0 životů a nemá žádné aktivní stavy.",
       zeroHpConditions: "{name} dosáhl 0 životů. Vyberte stavy k odebrání:",
       removeAllBtn: "Odebrat všechny stavy pro {name}",
       markIncapacitated: "Označit jako vyřazeného",
@@ -282,7 +284,8 @@ const TRANSLATION = {
       tokenMoved: "{name} byl přesunut na vrstvu mapy.",
       tokenNotFound: "Žeton nenalezen.",
       noActiveConditions: "{name} nemá žádné aktivní stavy k odebrání.",
-      deadNoConditions: "{name} byl označen jako mrtvý. Nebyly aktivní žádné stavy.",
+      deadNoConditions:
+        "{name} byl označen jako mrtvý. Nebyly aktivní žádné stavy.",
       scriptReady: "{name} je aktivní a používáte verzi {version}.",
       reachedZeroHp: "{name} dosáhl 0 životů",
       manuallyRemoved: "bylo ručně odebráno",
@@ -312,7 +315,8 @@ const TRANSLATION = {
       unusedMarkers: "Nepoužívané značky",
     },
     apply: {
-      turnAppended: "Cíl nebyl v pořadí tahů; řádek stavu byl připojen na konec.",
+      turnAppended:
+        "Cíl nebyl v pořadí tahů; řádek stavu byl připojen na konec.",
       turnInserted: "Řádek stavu vložen pod žeton cíle.",
     },
   },
@@ -350,11 +354,11 @@ const TRANSLATION = {
       colDesc: "Popis",
       rows: [
         ["--prompt", "Interaktivní průvodce krok za krokem"],
+        ["--multi-target", "Uplatnit stav na více cílových žetonů najednou"],
         [
-          "--multi-target",
-          "Uplatnit stav na více cílových žetonů najednou",
+          "--menu",
+          "Zobrazit hlavní nabídku (přidat remove pro nabídku odebrání)",
         ],
-        ["--menu", "Zobrazit hlavní nabídku (přidat remove pro nabídku odebrání)"],
         [
           "--source X --target Y --condition Z",
           "Uplatnit stav přímo bez průvodce",
@@ -424,10 +428,7 @@ const TRANSLATION = {
           "⬇️ Nevýhoda",
           "Zaznamenat uloženou nevýhodu; seskupeno se zdrojem v iniciativě",
         ],
-        [
-          "📝 Jiné",
-          "Volný vlastní popisek — budete vyzváni k zadání popisu",
-        ],
+        ["📝 Jiné", "Volný vlastní popisek — budete vyzváni k zadání popisu"],
       ],
     },
     durationOptions: {

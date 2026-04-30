@@ -99,24 +99,26 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} под воздействием {effect} ({source})",
       advantage: "{emoji} {source} имеет преимущество против {target}{subject}",
-      disadvantage:
-        "{emoji} {source} имеет помеху против {target}{subject}",
+      disadvantage: "{emoji} {source} имеет помеху против {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} {past}",
       standard: "{emoji} {target} {past} от {source}",
     },
     apply: {
       custom: "{source} накладывает {effect} на {target}.",
       advantage: "{source} имеет преимущество против {target}{subject}.",
       disadvantage: "{source} имеет помеху против {target}{subject}.",
+      self: "{target} {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} больше не находится под воздействием {effect}.",
-      advantage: "{source} больше не имеет преимущества против {target}{subject}.",
-      disadvantage:
-        "{source} больше не имеет помехи против {target}{subject}.",
+      advantage:
+        "{source} больше не имеет преимущества против {target}{subject}.",
+      disadvantage: "{source} больше не имеет помехи против {target}{subject}.",
       noBy: "{target} больше не {past}.",
+      self: "{target} больше не {past}.",
       standard: "{target} больше не {past} от {source}.",
     },
   },
@@ -134,8 +136,10 @@ const TRANSLATION = {
       confirmBtn: "Подтвердить список целей",
       enterDetails: "Ввести подробности эффекта",
       noneBtn: "Нет",
+      noneOrSourceBtn: "Нет или применить к источнику",
       subjectDesc: "Выберите, кто или что вызывает эффект.",
-      sourceDesc: "Выберите существо, создающее или генерирующее состояние или эффект.",
+      sourceDesc:
+        "Выберите существо, создающее или генерирующее состояние или эффект.",
       targetDesc: "Выберите существо, которое получит состояние или эффект.",
       otherText: "Произвольный текст состояния",
       effectDetails: "Подробности {condition}",
@@ -230,7 +234,8 @@ const TRANSLATION = {
       noTargets: "Не указаны жетоны целей для применения к нескольким целям.",
       noSelection:
         "Выберите хотя бы один жетон на поле перед использованием --multi-target.",
-      invalidIds: "В текущем выделении не найдено допустимых идентификаторов жетонов.",
+      invalidIds:
+        "В текущем выделении не найдено допустимых идентификаторов жетонов.",
       reSelectTokens:
         "Ни один из первоначально выбранных жетонов не найден. Выберите жетоны заново и повторите попытку.",
       conditionNotFound: "Идентификатор состояния не найден.",
@@ -270,8 +275,7 @@ const TRANSLATION = {
         "Длительность «Другое» требует числового количества раундов, например --duration 5 rounds.",
       invalidDuration:
         "Длительность должна быть «До удаления», вариантом конца хода или положительным числом раундов.",
-      zeroHpNoConditions:
-        "{name} достиг 0 ХП и не имеет активных состояний.",
+      zeroHpNoConditions: "{name} достиг 0 ХП и не имеет активных состояний.",
       zeroHpConditions: "{name} достиг 0 ХП. Выберите состояния для удаления:",
       removeAllBtn: "Удалить все состояния для {name}",
       markIncapacitated: "Пометить как недееспособного",
@@ -285,7 +289,8 @@ const TRANSLATION = {
       tokenMoved: "{name} был перемещён на слой карты.",
       tokenNotFound: "Жетон не найден.",
       noActiveConditions: "{name} не имеет активных состояний для удаления.",
-      deadNoConditions: "{name} был помечен как мёртвый. Активных состояний не было.",
+      deadNoConditions:
+        "{name} был помечен как мёртвый. Активных состояний не было.",
       scriptReady: "{name} активен, вы используете версию {version}.",
       reachedZeroHp: "{name} достиг 0 ХП",
       manuallyRemoved: "было удалено вручную",
@@ -315,7 +320,8 @@ const TRANSLATION = {
       unusedMarkers: "Неиспользуемые маркеры",
     },
     apply: {
-      turnAppended: "Цель не была в порядке ходов; строка состояния добавлена в конец.",
+      turnAppended:
+        "Цель не была в порядке ходов; строка состояния добавлена в конец.",
       turnInserted: "Строка состояния вставлена ниже жетона цели.",
     },
   },

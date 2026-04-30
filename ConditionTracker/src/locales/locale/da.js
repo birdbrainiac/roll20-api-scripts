@@ -101,21 +101,23 @@ const TRANSLATION = {
       advantage: "{emoji} {source} har fordel mod {target}{subject}",
       disadvantage: "{emoji} {source} har ulempe mod {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} er {past}",
       standard: "{emoji} {target} {past} af {source}",
     },
     apply: {
       custom: "{source} påfører {effect} på {target}.",
       advantage: "{source} har fordel mod {target}{subject}.",
       disadvantage: "{source} har ulempe mod {target}{subject}.",
+      self: "{target} er {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} er ikke længere påvirket af {effect}.",
       advantage: "{source} har ikke længere fordel mod {target}{subject}.",
-      disadvantage:
-        "{source} har ikke længere ulempe mod {target}{subject}.",
+      disadvantage: "{source} har ikke længere ulempe mod {target}{subject}.",
       noBy: "{target} er ikke længere {past}.",
+      self: "{target} er ikke længere {past}.",
       standard: "{target} er ikke længere {past} af {source}.",
     },
   },
@@ -133,6 +135,7 @@ const TRANSLATION = {
       confirmBtn: "Bekræft målliste",
       enterDetails: "Indtast effektdetaljer",
       noneBtn: "Ingen",
+      noneOrSourceBtn: "Ingen eller anvend på kilde",
       subjectDesc: "Vælg hvem eller hvad der leverer effekten.",
       sourceDesc:
         "Vælg den skabning, der opretter/genererer tilstanden eller effekten.",
@@ -253,8 +256,7 @@ const TRANSLATION = {
         "Markørkonfigurationsformat: --config marker Grappled=grab",
       markerPredefinedRequired:
         "Markørkonfiguration kræver et foruddefineret tilstandsnavn.",
-      markerNameRequired:
-        "Markørkonfiguration kræver et ikke-tomt markørnavn.",
+      markerNameRequired: "Markørkonfiguration kræver et ikke-tomt markørnavn.",
       markerSet: "{condition}-markør sat til {marker}.",
       healthBarSet: "Helsebjælke sat til {bar}.",
       boolSet: "{key} sat til {value}.",
@@ -271,9 +273,9 @@ const TRANSLATION = {
         "Anden varighed kræver et numerisk rundeantal, for eksempel --duration 5 rounds.",
       invalidDuration:
         "Varighed skal være Indtil fjernet, en turslut-indstilling eller et positivt rundeantal.",
-      zeroHpNoConditions:
-        "{name} har nået 0 HP og har ingen aktive tilstande.",
-      zeroHpConditions: "{name} har nået 0 HP. Vælg tilstande, der skal fjernes:",
+      zeroHpNoConditions: "{name} har nået 0 HP og har ingen aktive tilstande.",
+      zeroHpConditions:
+        "{name} har nået 0 HP. Vælg tilstande, der skal fjernes:",
       removeAllBtn: "Fjern alle tilstande for {name}",
       markIncapacitated: "Markér som ukampdygtig",
       removeFromTurnOrder: "Fjern fra turrækkefølge",
@@ -286,7 +288,8 @@ const TRANSLATION = {
       tokenMoved: "{name} er blevet flyttet til kortlaget.",
       tokenNotFound: "Token ikke fundet.",
       noActiveConditions: "{name} har ingen aktive tilstande at fjerne.",
-      deadNoConditions: "{name} blev markeret som død. Ingen tilstande var aktive.",
+      deadNoConditions:
+        "{name} blev markeret som død. Ingen tilstande var aktive.",
       scriptReady: "{name} er aktiv, og du bruger version {version}.",
       reachedZeroHp: "{name} nåede 0 HP",
       manuallyRemoved: "manuelt fjernet",
@@ -316,7 +319,8 @@ const TRANSLATION = {
       unusedMarkers: "Ubrugte markører",
     },
     apply: {
-      turnAppended: "Mål var ikke i turrækkefølgen; tilstandsrække tilføjet til sidst.",
+      turnAppended:
+        "Mål var ikke i turrækkefølgen; tilstandsrække tilføjet til sidst.",
       turnInserted: "Tilstandsrække indsat under måltoken.",
     },
   },
@@ -354,10 +358,7 @@ const TRANSLATION = {
       colDesc: "Beskrivelse",
       rows: [
         ["--prompt", "Interaktiv trin-for-trin-guide"],
-        [
-          "--multi-target",
-          "Anvend en tilstand på flere måltoken på én gang",
-        ],
+        ["--multi-target", "Anvend en tilstand på flere måltoken på én gang"],
         ["--menu", "Vis hovedmenu (tilføj remove for fjernelsesmenu)"],
         [
           "--source X --target Y --condition Z",

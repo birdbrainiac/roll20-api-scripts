@@ -102,21 +102,23 @@ const TRANSLATION = {
       advantage: "{emoji} {source} het voordeel teen {target}{subject}",
       disadvantage: "{emoji} {source} het nadeel teen {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} is {past}",
       standard: "{emoji} {target} {past} deur {source}",
     },
     apply: {
       custom: "{source} pas {effect} toe op {target}.",
       advantage: "{source} het voordeel teen {target}{subject}.",
       disadvantage: "{source} het nadeel teen {target}{subject}.",
+      self: "{target} is {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} word nie meer deur {effect} geraak nie.",
       advantage: "{source} het nie meer voordeel teen {target}{subject} nie.",
-      disadvantage:
-        "{source} het nie meer nadeel teen {target}{subject} nie.",
+      disadvantage: "{source} het nie meer nadeel teen {target}{subject} nie.",
       noBy: "{target} is nie meer {past} nie.",
+      self: "{target} is nie meer {past} nie.",
       standard: "{target} word nie meer {past} deur {source} nie.",
     },
   },
@@ -134,11 +136,10 @@ const TRANSLATION = {
       confirmBtn: "Bevestig teikenslys",
       enterDetails: "Voer effekbesonderhede in",
       noneBtn: "Geen",
+      noneOrSourceBtn: "Geen of pas op bron toe",
       subjectDesc: "Kies wie of wat die effek toepas.",
-      sourceDesc:
-        "Kies die wese wat die toestand of effek skep.",
-      targetDesc:
-        "Kies die wese wat die toestand of effek ontvang.",
+      sourceDesc: "Kies die wese wat die toestand of effek skep.",
+      targetDesc: "Kies die wese wat die toestand of effek ontvang.",
       otherText: "Aangepaste toestandteks",
       effectDetails: "{condition}-besonderhede",
     },
@@ -229,7 +230,8 @@ const TRANSLATION = {
       handoutReinstalled: "Die hulp-handout {handout} is herinstalleer.",
       duplicate:
         "Hierdie presiese kombinasie van bron, onderwerp, teiken, toestand en aangepaste teks is reeds aktief.",
-      noTargets: "Geen teikentoken gespesifiseer vir multiteiken-toepassing nie.",
+      noTargets:
+        "Geen teikentoken gespesifiseer vir multiteiken-toepassing nie.",
       noSelection:
         "Kies ten minste een token op die bord voordat jy --multi-target gebruik.",
       invalidIds: "Geen geldige token-ID's gevind in die huidige keuse nie.",
@@ -254,8 +256,7 @@ const TRANSLATION = {
         "Merker-konfigurasieformaat is: --config marker Grappled=grab",
       markerPredefinedRequired:
         "Merkerkonfigurasie vereis 'n vooraf bepaalde toestandnaam.",
-      markerNameRequired:
-        "Merkerkonfigurasie vereis 'n nie-leë merkernaam.",
+      markerNameRequired: "Merkerkonfigurasie vereis 'n nie-leë merkernaam.",
       markerSet: "{condition}-merker gestel op {marker}.",
       healthBarSet: "Gesondheidsstaaf gestel op {bar}.",
       boolSet: "{key} gestel op {value}.",
@@ -287,7 +288,8 @@ const TRANSLATION = {
       moveTokenBtn: "Verskuif {name} na Kaartlaag",
       tokenMoved: "{name} is na die kaartlaag verskuif.",
       tokenNotFound: "Token nie gevind nie.",
-      noActiveConditions: "{name} het geen aktiewe toestande om te verwyder nie.",
+      noActiveConditions:
+        "{name} het geen aktiewe toestande om te verwyder nie.",
       deadNoConditions:
         "{name} is as dood gemerk. Geen toestande was aktief nie.",
       scriptReady: "{name} is aktief en jy gebruik weergawe {version}.",

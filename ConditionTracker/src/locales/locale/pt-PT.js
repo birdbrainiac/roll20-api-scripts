@@ -97,24 +97,25 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target} afetado por {effect} ({source})",
       advantage: "{emoji} {source} tem vantagem contra {target}{subject}",
-      disadvantage:
-        "{emoji} {source} tem desvantagem contra {target}{subject}",
+      disadvantage: "{emoji} {source} tem desvantagem contra {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} está {past}",
       standard: "{emoji} {target} {past} por {source}",
     },
     apply: {
       custom: "{source} aplica {effect} a {target}.",
       advantage: "{source} tem vantagem contra {target}{subject}.",
       disadvantage: "{source} tem desvantagem contra {target}{subject}.",
+      self: "{target} está {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
     remove: {
       custom: "{target} já não está afetado por {effect}.",
       advantage: "{source} já não tem vantagem contra {target}{subject}.",
-      disadvantage:
-        "{source} já não tem desvantagem contra {target}{subject}.",
+      disadvantage: "{source} já não tem desvantagem contra {target}{subject}.",
       noBy: "{target} já não {past}.",
+      self: "{target} já não está {past}.",
       standard: "{target} já não está {past} por {source}.",
     },
   },
@@ -132,6 +133,7 @@ const TRANSLATION = {
       confirmBtn: "Confirmar lista de alvos",
       enterDetails: "Introduzir detalhes do efeito",
       noneBtn: "Nenhum",
+      noneOrSourceBtn: "Nenhum ou aplicar à origem",
       subjectDesc: "Selecione quem ou o que aplica o efeito.",
       sourceDesc:
         "Selecione a criatura que cria ou gera a condição ou o efeito.",
@@ -263,19 +265,19 @@ const TRANSLATION = {
       invalidHealthBar:
         "A barra de saúde deve ser bar1_value, bar2_value ou bar3_value.",
       markersDisabled: "Os marcadores estão desactivados.",
-      noMarkerConfigured: "Não há nenhum marcador configurado para esta condição.",
+      noMarkerConfigured:
+        "Não há nenhum marcador configurado para esta condição.",
       markerApplied: "Marcador aplicado: {marker}",
       markerPresent: "Marcador já presente: {marker}",
       langSet: "Idioma definido para {locale}.",
-      invalidLocale: "Configuração regional inválida. Configurações regionais suportadas: {locales}.",
+      invalidLocale:
+        "Configuração regional inválida. Configurações regionais suportadas: {locales}.",
       otherDurationRequiresRounds:
         "A duração Outro requer um número de rondas, por exemplo --duration 5 rounds.",
       invalidDuration:
         "A duração deve ser Até ser removido, uma opção de fim de turno ou um número positivo de rondas.",
-      zeroHpNoConditions:
-        "{name} chegou a 0 PV e não tem condições activas.",
-      zeroHpConditions:
-        "{name} chegou a 0 PV. Escolha as condições a remover:",
+      zeroHpNoConditions: "{name} chegou a 0 PV e não tem condições activas.",
+      zeroHpConditions: "{name} chegou a 0 PV. Escolha as condições a remover:",
       removeAllBtn: "Remover todas as condições de {name}",
       markIncapacitated: "Marcar como Incapacitado",
       removeFromTurnOrder: "Remover da ordem de iniciativa",

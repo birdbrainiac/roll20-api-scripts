@@ -95,25 +95,25 @@ const TRANSLATION = {
     display: {
       custom: "{emoji} {target}は{effect}の影響下にある（{source}）",
       advantage: "{emoji} {source}は{target}{subject}に対して有利を持つ",
-      disadvantage:
-        "{emoji} {source}は{target}{subject}に対して不利を持つ",
+      disadvantage: "{emoji} {source}は{target}{subject}に対して不利を持つ",
       noBy: "{emoji} {target}は{past}（{source}）",
+      self: "{target}は{past}",
       standard: "{emoji} {target}は{source}によって{past}",
     },
     apply: {
       custom: "{source}は{target}に{effect}を適用した。",
       advantage: "{source}は{target}{subject}に対して有利を持つ。",
       disadvantage: "{source}は{target}{subject}に対して不利を持つ。",
+      self: "{target}は{past}。",
       withSuffix: "{source}は{target}を{suffix}状態にした（{verb}）。",
       standard: "{source}は{target}を{verb}。",
     },
     remove: {
       custom: "{target}はもはや{effect}の影響を受けていない。",
-      advantage:
-        "{source}はもはや{target}{subject}に対して有利を持たない。",
-      disadvantage:
-        "{source}はもはや{target}{subject}に対して不利を持たない。",
+      advantage: "{source}はもはや{target}{subject}に対して有利を持たない。",
+      disadvantage: "{source}はもはや{target}{subject}に対して不利を持たない。",
       noBy: "{target}はもはや{past}ではない。",
+      self: "{target}はもはや{past}ではない。",
       standard: "{target}はもはや{source}によって{past}ではない。",
     },
   },
@@ -131,11 +131,10 @@ const TRANSLATION = {
       confirmBtn: "ターゲットリストを確認",
       enterDetails: "効果の詳細を入力",
       noneBtn: "なし",
+      noneOrSourceBtn: "なし、または発生源に適用",
       subjectDesc: "効果をもたらすものを選択してください。",
-      sourceDesc:
-        "状態または効果を生み出すクリーチャーを選択してください。",
-      targetDesc:
-        "状態または効果を受け取るクリーチャーを選択してください。",
+      sourceDesc: "状態または効果を生み出すクリーチャーを選択してください。",
+      targetDesc: "状態または効果を受け取るクリーチャーを選択してください。",
       otherText: "カスタム状態テキスト",
       effectDetails: "{condition}の詳細",
     },
@@ -249,12 +248,10 @@ const TRANSLATION = {
         "--subjectPromptBypassは値が指定された場合、trueまたはfalseを期待します。",
       customDetailsRequired:
         "{condition}の詳細が必要です。--otherを使用して指定してください。",
-      markerConfigFormat:
-        "マーカー設定の形式：--config marker Grappled=grab",
+      markerConfigFormat: "マーカー設定の形式：--config marker Grappled=grab",
       markerPredefinedRequired:
         "マーカー設定には事前定義された状態名が必要です。",
-      markerNameRequired:
-        "マーカー設定には空でないマーカー名が必要です。",
+      markerNameRequired: "マーカー設定には空でないマーカー名が必要です。",
       markerSet: "{condition}のマーカーを{marker}に設定しました。",
       healthBarSet: "ヘルスバーを{bar}に設定しました。",
       boolSet: "{key}を{value}に設定しました。",
@@ -262,8 +259,7 @@ const TRANSLATION = {
       invalidHealthBar:
         "ヘルスバーはbar1_value、bar2_value、またはbar3_valueである必要があります。",
       markersDisabled: "マーカーは無効になっています。",
-      noMarkerConfigured:
-        "この状態に設定されたマーカーはありません。",
+      noMarkerConfigured: "この状態に設定されたマーカーはありません。",
       markerApplied: "マーカーを適用しました：{marker}",
       markerPresent: "マーカーはすでに存在します：{marker}",
       langSet: "言語を{locale}に設定しました。",
@@ -360,27 +356,18 @@ const TRANSLATION = {
       colDesc: "説明",
       rows: [
         ["--prompt", "インタラクティブなステップバイステップウィザードUI"],
-        [
-          "--multi-target",
-          "複数のターゲットトークンに状態を一括適用",
-        ],
+        ["--multi-target", "複数のターゲットトークンに状態を一括適用"],
         ["--menu", "メインメニューを表示（削除メニューにはremoveを追加）"],
         [
           "--source X --target Y --condition Z",
           "ウィザードを使わずに直接状態を適用",
         ],
-        [
-          "--duration &lt;値&gt;",
-          "直接適用時の継続時間（例：2 rounds）",
-        ],
+        ["--duration &lt;値&gt;", "直接適用時の継続時間（例：2 rounds）"],
         [
           "--other &lt;テキスト&gt;",
           "呪文・能力・その他の効果タイプ用のカスタムテキスト",
         ],
-        [
-          "--remove &lt;状態ID&gt;",
-          "一意のIDで特定の状態を削除",
-        ],
+        ["--remove &lt;状態ID&gt;", "一意のIDで特定の状態を削除"],
         [
           "--config &lt;オプション&gt; &lt;値&gt;",
           "設定を変更する（下記の設定セクションを参照）",
@@ -434,10 +421,7 @@ const TRANSLATION = {
           "⬇️ 不利",
           "課された不利を記録します。イニシアチブではソースとグループ化されます",
         ],
-        [
-          "📝 その他",
-          "自由形式のカスタムラベル — 説明の入力を求められます",
-        ],
+        ["📝 その他", "自由形式のカスタムラベル — 説明の入力を求められます"],
       ],
     },
     durationOptions: {
@@ -447,10 +431,7 @@ const TRANSLATION = {
       colOption: "オプション",
       colBehaviour: "動作",
       rows: [
-        [
-          "削除されるまで",
-          "恒久的 — メニューまたは--removeで手動削除が必要",
-        ],
+        ["削除されるまで", "恒久的 — メニューまたは--removeで手動削除が必要"],
         [
           "ターゲットの次のターン終了時",
           "イニシアチブでターゲットトークンの次のターンが終了したときに失効",

@@ -224,7 +224,7 @@ function localeTableRows() {
  *
  * @param {object} token Token entry.
  * @param {object} args Current wizard args.
- * @param {"source"|"target"} slot Which slot to fill.
+ * @param {"source"|"target"|"subject"} slot Which slot to fill.
  * @returns {object} Trusted HTML button.
  */
 function buildTokenChoiceButton(token, args, slot) {
@@ -549,7 +549,7 @@ function buildTwoColumnRows(leftButtons, rightButtons) {
  * @param {string} playerId GM player id.
  * @param {string} title Step heading.
  * @param {object} args Current wizard args.
- * @param {"source"|"target"} slot Which slot to fill.
+ * @param {"source"|"target"|"subject"} slot Which slot to fill.
  * @param {string} [description] Optional context shown above the token list.
  * @returns {void}
  */
@@ -584,6 +584,17 @@ function showTokenStep(playerId, title, args, slot, description) {
         buildWizardBase({ ...args, subject: SUBJECT_NONE }),
       ),
     );
+  }
+  if (slot === "target") {
+    const sourceId = toText(args.source);
+    if (sourceId) {
+      body.push(
+        buildButton(
+          t("ui.wizard.noneOrSourceBtn", locale),
+          buildWizardBase({ ...args, target: sourceId }),
+        ),
+      );
+    }
   }
   body.push(
     htmlTable(
@@ -1252,6 +1263,7 @@ export function buildConditionRecord(validation, config, duration, locale) {
     sourceName,
     subjectName,
     targetName,
+    isSelfTarget: validation.sourceToken.id === validation.targetToken.id,
     condition: validation.condition,
     customText: validation.customText,
     useIcons: config.useIcons,

@@ -102,12 +102,14 @@ const TRANSLATION = {
       disadvantage:
         "{emoji} {source} έχει μειονέκτημα εναντίον {target}{subject}",
       noBy: "{emoji} {target} {past} ({source})",
+      self: "{target} είναι {past}",
       standard: "{emoji} {target} {past} από {source}",
     },
     apply: {
       custom: "{source} εφαρμόζει {effect} στον {target}.",
       advantage: "{source} έχει πλεονέκτημα εναντίον {target}{subject}.",
       disadvantage: "{source} έχει μειονέκτημα εναντίον {target}{subject}.",
+      self: "{target} είναι {past}.",
       withSuffix: "{source} {verb} {target} {suffix}.",
       standard: "{source} {verb} {target}.",
     },
@@ -118,6 +120,7 @@ const TRANSLATION = {
       disadvantage:
         "{source} δεν έχει πλέον μειονέκτημα εναντίον {target}{subject}.",
       noBy: "{target} δεν είναι πλέον {past}.",
+      self: "{target} δεν είναι πλέον {past}.",
       standard: "{target} δεν είναι πλέον {past} από {source}.",
     },
   },
@@ -135,11 +138,11 @@ const TRANSLATION = {
       confirmBtn: "Επιβεβαίωση λίστας στόχων",
       enterDetails: "Εισαγωγή λεπτομερειών εφέ",
       noneBtn: "Κανένα",
+      noneOrSourceBtn: "Κανένα ή εφαρμογή στην πηγή",
       subjectDesc: "Επιλέξτε ποιος ή τι παράγει το εφέ.",
       sourceDesc:
         "Επιλέξτε το πλάσμα που δημιουργεί ή παράγει την κατάσταση ή το εφέ.",
-      targetDesc:
-        "Επιλέξτε το πλάσμα που θα λάβει την κατάσταση ή το εφέ.",
+      targetDesc: "Επιλέξτε το πλάσμα που θα λάβει την κατάσταση ή το εφέ.",
       otherText: "Προσαρμοσμένο κείμενο κατάστασης",
       effectDetails: "Λεπτομέρειες {condition}",
     },
@@ -255,8 +258,7 @@ const TRANSLATION = {
         "Μορφή ρύθμισης δείκτη: --config marker Grappled=grab",
       markerPredefinedRequired:
         "Η ρύθμιση δείκτη απαιτεί προκαθορισμένο όνομα κατάστασης.",
-      markerNameRequired:
-        "Η ρύθμιση δείκτη απαιτεί μη κενό όνομα δείκτη.",
+      markerNameRequired: "Η ρύθμιση δείκτη απαιτεί μη κενό όνομα δείκτη.",
       markerSet: "Ο δείκτης για {condition} ορίστηκε σε {marker}.",
       healthBarSet: "Η μπάρα υγείας ορίστηκε σε {bar}.",
       boolSet: "Το {key} ορίστηκε σε {value}.",
@@ -281,8 +283,7 @@ const TRANSLATION = {
       markIncapacitated: "Σήμανση ως Ανίκανος",
       removeFromTurnOrder: "Αφαίρεση από τη Σειρά Πρωτοβουλίας",
       alreadyIncapacitated: "{name} είναι ήδη Ανίκανος.",
-      tokenRemovedFromTurn:
-        "{name} αφαιρέθηκε από τη σειρά πρωτοβουλίας.",
+      tokenRemovedFromTurn: "{name} αφαιρέθηκε από τη σειρά πρωτοβουλίας.",
       tokenNotInTurn: "{name} δεν βρέθηκε στη σειρά πρωτοβουλίας.",
       moveTokenPrompt:
         "Μετακίνηση του {name} στο επίπεδο χάρτη ώστε να παραμένει ορατό χωρίς να παρεμβάλλεται με άλλα tokens;",
@@ -364,7 +365,10 @@ const TRANSLATION = {
           "--multi-target",
           "Εφαρμογή κατάστασης σε πολλά tokens-στόχους ταυτόχρονα",
         ],
-        ["--menu", "Εμφάνιση κύριου μενού (προσθέστε remove για μενού αφαίρεσης)"],
+        [
+          "--menu",
+          "Εμφάνιση κύριου μενού (προσθέστε remove για μενού αφαίρεσης)",
+        ],
         [
           "--source X --target Y --condition Z",
           "Εφαρμογή κατάστασης απευθείας χωρίς τον οδηγό",

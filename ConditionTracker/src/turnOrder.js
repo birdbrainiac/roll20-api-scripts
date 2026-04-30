@@ -481,6 +481,77 @@ export function getActiveConditionIds() {
 }
 
 /**
+ * Returns the ids of all token rows (non-custom rows) in turn order sequence.
+ *
+ * @returns {string[]} Token ids in current turn order.
+ */
+export function getTokenRowIds() {
+  return getTurnOrder()
+    .map((row) => getTokenRowId(row))
+    .filter(Boolean);
+}
+
+/**
+ * Returns condition ids whose rows appear after the wrong anchor token.
+ *
+ * A condition row is misplaced when the most recent token row before it in the
+ * tracker is not the condition's anchor token, and the anchor token IS present
+ * somewhere in the turn order.
+ *
+ * @returns {string[]} Misplaced condition ids.
+ */
+export function findMisplacedConditionIds() {
+  const rows = getTurnOrder();
+  const anchorLookup = getConditionAnchorLookup();
+  const tokenIdSet = new Set(rows.map((r) => getTokenRowId(r)).filter(Boolean));
+  const misplaced = [];
+  let currentTokenId = null;
+
+  for (const row of rows) {
+    const tokenId = getTokenRowId(row);
+    if (tokenId) {
+      currentTokenId = tokenId;
+    } else {
+      const conditionId = getConditionIdFromRow(row);
+      if (conditionId) {
+        const expectedAnchor = anchorLookup.get(conditionId);
+        if (
+          expectedAnchor &&
+          tokenIdSet.has(expectedAnchor) &&
+          expectedAnchor !== currentTokenId
+        ) {
+          misplaced.push(conditionId);
+        }
+      }
+    }
+  }
+
+  return misplaced;
+}
+
+/**
+ * Strips all condition rows from the turn order and re-inserts them
+ * immediately after their anchor tokens in a single read-write cycle.
+ *
+ * @returns {void}
+ */
+export function reorderAllConditionRows() {
+  const rows = getTurnOrder();
+  const anchorLookup = getConditionAnchorLookup();
+  const activeConditions = ensureState().active;
+
+  const workingRows = rows.filter((row) => !getConditionIdFromRow(row));
+
+  for (const condition of activeConditions) {
+    const anchorTokenId = getConditionAnchorTokenId(condition);
+    const insertIndex = getInsertIndex(workingRows, anchorTokenId, anchorLookup);
+    workingRows.splice(insertIndex.index, 0, createConditionRow(condition));
+  }
+
+  setTurnOrder(workingRows);
+}
+
+/**
  * Returns a Set of all condition ids that currently have a Turn Tracker row.
  *
  * Builds the Set in a single pass so callers avoid O(n) per-condition scans.

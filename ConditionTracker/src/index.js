@@ -1,4 +1,5 @@
 import {
+  COMMAND,
   SCRIPT_LAST_UPDATED,
   SCRIPT_NAME,
   SCRIPT_VERSION,
@@ -23,7 +24,7 @@ import {
   removeExpiredConditions,
   showMenu,
 } from "./commands.js";
-import { whisper } from "./chat.js";
+import { buildButton, whisper } from "./chat.js";
 import { decrementDuration } from "./durations.js";
 import {
   containsMarker,
@@ -34,6 +35,8 @@ import { getGmPlayerIds, getTokenName, toText } from "./utils.js";
 import {
   getCurrentTurnTokenId,
   getConditionRowIdSet,
+  getTokenRowIds,
+  findMisplacedConditionIds,
   getTurnSignature,
   migrateTurnOrderRows,
   removeConditionRows,
@@ -49,7 +52,12 @@ function checkInstall() {
   ensureState();
   applyGlobalConfig();
   migrateTurnOrderRows();
-  updateTurnRuntime(getCurrentTurnTokenId(), getTurnSignature());
+  updateTurnRuntime(
+    getCurrentTurnTokenId(),
+    getTurnSignature(),
+    getTokenRowIds(),
+    findMisplacedConditionIds(),
+  );
   installMacro();
   installHandout(getConfig().language);
   log(
@@ -167,9 +175,30 @@ function handleTurnOrderChange() {
     }
 
     const previousFirstTurnId = trackerState.runtime.previousFirstTurnId;
+    const previousTokenIds = trackerState.runtime.previousTokenIds || [];
+    const previousMisplacedIds =
+      trackerState.runtime.previousMisplacedConditionIds || [];
     const currentFirstTurnId = getCurrentTurnTokenId();
-    updateTurnRuntime(currentFirstTurnId, currentSignature);
+    const currentTokenIds = getTokenRowIds();
     reconcileActiveConditionsWithTurnOrder();
+    const currentMisplacedIds = findMisplacedConditionIds();
+    updateTurnRuntime(
+      currentFirstTurnId,
+      currentSignature,
+      currentTokenIds,
+      currentMisplacedIds,
+    );
+
+    if (
+      shouldPromptConditionReorder(
+        previousTokenIds,
+        currentTokenIds,
+        previousMisplacedIds,
+        currentMisplacedIds,
+      )
+    ) {
+      promptConditionReorder(getPrimaryGmId(), currentMisplacedIds.length);
+    }
 
     if (!previousFirstTurnId || previousFirstTurnId === currentFirstTurnId) {
       return;
@@ -184,6 +213,90 @@ function handleTurnOrderChange() {
   } catch (error) {
     log(`${SCRIPT_NAME} duration error: ${error.message}`);
   }
+}
+
+/**
+ * Returns true when a turn-order change should prompt the GM to reorder
+ * condition rows.
+ *
+ * @param {string[]} previousTokenIds Token ids from the previous turn order snapshot.
+ * @param {string[]} currentTokenIds Token ids from the current turn order.
+ * @param {string[]} previousMisplacedIds Previously misplaced condition ids.
+ * @param {string[]} currentMisplacedIds Currently misplaced condition ids.
+ * @returns {boolean} True when a reorder prompt should be whispered.
+ */
+function shouldPromptConditionReorder(
+  previousTokenIds,
+  currentTokenIds,
+  previousMisplacedIds,
+  currentMisplacedIds,
+) {
+  if (currentMisplacedIds.length === 0) {
+    return false;
+  }
+
+  const previousMisplacedSet = new Set(previousMisplacedIds);
+  const newlyMisplaced = currentMisplacedIds.some(
+    (id) => !previousMisplacedSet.has(id),
+  );
+  if (!newlyMisplaced) {
+    return false;
+  }
+
+  if (isSingleTurnAdvance(previousTokenIds, currentTokenIds)) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Returns true when token rows changed by the normal next-turn rotation.
+ *
+ * @param {string[]} previousIds Token ids from the previous turn order snapshot.
+ * @param {string[]} currentIds Token ids from the current turn order.
+ * @returns {boolean} True for a one-step left rotation.
+ */
+function isSingleTurnAdvance(previousIds, currentIds) {
+  if (previousIds.length < 2 || previousIds.length !== currentIds.length) {
+    return false;
+  }
+
+  const rotated = previousIds.slice(1).concat(previousIds[0]);
+  return arraysEqual(rotated, currentIds);
+}
+
+/**
+ * Returns true when two string arrays have the same values in the same order.
+ *
+ * @param {string[]} a First array.
+ * @param {string[]} b Second array.
+ * @returns {boolean} True when arrays match.
+ */
+function arraysEqual(a, b) {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  return a.every((value, index) => value === b[index]);
+}
+
+/**
+ * Whispers a GM prompt asking whether to reorder displaced condition rows.
+ *
+ * @param {string} gmId GM player id.
+ * @param {number} count Number of misplaced condition rows detected.
+ * @returns {void}
+ */
+function promptConditionReorder(gmId, count) {
+  const locale = getConfig().language;
+  whisper(gmId, t("ui.title.conditionReorder", locale), [
+    t("ui.msg.conditionReorder", locale, { count }),
+    buildButton(
+      t("ui.btn.reorderConditions", locale),
+      `${COMMAND} --reorder-conditions`,
+    ),
+  ]);
 }
 
 /**

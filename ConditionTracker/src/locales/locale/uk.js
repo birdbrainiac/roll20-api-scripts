@@ -183,6 +183,7 @@ const TRANSLATION = {
       reinstallMacro: "Перевстановити макрос",
       reinstallHandout: "Перевстановити довідник",
       showHelp: "Показати довідку",
+      reorderConditions: "Переупорядкувати рядки умов",
     },
     title: {
       menu: "Меню",
@@ -204,6 +205,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 HP",
       moveToken: "{name} — перемістити токен?",
       scriptReady: "Скрипт готовий",
+      conditionReorder: "Порядок ходів змінено",
     },
     heading: {
       quickActions: "Швидкі дії",
@@ -290,6 +292,10 @@ const TRANSLATION = {
       manuallyRemoved: "це було видалено вручну",
       durationExpired: "тривалість завершилася",
       markedAsDead: "{name} позначено як мертвого",
+      conditionReorder:
+        "Порядок ходів змінився, і {count} відстежуваний рядок/рядків умов може бути тепер не на місці. Натисніть нижче, щоб відновити їх після призначених токенів.",
+      conditionsReordered:
+        "Рядки умов були переміщені після призначених токенів.",
     },
     removal: {
       conditionField: "Стан",
@@ -378,6 +384,10 @@ const TRANSLATION = {
         [
           "--cleanup",
           "Узгодити стан — видалити осиротілі стани й рядки Turn Tracker",
+        ],
+        [
+          "--reorder-conditions",
+          "Вручну переставити рядки умов після відповідних токенів у черзі ходу",
         ],
         ["--reinstall-macro", "Повторно створити або оновити GM-макроси"],
         [

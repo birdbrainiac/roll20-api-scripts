@@ -61,6 +61,7 @@ import {
   insertConditionRow,
   insertConditionRows,
   removeTokenRow,
+  reorderAllConditionRows,
 } from "./turnOrder.js";
 import {
   validateApplyArgs,
@@ -1008,6 +1009,11 @@ export function routeCommand(msg, args) {
     return;
   }
 
+  if (args["reorder-conditions"] !== undefined) {
+    handleReorderConditions(msg.playerid);
+    return;
+  }
+
   if (args["reinstall-macro"]) {
     handleReinstallMacro(msg.playerid);
     return;
@@ -1588,6 +1594,7 @@ export function showMenu(playerId, menu) {
   const cmdRemoveMenu = `${COMMAND} --menu remove`;
   const cmdConfig = `${COMMAND} --config`;
   const cmdCleanup = `${COMMAND} --cleanup`;
+  const cmdReorder = `${COMMAND} --reorder-conditions`;
   const cmdReinstall = `${COMMAND} --reinstall-macro`;
   const cmdReinstallHandout = `${COMMAND} --reinstall-handout`;
   const cmdHelp = `${COMMAND} --help`;
@@ -1616,6 +1623,10 @@ export function showMenu(playerId, menu) {
         [
           code(cmdCleanup),
           buildButton(t("ui.btn.runCleanup", locale), cmdCleanup),
+        ],
+        [
+          code(cmdReorder),
+          buildButton(t("ui.btn.reorderConditions", locale), cmdReorder),
         ],
         [
           code(cmdReinstall),
@@ -2064,6 +2075,22 @@ export function handleZeroHpIncapacitated(playerId, tokenId) {
     insertResult.appended,
     markerNotice,
     locale,
+  );
+}
+
+/**
+ * Reorders all condition rows to follow their anchor tokens.
+ *
+ * @param {string} playerId GM player id.
+ * @returns {void}
+ */
+function handleReorderConditions(playerId) {
+  const locale = getConfig().language;
+  reorderAllConditionRows();
+  whisper(
+    playerId,
+    t("ui.title.conditionReorder", locale),
+    t("ui.msg.conditionsReordered", locale),
   );
 }
 

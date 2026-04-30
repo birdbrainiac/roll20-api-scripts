@@ -179,6 +179,7 @@ const TRANSLATION = {
       reinstallMacro: "התקן מאקרו מחדש",
       reinstallHandout: "התקן דף עזרה מחדש",
       showHelp: "הצג עזרה",
+      reorderConditions: "סדר מחדש שורות תנאי",
     },
     title: {
       menu: "תפריט",
@@ -200,6 +201,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 נק״פ",
       moveToken: "{name} — להעביר אסימון?",
       scriptReady: "הסקריפט מוכן",
+      conditionReorder: "סדר התורות השתנה",
     },
     heading: {
       quickActions: "פעולות מהירות",
@@ -279,6 +281,10 @@ const TRANSLATION = {
       manuallyRemoved: "הוסר ידנית",
       durationExpired: "משך הזמן שלו פג",
       markedAsDead: "{name} סומן כמת",
+      conditionReorder:
+        "סדר התורות השתנה ו-{count} שורת/שורות תנאי עקובות עשויות להיות כעת במיקום שגוי. לחץ למטה כדי לשחזר אותן אחרי הטוקנים שהוקצו להן.",
+      conditionsReordered:
+        "שורות התנאי מוקמו מחדש אחרי הטוקנים שהוקצו להן.",
     },
     removal: {
       conditionField: "מצב",
@@ -348,6 +354,7 @@ const TRANSLATION = {
           "עקיפת שלב הנושא לפקודה זו בלבד",
         ],
         ["--cleanup", "ניקוי רשומות ושורות יתומות"],
+        ["--reorder-conditions", "מיקום מחדש ידני של שורות תנאי אחרי הטוקנים המוקצים בסדר התורות"],
         ["--reinstall-macro", "יצירה או עדכון של מאקרואים ל־GM"],
         ["--reinstall-handout", "יצירה או עדכון של דף העזרה המקומי"],
         ["--lang &lt;locale&gt;", "פלט נוסף באזור שפה אחר"],
@@ -419,6 +426,14 @@ const TRANSLATION = {
       heading: "סמני סטטוס ברירת מחדל",
       colCondition: "מצב",
       colMarker: "שם סמן",
+    },
+    availableLocales: {
+      heading: "תרגומים זמינים",
+      intro:
+        "השתמש באפשרות הגדרת language כדי לקבוע את הודעות הצ'אט וחוברת העזרה בכל locale נתמך. כינויים קצרים מקובלים גם עבור en, zh ו-pt.",
+      colLocale: "Locale",
+      colLanguage: "שפה",
+      colFile: "קובץ תרגום",
     },
   },
 };

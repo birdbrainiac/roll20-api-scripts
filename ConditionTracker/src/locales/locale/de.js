@@ -179,7 +179,9 @@ const TRANSLATION = {
       showConfig: "Konfiguration anzeigen",
       runCleanup: "Bereinigung starten",
       reinstallMacro: "Makro neu installieren",
+      reinstallHandout: "Handout neu installieren",
       showHelp: "Hilfe anzeigen",
+      reorderConditions: "Bedingungszeilen neu anordnen",
     },
     title: {
       menu: "Menü",
@@ -201,6 +203,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 TP",
       moveToken: "{name} — Token verschieben?",
       scriptReady: "Skript bereit",
+      conditionReorder: "Rundenreihenfolge geändert",
     },
     heading: {
       quickActions: "Schnellaktionen",
@@ -289,6 +292,10 @@ const TRANSLATION = {
       manuallyRemoved: "manuell entfernt",
       durationExpired: "Dauer abgelaufen",
       markedAsDead: "{name} wurde als tot markiert",
+      conditionReorder:
+        "Die Rundenreihenfolge wurde geändert und {count} verfolgte Bedingungszeile(n) könnte(n) nun falsch platziert sein. Klicke unten, um sie hinter ihre zugewiesenen Tokens zu verschieben.",
+      conditionsReordered:
+        "Bedingungszeilen wurden hinter ihre zugewiesenen Tokens verschoben.",
     },
     removal: {
       conditionField: "Zustand",
@@ -380,6 +387,10 @@ const TRANSLATION = {
         [
           "--cleanup",
           "Status bereinigen — verwaiste Zustände und Zeilen entfernen",
+        ],
+        [
+          "--reorder-conditions",
+          "Bedingungszeilen manuell hinter ihre zugewiesenen Tokens in der Rundenreihenfolge verschieben",
         ],
         ["--reinstall-macro", "GM-Makros neu erstellen oder aktualisieren"],
         [
@@ -493,6 +504,14 @@ const TRANSLATION = {
       heading: "Standard-Statusmarker",
       colCondition: "Zustand",
       colMarker: "Markername",
+    },
+    availableLocales: {
+      heading: "Verfügbare Übersetzungen",
+      intro:
+        "Verwende die Konfigurationsoption language, um Chat-Nachrichten und das Hilfe-Handout auf eine unterstützte Locale einzustellen. Kurze Aliase werden auch für en, zh und pt akzeptiert.",
+      colLocale: "Locale",
+      colLanguage: "Sprache",
+      colFile: "Übersetzungsdatei",
     },
   },
 };

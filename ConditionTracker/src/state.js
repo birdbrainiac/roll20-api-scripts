@@ -35,6 +35,8 @@ export function createRuntimeState() {
   return {
     previousFirstTurnId: "",
     previousTurnSignature: "",
+    previousTokenIds: [],
+    previousMisplacedConditionIds: [],
   };
 }
 
@@ -407,10 +409,21 @@ export function getActiveByTarget(targetTokenId) {
  *
  * @param {string} firstTurnId The current first turn id.
  * @param {string} signature The current turn signature.
+ * @param {string[]} [tokenIds] Ordered token ids from the current turn order.
+ * @param {string[]} [misplacedConditionIds] Condition ids currently misplaced in the turn order.
  * @returns {void}
  */
-export function updateTurnRuntime(firstTurnId, signature) {
+export function updateTurnRuntime(
+  firstTurnId,
+  signature,
+  tokenIds,
+  misplacedConditionIds,
+) {
   const runtime = ensureState().runtime;
   runtime.previousFirstTurnId = firstTurnId || "";
   runtime.previousTurnSignature = signature || "";
+  runtime.previousTokenIds = Array.isArray(tokenIds) ? tokenIds : [];
+  runtime.previousMisplacedConditionIds = Array.isArray(misplacedConditionIds)
+    ? misplacedConditionIds
+    : [];
 }

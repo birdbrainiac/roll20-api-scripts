@@ -5,7 +5,7 @@
  * Name: Condition Tracker
  * Script: ConditionTracker.js
  * Version: 1.0.0
- * Built: 2026-04-30T00:30:05.224Z
+ * Built: 2026-04-30T11:04:32.612Z
  */
 const ConditionTrackerMod = (() => {
   'use strict';
@@ -260,7 +260,7 @@ const ConditionTrackerMod = (() => {
 
   const SCRIPT_NAME = 'Condition Tracker';
   const SCRIPT_VERSION = '1.0.0';
-  const SCRIPT_LAST_UPDATED = '2026-04-30T00:30:05.224Z';
+  const SCRIPT_LAST_UPDATED = '2026-04-30T11:04:32.612Z';
 
   const COLOR_BG_SOFT_BLACK = '#0A0A12';
   const COLOR_TEXT_ARCANE_SILVER = '#E6DFFF';
@@ -545,28 +545,425 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} geraak deur {effect} ({source})',
+        advantage: '{emoji} {source} het voordeel teen {target}{subject}',
+        disadvantage: '{emoji} {source} het nadeel teen {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} deur {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} pas {effect} toe op {target}.',
+        advantage: '{source} het voordeel teen {target}{subject}.',
+        disadvantage: '{source} het nadeel teen {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+        custom: '{target} word nie meer deur {effect} geraak nie.',
+        advantage: '{source} het nie meer voordeel teen {target}{subject} nie.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} het nie meer nadeel teen {target}{subject} nie.',
+        noBy: '{target} is nie meer {past} nie.',
+        standard: '{target} word nie meer {past} deur {source} nie.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Kies Toestand',
+        selectSource: 'Kies Bron-token',
+        selectTarget: 'Kies Teikentoken',
+        selectSubject: 'Kies Onderwerp',
+        selectDuration: 'Kies Duur',
+        confirmTargetTitle: 'Bevestig Teikenslys',
+        applyEffectTitle: 'Pas {condition}-effek toe',
+        noTokens: 'Geen benoemde tokens gevind op die aktiewe bladsy nie.',
+        confirmIntro: 'Die volgende tokens sal die toestand ontvang:',
+        confirmBtn: 'Bevestig teikenslys',
+        enterDetails: 'Voer effekbesonderhede in',
+        noneBtn: 'Geen',
+        subjectDesc: 'Kies wie of wat die effek toepas.',
+        sourceDesc: 'Kies die wese wat die toestand of effek skep.',
+        targetDesc: 'Kies die wese wat die toestand of effek ontvang.',
+        otherText: 'Aangepaste toestandteks',
+        effectDetails: '{condition}-besonderhede',
+      },
+      col: {
+        players: 'Spelers',
+        npcs: "NPS'e",
+        conditions: 'Toestande',
+        customEffects: 'Aangepaste Effekte',
+        permanentTurnEnd: 'Permanent / Beurt Einde',
+        rounds: 'Rondtes',
+        command: 'Opdrag',
+        result: 'Resultaat',
+        field: 'Veld',
+        value: 'Waarde',
+        option: 'Opsie',
+        condition: 'Toestand',
+        marker: 'Merker',
+        item: 'Item',
+        removed: 'Verwyder',
+        details: 'Besonderhede',
+        description: 'Beskrywing',
+        scenario: 'Scenario',
+      },
+      dur: {
+        untilRemoved: 'Tot verwydering',
+        endOfTargetTurn: 'Einde van teiken se volgende beurt',
+        endOfSourceTurn: 'Einde van bron se volgende beurt',
+        round1: '1 rondte',
+        round2: '2 rondtes',
+        round3: '3 rondtes',
+        round10: '10 rondtes',
+        custom: 'Aangepas',
+        customPrompt: 'Aantal rondtes',
+        untilRemovedDisplay: 'Tot verwydering',
+        turnsRemaining: '{n} beurt-einde(s) wat gevolg word, oor',
+      },
+      btn: {
+        openWizard: 'Maak Towenaar Oop',
+        openMultiTarget: 'Maak Multiteiken-towenaar Oop',
+        openRemovalList: 'Maak Verwyderlys Oop',
+        showConfig: 'Wys Konfigurasie',
+        runCleanup: 'Voer Opruiming Uit',
+        reinstallMacro: 'Herinstalleer Makro',
+        reinstallHandout: 'Herinstalleer Handout',
+        showHelp: 'Wys Hulp',
+        reorderConditions: 'Herrangskik Toestandrye',
+      },
+      title: {
+        menu: 'Kieslys',
+        removalMenu: 'Condition Tracker — Verwydering',
+        config: 'Konfigurasie',
+        configTracker: 'Condition Tracker — Konfigurasie',
+        help: 'Hulp',
+        applied: 'Toegepas',
+        removed: 'Toestand Verwyder',
+        cleanup: 'Opruiming Voltooi',
+        macroReinstalled: 'Makro Herinstalleer',
+        handoutReinstalled: 'Handout Herinstalleer',
+        warning: 'Waarskuwing',
+        error: 'Fout',
+        turnOrder: 'Beurtorde',
+        noConditions: 'Geen Toestande',
+        tokenMoved: 'Token Verskuif',
+        markedDead: 'As Dood Gemerk',
+        zeroHp: '{name} — 0 LP',
+        moveToken: '{name} — Verskuif Token?',
+        scriptReady: 'Skrip Gereed',
+        conditionReorder: 'Beurtorde Verander',
+      },
+      heading: {
+        quickActions: 'Vinnige Aksies',
+        settings: 'Instellings',
+        markerMappings: 'Merkertoewysings',
+        result: 'Resultaat',
+        info: 'Inligting',
+        commandOptions: 'Opdragopsies',
+        promptUi: 'Towenaar-koppelvlak',
+        examples: 'Voorbeelde',
+        summary: 'Opsomming',
+      },
+      msg: {
+        noActive: 'Geen aktiewe toestande word gevolg nie.',
+        configReset: 'Konfigurasie terugstel na verstekwaardes.',
+        unknownConfig:
+          'Onbekende konfigurasieopsie. Gebruik --config om ondersteunde instellings te sien.',
+        macroReinstalled:
+          'Die {wizard}- en {multiTarget}-makros is herinstalleer vir alle huidige GM-spelers.',
+        handoutReinstalled: 'Die hulp-handout {handout} is herinstalleer.',
+        duplicate:
+          'Hierdie presiese kombinasie van bron, onderwerp, teiken, toestand en aangepaste teks is reeds aktief.',
+        noTargets:
+          'Geen teikentoken gespesifiseer vir multiteiken-toepassing nie.',
+        noSelection:
+          'Kies ten minste een token op die bord voordat jy --multi-target gebruik.',
+        invalidIds: "Geen geldige token-ID's gevind in die huidige keuse nie.",
+        reSelectTokens:
+          'Nie een van die oorspronklik gekose tokens kon gevind word nie. Kies tokens weer en probeer opnuut.',
+        conditionNotFound: 'Toestand-ID nie gevind nie.',
+        gmOnly: 'Condition Tracker-opdragte is slegs vir die GM.',
+        commandFailed:
+          'Die opdrag kon nie veilig voltooi word nie. Kyk die API-konsole vir besonderhede.',
+        sourceTokenNotFound: 'Bron-token kon nie gevind word nie.',
+        targetTokenNotFound: 'Teikentoken kon nie gevind word nie.',
+        subjectTokenNotFound: 'Onderwerp-token kon nie gevind word nie.',
+        invalidCondition:
+          'Toestand moet een van die vooraf bepaalde toestande of Ander wees.',
+        subjectOnlyCustom:
+          '--subject is slegs geldig vir Towerspreuk, Vermoë, Voordeel, Nadeel en Ander.',
+        subjectBypassInvalid:
+          "--subjectPromptBypass verwag true of false wanneer 'n waarde verskaf word.",
+        customDetailsRequired:
+          '{condition}-besonderhede is vereis. Gebruik --other om dit te verskaf.',
+        markerConfigFormat:
+          'Merker-konfigurasieformaat is: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          "Merkerkonfigurasie vereis 'n vooraf bepaalde toestandnaam.",
+        markerNameRequired: "Merkerkonfigurasie vereis 'n nie-leë merkernaam.",
+        markerSet: '{condition}-merker gestel op {marker}.',
+        healthBarSet: 'Gesondheidsstaaf gestel op {bar}.',
+        boolSet: '{key} gestel op {value}.',
+        expectedBoolean: 'true of false verwag.',
+        invalidHealthBar:
+          'Gesondheidsstaaf moet bar1_value, bar2_value of bar3_value wees.',
+        markersDisabled: 'Merkers is gedeaktiveer.',
+        noMarkerConfigured: 'Geen merker is opgestel vir hierdie toestand nie.',
+        markerApplied: 'Merker toegepas: {marker}',
+        markerPresent: 'Merker reeds teenwoordig: {marker}',
+        langSet: 'Taal gestel op {locale}.',
+        invalidLocale: 'Ongeldige lokaal. Ondersteunde lokale: {locales}.',
+        otherDurationRequiresRounds:
+          "Ander-duur vereis 'n numeriese rondte-telling, byvoorbeeld --duration 5 rounds.",
+        invalidDuration:
+          "Duur moet Tot verwydering, 'n beurt-einde-opsie of 'n positiewe rondte-telling wees.",
+        zeroHpNoConditions:
+          '{name} het 0 LP bereik en het geen aktiewe toestande nie.',
+        zeroHpConditions:
+          '{name} het 0 LP bereik. Kies toestande om te verwyder:',
+        removeAllBtn: 'Verwyder Alle Toestande vir {name}',
+        markIncapacitated: 'Merk as Onbekwaam',
+        removeFromTurnOrder: 'Verwyder uit Beurtorde',
+        alreadyIncapacitated: '{name} is reeds Onbekwaam.',
+        tokenRemovedFromTurn: '{name} is uit die beurtorde verwyder.',
+        tokenNotInTurn: '{name} is nie in die beurtorde gevind nie.',
+        moveTokenPrompt:
+          'Verskuif {name} na die kaartlaag sodat dit sigbaar bly maar ander tokens nie steur nie?',
+        moveTokenBtn: 'Verskuif {name} na Kaartlaag',
+        tokenMoved: '{name} is na die kaartlaag verskuif.',
+        tokenNotFound: 'Token nie gevind nie.',
+        noActiveConditions:
+          '{name} het geen aktiewe toestande om te verwyder nie.',
+        deadNoConditions:
+          '{name} is as dood gemerk. Geen toestande was aktief nie.',
+        scriptReady: '{name} is aktief en jy gebruik weergawe {version}.',
+        reachedZeroHp: '{name} het 0 LP bereik',
+        manuallyRemoved: 'dit is handmatig verwyder',
+        durationExpired: 'die duur het verstryk',
+        markedAsDead: '{name} is as dood gemerk',
+        conditionReorder:
+          'Die beurtorde het verander en {count} gevolge toestandry(e) mag nou buite plek wees. Klik hieronder om hulle ná hul toegewysde tokens te herstel.',
+        conditionsReordered:
+          'Toestandrye is herposisioneer ná hul toegewysde tokens.',
+      },
+      removal: {
+        conditionField: 'Toestand',
+        reasonField: 'Rede',
+        turnRowField: 'Beurtorde-ry',
+        markerField: 'Merker',
+        notConfigured: 'Nie opgestel nie',
+        markerRemoved: 'Verwyder ({marker})',
+        markerRetained: 'Behou ({marker})',
+        rowRemoved: 'Verwyder',
+        rowMissing: 'Reeds ontbreek',
+        manualReason: 'Handmatige verwydering',
+      },
+      cleanup: {
+        orphaned: 'Weesagtige toestandinskrywings',
+        stale: 'Verouderde toestandinskrywings',
+        orphanedRows: 'Weesagtige beurtorde-rye',
+        unusedMarkers: 'Ongebruikte merkers',
+      },
+      apply: {
+        turnAppended:
+          'Teiken was nie in die beurtorde nie; toestandry is aangeheg.',
+        turnInserted: 'Toestandry ingevoeg onder die teikentoken.',
+      },
+    },
+    handout: {
+      versionLabel: 'Weergawe',
+      subtitle: 'D&D 5e Statuseffek-bestuurder',
+      footerNote:
+        'Hierdie handout word outomaties geskep en bygewerk elke keer as die skrip laai.',
+      overview: {
+        heading: 'Oorsig',
+        body: "Condition Tracker bestuur D&D 5e-statustoestande en aangepaste effekte as geëtiketteerde rye in die Roll20 Beurtopvolger. Pas toestande toe op tokens, volg duurtes op inisiatieford en verwyder verstekde effekte outomaties wanneer 'n beurt eindig. Alle opdragte is slegs vir die GM en kan vanuit die klets of via die geïnstalleerde makros uitgevoer word.",
+      },
+      quickStart: {
+        heading: 'Vinnige Begin',
+        colCommand: 'Opdrag',
+        colDesc: 'Beskrywing',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Stap-vir-stap towenaar — kies toestand, tokens en duur interaktief. Ook beskikbaar as die ConditionTrackerWizard-makro.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Pas een toestand gelyktydig op verskeie tokens toe. Ook beskikbaar as die ConditionTrackerMultiTarget-makro.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Maak die hoofbestuurskieslys oop met knoppies om toestande toe te pas, te hersien of te verwyder.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Opdragreferensie',
+        colFlag: 'Vlag',
+        colDesc: 'Beskrywing',
+        rows: [
+          ['--prompt', 'Interaktiewe stap-vir-stap towenaar-koppelvlak'],
+          [
+            '--multi-target',
+            "Pas 'n toestand op verskeie teikentoken gelyktydig toe",
+          ],
+          [
+            '--menu',
+            'Wys hoofkieslys (voeg remove by vir verwyderingskieslys)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            "Pas 'n toestand direk toe sonder die towenaar",
+          ],
+          [
+            '--duration &lt;waarde&gt;',
+            "Duur vir 'n direkte toepassing (bv. 2 rounds)",
+          ],
+          [
+            '--other &lt;teks&gt;',
+            'Aangepaste teks vir Towerspreuk / Vermoë / Ander effektipes',
+          ],
+          [
+            '--remove &lt;toestand-ID&gt;',
+            "Verwyder 'n spesifieke toestand met sy unieke ID",
+          ],
+          [
+            '--config &lt;opsie&gt; &lt;waarde&gt;',
+            'Pas konfigurasie-instellings aan (sien Konfigurasie-afdeling hieronder)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Oorskryf subjectPromptBypass slegs vir hierdie opdrag (ondersteun ook --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Versoen toestand — verwyder weesagtige toestande en beurtorde-rye',
+          ],
+          [
+            '--reorder-conditions',
+            'Verskuif toestandrye handmatig agter hul aangewese tokens in die beurtorde',
+          ],
+          ['--reinstall-macro', 'Herskep of dateer GM-makros op'],
+          [
+            '--reinstall-handout',
+            'Herskep of dateer die gelokaliseerde hulp-handout op',
+          ],
+          [
+            '--lang &lt;lokaal&gt;',
+            "Gee hierdie opdrag se boodskappe in 'n bykomende lokaal uit (tweetalige modus)",
+          ],
+          ['--help', "Wys 'n kort hulpkaart in die klets"],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standaard Toestande (D&amp;D 5e)',
+        colCondition: 'Toestand',
+      },
+      customEffects: {
+        heading: 'Aangepaste Effektipes',
+        colType: 'Tipe',
+        colNotes: 'Notas',
+        rows: [
+          [
+            '🔮 Towerspreuk',
+            "Volg 'n benoemde towerspreukeffek — jy sal gevra word vir die spreukse naam",
+          ],
+          [
+            '🎯 Vermoë',
+            "Volg 'n benoemde klas- of rasvermoë — jy sal gevra word vir die naam",
+          ],
+          [
+            '🍀 Voordeel',
+            "Teken voordeel op van een token na 'n ander; gegroepeer met die bron in inisiatief",
+          ],
+          [
+            '⬇️ Nadeel',
+            'Teken opgelegde nadeel op; gegroepeer met die bron in inisiatief',
+          ],
+          [
+            '📝 Ander',
+            "Vryvorm aangepaste etiket — jy sal gevra word vir 'n beskrywing",
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Duuropsies',
+        intro:
+          'Die oorblywende telling word in die pr-kolom van die Beurtopvolger gewys en verminder wanneer die ankerteken se beurt eindig.',
+        colOption: 'Opsie',
+        colBehaviour: 'Gedrag',
+        rows: [
+          [
+            'Tot verwydering',
+            'Permanent — moet handmatig verwyder word via die kieslys of --remove',
+          ],
+          [
+            'Einde van teiken se volgende beurt',
+            'Verval wanneer die teikentoken se volgende beurt in inisiatief eindig',
+          ],
+          [
+            'Einde van bron se volgende beurt',
+            'Verval wanneer die bron-token se volgende beurt in inisiatief eindig',
+          ],
+          [
+            '1 / 2 / 3 / 10 rondtes',
+            'Vaste aftelrekening; een vermindering per ankerteken-beurt-einde',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Konfigurasie',
+        intro:
+          'Gebruik !condition-tracker --config &lt;opsie&gt; &lt;waarde&gt; of die Konfigurasie-knoppie in die hoofkieslys.',
+        colOption: 'Opsie',
+        colValues: 'Waardes',
+        colDesc: 'Beskrywing',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            "Pas Roll20-statusmerkers op tokens toe wanneer 'n toestand bygevoeg word",
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Wys kort ikonskodes (bv. [G]) in plaas van emoji in Beurtopvolger-rye',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Slaan die opsionele onderwerp-tokenstap oor vir Towerspreuk / Vermoë / Ander effekte',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Tokenstaaf om te monitor; wanneer dit op 0 daal, word die GM gevra om toestande op te ruim',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Uitvoertaal vir kletsberoepe en die hulp-handout',
+          ],
+          [
+            'marker',
+            '&lt;Toestand&gt;=&lt;merkernaam&gt;',
+            "Oorskryf die statusmerker wat gebruik word vir 'n spesifieke toestand (bv. marker Grappled=grab)",
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Verstek Statusmerkers',
+        colCondition: 'Toestand',
+        colMarker: 'Merkernaam',
+      },
+      availableLocales: {
+        heading: 'Beskikbare Vertalings',
+        intro:
+          "Gebruik die taal-konfigurasie-opsie om kletsberoepe en die hulp-handout op 'n ondersteunde lokaal in te stel. Kort aliasse word ook aanvaar vir en, zh en pt.",
+        colLocale: 'Locale',
+        colLanguage: 'Taal',
+        colFile: 'Vertaallêer',
       },
     },
   };
@@ -668,28 +1065,431 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} afectat per {effect} ({source})',
+        advantage: '{emoji} {source} té avantatge contra {target}{subject}',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source} té desavantatge contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} per {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} aplica {effect} a {target}.',
+        advantage: '{source} té avantatge contra {target}{subject}.',
+        disadvantage: '{source} té desavantatge contra {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+        custom: '{target} ja no està afectat per {effect}.',
+        advantage: '{source} ja no té avantatge contra {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} ja no té desavantatge contra {target}{subject}.',
+        noBy: '{target} ja no {past}.',
+        standard: '{target} ja no està {past} per {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Selecciona una condició',
+        selectSource: 'Selecciona el testimoni origen',
+        selectTarget: 'Selecciona el testimoni destinatari',
+        selectSubject: 'Selecciona el subjecte',
+        selectDuration: 'Selecciona la durada',
+        confirmTargetTitle: 'Confirma la llista de destinataris',
+        applyEffectTitle: "Aplica l'efecte {condition}",
+        noTokens: "No s'han trobat testimonis amb nom a la pàgina activa.",
+        confirmIntro: 'Els testimonis següents rebran la condició:',
+        confirmBtn: 'Confirma la llista de destinataris',
+        enterDetails: "Introdueix els detalls de l'efecte",
+        noneBtn: 'Cap',
+        subjectDesc: "Selecciona qui o què aplica l'efecte.",
+        sourceDesc:
+          "Selecciona la criatura que crea o genera la condició o l'efecte.",
+        targetDesc: "Selecciona la criatura que rebrà la condició o l'efecte.",
+        otherText: 'Text de condició personalitzat',
+        effectDetails: 'Detalls de {condition}',
+      },
+      col: {
+        players: 'Jugadors',
+        npcs: 'PNJ',
+        conditions: 'Condicions',
+        customEffects: 'Efectes personalitzats',
+        permanentTurnEnd: 'Permanent / Fi de torn',
+        rounds: 'Rondes',
+        command: 'Ordre',
+        result: 'Resultat',
+        field: 'Camp',
+        value: 'Valor',
+        option: 'Opció',
+        condition: 'Condició',
+        marker: 'Marcador',
+        item: 'Element',
+        removed: 'Eliminat',
+        details: 'Detalls',
+        description: 'Descripció',
+        scenario: 'Escenari',
+      },
+      dur: {
+        untilRemoved: "Fins que s'elimini",
+        endOfTargetTurn: 'Fi del proper torn del destinatari',
+        endOfSourceTurn: "Fi del proper torn de l'origen",
+        round1: '1 ronda',
+        round2: '2 rondes',
+        round3: '3 rondes',
+        round10: '10 rondes',
+        custom: 'Personalitzat',
+        customPrompt: 'Nombre de rondes',
+        untilRemovedDisplay: "Fins que s'elimini",
+        turnsRemaining: '{n} fi(ns) de torn restant(s)',
+      },
+      btn: {
+        openWizard: "Obre l'assistent",
+        openMultiTarget: "Obre l'assistent multi-destinatari",
+        openRemovalList: "Obre la llista d'eliminació",
+        showConfig: 'Mostra la configuració',
+        runCleanup: 'Executa la neteja',
+        reinstallMacro: 'Reinstal·la la macro',
+        reinstallHandout: 'Reinstal·la el fullet',
+        showHelp: "Mostra l'ajuda",
+        reorderConditions: 'Reordena les files de condicions',
+      },
+      title: {
+        menu: 'Menú',
+        removalMenu: 'Eliminació — Condition Tracker',
+        config: 'Configuració',
+        configTracker: 'Configuració — Condition Tracker',
+        help: 'Ajuda',
+        applied: 'Aplicat',
+        removed: 'Condició eliminada',
+        cleanup: 'Neteja completada',
+        macroReinstalled: 'Macro reinstal·lada',
+        handoutReinstalled: 'Fullet reinstal·lat',
+        warning: 'Avís',
+        error: 'Error',
+        turnOrder: "Ordre d'iniciativa",
+        noConditions: 'Sense condicions',
+        tokenMoved: 'Testimoni mogut',
+        markedDead: 'Marcat com a mort',
+        zeroHp: '{name} — 0 PV',
+        moveToken: '{name} — Mou el testimoni?',
+        scriptReady: 'Script llest',
+        conditionReorder: 'Ordre de torn modificat',
+      },
+      heading: {
+        quickActions: 'Accions ràpides',
+        settings: 'Paràmetres',
+        markerMappings: 'Correspondències dels marcadors',
+        result: 'Resultat',
+        info: 'Informació',
+        commandOptions: "Opcions d'ordre",
+        promptUi: "Interfície de l'assistent",
+        examples: 'Exemples',
+        summary: 'Resum',
+      },
+      msg: {
+        noActive: 'No hi ha cap condició activa en seguiment.',
+        configReset: 'Configuració restablerta als valors predeterminats.',
+        unknownConfig:
+          'Opció de configuració desconeguda. Usa --config per veure els paràmetres disponibles.',
+        macroReinstalled:
+          "Les macros {wizard} i {multiTarget} s'han reinstal·lat per a tots els MJ actius.",
+        handoutReinstalled: "El fullet d'ajuda {handout} s'ha reinstal·lat.",
+        duplicate:
+          "Aquesta combinació d'origen, subjecte, destinatari, condició i text personalitzat ja és activa.",
+        noTargets:
+          "No s'ha especificat cap testimoni destinatari per a l'aplicació multi-destinatari.",
+        noSelection:
+          "Selecciona almenys un testimoni al tauler abans d'usar --multi-target.",
+        invalidIds:
+          "No s'han trobat identificadors de testimoni vàlids a la selecció actual.",
+        reSelectTokens:
+          "No s'ha pogut trobar cap dels testimonis seleccionats originalment. Torna a seleccionar els testimonis i intenta-ho de nou.",
+        conditionNotFound: "No s'ha trobat l'identificador de condició.",
+        gmOnly: 'Les ordres de Condition Tracker són exclusives del MJ.',
+        commandFailed:
+          "L'ordre no s'ha pogut completar de manera segura. Comprova la consola de l'API per obtenir detalls.",
+        sourceTokenNotFound: "No s'ha trobat el testimoni origen.",
+        targetTokenNotFound: "No s'ha trobat el testimoni destinatari.",
+        subjectTokenNotFound: "No s'ha trobat el testimoni subjecte.",
+        invalidCondition:
+          'La condició ha de ser una de les condicions predefinides o Altres.',
+        subjectOnlyCustom:
+          '--subject només és vàlid per a Encanteri, Habilitat, Avantatge, Desavantatge i Altres.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass espera true o false quan es proporciona un valor.',
+        customDetailsRequired:
+          'Es requereixen detalls de {condition}. Usa --other per proporcionar-los.',
+        markerConfigFormat:
+          'El format de configuració del marcador és: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'La configuració del marcador requereix un nom de condició predefinit.',
+        markerNameRequired:
+          'La configuració del marcador requereix un nom de marcador no buit.',
+        markerSet: "El marcador de {condition} s'ha establert a {marker}.",
+        healthBarSet: "La barra de salut s'ha establert a {bar}.",
+        boolSet: "{key} s'ha establert a {value}.",
+        expectedBoolean: "S'esperava true o false.",
+        invalidHealthBar:
+          'La barra de salut ha de ser bar1_value, bar2_value o bar3_value.',
+        markersDisabled: 'Els marcadors estan desactivats.',
+        noMarkerConfigured:
+          'No hi ha cap marcador configurat per a aquesta condició.',
+        markerApplied: 'Marcador aplicat: {marker}',
+        markerPresent: 'Marcador ja present: {marker}',
+        langSet: 'Idioma establert a {locale}.',
+        invalidLocale:
+          'Configuració regional no vàlida. Configuracions regionals admeses: {locales}.',
+        otherDurationRequiresRounds:
+          'La durada Altre requereix un nombre de rondes, per exemple --duration 5 rounds.',
+        invalidDuration:
+          "La durada ha de ser Fins que s'elimini, una opció de fi de torn o un nombre de rondes positiu.",
+        zeroHpNoConditions:
+          '{name} ha arribat a 0 PV i no té cap condició activa.',
+        zeroHpConditions:
+          '{name} ha arribat a 0 PV. Tria les condicions a eliminar:',
+        removeAllBtn: 'Elimina totes les condicions de {name}',
+        markIncapacitated: 'Marca com a Incapacitat',
+        removeFromTurnOrder: "Elimina de l'ordre d'iniciativa",
+        alreadyIncapacitated: '{name} ja és Incapacitat.',
+        tokenRemovedFromTurn: "{name} s'ha eliminat de l'ordre d'iniciativa.",
+        tokenNotInTurn: "No s'ha trobat {name} a l'ordre d'iniciativa.",
+        moveTokenPrompt:
+          'Mou {name} al calque del mapa perquè romangui visible sense interferir amb altres testimonis?',
+        moveTokenBtn: 'Mou {name} al calque del mapa',
+        tokenMoved: "{name} s'ha mogut al calque del mapa.",
+        tokenNotFound: "No s'ha trobat el testimoni.",
+        noActiveConditions: '{name} no té cap condició activa a eliminar.',
+        deadNoConditions:
+          "{name} s'ha marcat com a mort. No hi havia cap condició activa.",
+        scriptReady: '{name} és actiu i estàs usant la versió {version}.',
+        reachedZeroHp: '{name} ha arribat a 0 PV',
+        manuallyRemoved: "s'ha eliminat manualment",
+        durationExpired: 'la seva durada ha expirat',
+        markedAsDead: "{name} s'ha marcat com a mort",
+        conditionReorder:
+          "L'ordre de torn ha canviat i {count} fila(es) de condició seguida(es) pot estar fora de lloc. Fes clic a continuació per restaurar-les després dels seus testimonis assignats.",
+        conditionsReordered:
+          "Les files de condicions s'han reposicionat després dels seus testimonis assignats.",
+      },
+      removal: {
+        conditionField: 'Condició',
+        reasonField: 'Motiu',
+        turnRowField: 'Fila del registre de torns',
+        markerField: 'Marcador',
+        notConfigured: 'No configurat',
+        markerRemoved: 'Eliminat ({marker})',
+        markerRetained: 'Conservat ({marker})',
+        rowRemoved: 'Eliminat',
+        rowMissing: 'Ja absent',
+        manualReason: 'Eliminació manual',
+      },
+      cleanup: {
+        orphaned: 'Entrades de condició òrfenes',
+        stale: 'Entrades de condició obsoletes',
+        orphanedRows: 'Files del registre de torns òrfenes',
+        unusedMarkers: 'Marcadors no usats',
+      },
+      apply: {
+        turnAppended:
+          "El destinatari no era a l'ordre d'iniciativa; la fila de condició s'ha afegit al final.",
+        turnInserted:
+          'Fila de condició inserida sota el testimoni destinatari.',
+      },
+    },
+    handout: {
+      versionLabel: 'Versió',
+      subtitle: "Gestor d'estats de D&D 5e",
+      footerNote:
+        "Aquest fullet es crea i s'actualitza automàticament cada vegada que es carrega el script.",
+      overview: {
+        heading: 'Visió general',
+        body: "Condition Tracker gestiona les condicions d'estat de D&D 5e i els efectes personalitzats com a files etiquetades al registre de torns de Roll20. Aplica condicions als testimonis, fes un seguiment de les durades per ordre d'iniciativa i elimina automàticament els efectes expirats quan acaba un torn. Totes les ordres són exclusives del MJ i es poden executar des del xat o mitjançant les macros instal·lades.",
+      },
+      quickStart: {
+        heading: 'Inici ràpid',
+        colCommand: 'Ordre',
+        colDesc: 'Descripció',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Assistent pas a pas — tria la condició, els testimonis i la durada de manera interactiva. També disponible com a macro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Aplica una condició a diversos testimonis simultàniament. També disponible com a macro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Obre el menú principal de gestió amb botons per aplicar, revisar o eliminar condicions.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: "Referència d'ordres",
+        colFlag: 'Opció',
+        colDesc: 'Descripció',
+        rows: [
+          ['--prompt', "Interfície de l'assistent pas a pas"],
+          [
+            '--multi-target',
+            'Aplica una condició a diversos testimonis destinataris alhora',
+          ],
+          [
+            '--menu',
+            "Mostra el menú principal (afegeix remove per al menú d'eliminació)",
+          ],
+          [
+            '--source X --target Y --condition Z',
+            "Aplica una condició directament sense l'assistent",
+          ],
+          [
+            '--duration &lt;valor&gt;',
+            'Durada per a una aplicació directa (p. ex. 2 rounds)',
+          ],
+          [
+            '--other &lt;text&gt;',
+            "Text personalitzat per als tipus d'efecte Encanteri / Habilitat / Altres",
+          ],
+          [
+            '--remove &lt;id-condició&gt;',
+            'Elimina una condició específica pel seu identificador únic',
+          ],
+          [
+            '--config &lt;opció&gt; &lt;valor&gt;',
+            'Ajusta els paràmetres de configuració (vegeu la secció Configuració)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Substitueix subjectPromptBypass per a aquesta ordre únicament (també admet --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            "Reconcilia l'estat — elimina les condicions i files del registre de torns òrfenes",
+          ],
+          [
+            '--reorder-conditions',
+            "Reposiciona manualment les files de condicions darrere dels seus tokens assignats a l'ordre de torns",
+          ],
+          ['--reinstall-macro', 'Torna a crear o actualitza les macros del MJ'],
+          [
+            '--reinstall-handout',
+            "Torna a crear o actualitza el fullet d'ajuda localitzat",
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            "Mostra els missatges d'aquesta ordre en una configuració regional addicional (mode bilingüe)",
+          ],
+          ['--help', "Mostra una targeta d'ajuda breu al xat"],
+        ],
+      },
+      standardConditions: {
+        heading: 'Condicions estàndard (D&amp;D 5e)',
+        colCondition: 'Condició',
+      },
+      customEffects: {
+        heading: "Tipus d'efectes personalitzats",
+        colType: 'Tipus',
+        colNotes: 'Notes',
+        rows: [
+          [
+            '🔮 Encanteri',
+            "Segueix un efecte d'encanteri amb nom — se't demanarà el nom de l'encanteri",
+          ],
+          [
+            '🎯 Habilitat',
+            "Segueix una habilitat de classe o raça amb nom — se't demanarà el nom",
+          ],
+          [
+            '🍀 Avantatge',
+            "Registra un avantatge atorgat d'un testimoni a un altre; agrupat amb l'origen a la iniciativa",
+          ],
+          [
+            '⬇️ Desavantatge',
+            "Registra un desavantatge imposat; agrupat amb l'origen a la iniciativa",
+          ],
+          [
+            '📝 Altres',
+            "Etiqueta personalitzada de forma lliure — se't demanarà una descripció",
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Opcions de durada',
+        intro:
+          'El recompte restant es mostra a la columna pr del registre de torns i disminueix quan acaba el torn del testimoni ancla.',
+        colOption: 'Opció',
+        colBehaviour: 'Comportament',
+        rows: [
+          [
+            "Fins que s'elimini",
+            "Permanent — s'ha d'eliminar manualment mitjançant el menú o --remove",
+          ],
+          [
+            'Fi del proper torn del destinatari',
+            'Expira quan acaba el proper torn del testimoni destinatari a la iniciativa',
+          ],
+          [
+            "Fi del proper torn de l'origen",
+            'Expira quan acaba el proper torn del testimoni origen a la iniciativa',
+          ],
+          [
+            '1 / 2 / 3 / 10 rondes',
+            'Compte enrere fix; un decrement per fi de torn del testimoni ancla',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Configuració',
+        intro:
+          'Usa !condition-tracker --config &lt;opció&gt; &lt;valor&gt; o el botó Configuració del menú principal.',
+        colOption: 'Opció',
+        colValues: 'Valors',
+        colDesc: 'Descripció',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            "Aplica marcadors d'estat de Roll20 als testimonis quan s'afegeix una condició",
+          ],
+          [
+            'useIcons',
+            'true / false',
+            "Mostra codis d'icona curts (p. ex. [G]) en lloc d'emojis a les files del registre de torns",
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Omet el pas del testimoni subjecte opcional per als efectes Encanteri / Habilitat / Altres',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Barra del testimoni a vigilar; quan arriba a 0 el MJ rep un avís per netejar les condicions',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            "Idioma dels missatges del xat i del fullet d'ajuda",
+          ],
+          [
+            'marker',
+            '&lt;Condició&gt;=&lt;nom del marcador&gt;',
+            "Substitueix el marcador d'estat usat per a una condició específica (p. ex. marker Grappled=grab)",
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: "Marcadors d'estat predeterminats",
+        colCondition: 'Condició',
+        colMarker: 'Nom del marcador',
+      },
+      availableLocales: {
+        heading: 'Traduccions disponibles',
+        intro:
+          "Usa l'opció de configuració language per establir els missatges del xat i el fullet d'ajuda en qualsevol configuració regional admesa. Els àlies curts també s'accepten per a en, zh i pt.",
+        colLocale: 'Locale',
+        colLanguage: 'Idioma',
+        colFile: 'Fitxer de traducció',
       },
     },
   };
@@ -877,6 +1677,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: '重新安裝巨集',
         reinstallHandout: '重新安裝講義',
         showHelp: '顯示說明',
+        reorderConditions: '重新排列狀態列',
       },
       title: {
         menu: '選單',
@@ -898,6 +1699,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 HP',
         moveToken: '{name} — 移動 Token？',
         scriptReady: '腳本已就緒',
+        conditionReorder: '行動順序已變更',
       },
       heading: {
         quickActions: '快速動作',
@@ -973,6 +1775,9 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: '已手動移除',
         durationExpired: '持續時間已結束',
         markedAsDead: '{name} 已標記為死亡',
+        conditionReorder:
+          '行動順序已變更，{count} 個追蹤中的狀態列可能已不在正確位置。點擊下方將其還原至指定代幣之後。',
+        conditionsReordered: '狀態列已重新排列至其指定代幣之後。',
       },
       removal: {
         conditionField: '狀態',
@@ -1048,6 +1853,10 @@ const ConditionTrackerMod = (() => {
             '僅對此指令覆寫 subjectPromptBypass（也支援 --subject-prompt-bypass）',
           ],
           ['--cleanup', '校正狀態 — 移除孤立狀態與回合追蹤列'],
+          [
+            '--reorder-conditions',
+            '手動將狀態列重新排列到輪序中其對應代幣之後',
+          ],
           ['--reinstall-macro', '重新建立或更新 GM 巨集'],
           ['--reinstall-handout', '重新建立或更新本地化說明講義'],
           ['--lang &lt;locale&gt;', '以額外語言環境輸出此指令訊息（雙語模式）'],
@@ -1266,28 +2075,418 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} ovlivněný {effect} ({source})',
+        advantage: '{emoji} {source} má výhodu proti {target}{subject}',
+        disadvantage: '{emoji} {source} má nevýhodu proti {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} od {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} uplatní {effect} na {target}.',
+        advantage: '{source} má výhodu proti {target}{subject}.',
+        disadvantage: '{source} má nevýhodu proti {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
-        disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+        custom: '{target} již není ovlivněný {effect}.',
+        advantage: '{source} již nemá výhodu proti {target}{subject}.',
+        disadvantage: '{source} již nemá nevýhodu proti {target}{subject}.',
+        noBy: '{target} již není {past}.',
+        standard: '{target} již není {past} od {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Vybrat stav',
+        selectSource: 'Vybrat zdrojový žeton',
+        selectTarget: 'Vybrat cílový žeton',
+        selectSubject: 'Vybrat subjekt',
+        selectDuration: 'Vybrat trvání',
+        confirmTargetTitle: 'Potvrdit seznam cílů',
+        applyEffectTitle: 'Uplatnit efekt {condition}',
+        noTokens:
+          'Na aktivní stránce nebyly nalezeny žádné pojmenované žetony.',
+        confirmIntro: 'Následující žetony obdrží stav:',
+        confirmBtn: 'Potvrdit seznam cílů',
+        enterDetails: 'Zadat podrobnosti efektu',
+        noneBtn: 'Žádný',
+        subjectDesc: 'Vyberte, kdo nebo co efekt způsobuje.',
+        sourceDesc: 'Vyberte bytost, která stav nebo efekt vytváří.',
+        targetDesc: 'Vyberte bytost, která stav nebo efekt obdrží.',
+        otherText: 'Vlastní text stavu',
+        effectDetails: 'Podrobnosti {condition}',
+      },
+      col: {
+        players: 'Hráči',
+        npcs: 'Nestvůry',
+        conditions: 'Stavy',
+        customEffects: 'Vlastní efekty',
+        permanentTurnEnd: 'Trvalý / Konec tahu',
+        rounds: 'Kola',
+        command: 'Příkaz',
+        result: 'Výsledek',
+        field: 'Pole',
+        value: 'Hodnota',
+        option: 'Možnost',
+        condition: 'Stav',
+        marker: 'Značka',
+        item: 'Položka',
+        removed: 'Odstraněno',
+        details: 'Podrobnosti',
+        description: 'Popis',
+        scenario: 'Scénář',
+      },
+      dur: {
+        untilRemoved: 'Do odebrání',
+        endOfTargetTurn: 'Konec příštího tahu cíle',
+        endOfSourceTurn: 'Konec příštího tahu zdroje',
+        round1: '1 kolo',
+        round2: '2 kola',
+        round3: '3 kola',
+        round10: '10 kol',
+        custom: 'Vlastní',
+        customPrompt: 'Počet kol',
+        untilRemovedDisplay: 'Do odebrání',
+        turnsRemaining: 'Zbývá {n} konec (konců) tahu',
+      },
+      btn: {
+        openWizard: 'Otevřít průvodce',
+        openMultiTarget: 'Otevřít průvodce více cílů',
+        openRemovalList: 'Otevřít seznam odebrání',
+        showConfig: 'Zobrazit konfiguraci',
+        runCleanup: 'Spustit vyčištění',
+        reinstallMacro: 'Přeinstalovat makro',
+        reinstallHandout: 'Přeinstalovat příručku',
+        showHelp: 'Zobrazit nápovědu',
+        reorderConditions: 'Přeuspořádat řádky stavů',
+      },
+      title: {
+        menu: 'Nabídka',
+        removalMenu: 'Odebrání stavů',
+        config: 'Konfigurace',
+        configTracker: 'Konfigurace Condition Trackeru',
+        help: 'Nápověda',
+        applied: 'Uplatněno',
+        removed: 'Stav odebrán',
+        cleanup: 'Vyčištění dokončeno',
+        macroReinstalled: 'Makro přeinstalováno',
+        handoutReinstalled: 'Příručka přeinstalována',
+        warning: 'Varování',
+        error: 'Chyba',
+        turnOrder: 'Pořadí tahů',
+        noConditions: 'Žádné stavy',
+        tokenMoved: 'Žeton přesunut',
+        markedDead: 'Označen jako mrtvý',
+        zeroHp: '{name} — 0 životů',
+        moveToken: '{name} — Přesunout žeton?',
+        scriptReady: 'Skript připraven',
+        conditionReorder: 'Pořadí tahů změněno',
+      },
+      heading: {
+        quickActions: 'Rychlé akce',
+        settings: 'Nastavení',
+        markerMappings: 'Mapování značek',
+        result: 'Výsledek',
+        info: 'Informace',
+        commandOptions: 'Možnosti příkazů',
+        promptUi: 'Rozhraní průvodce',
+        examples: 'Příklady',
+        summary: 'Souhrn',
+      },
+      msg: {
+        noActive: 'Nejsou sledovány žádné aktivní stavy.',
+        configReset: 'Konfigurace obnovena na výchozí hodnoty modulu.',
+        unknownConfig:
+          'Neznámá možnost konfigurace. Použijte --config pro zobrazení podporovaných nastavení.',
+        macroReinstalled:
+          'Makra {wizard} a {multiTarget} byla přeinstalována pro všechny aktuální hráče s GM rolí.',
+        handoutReinstalled: 'Pomocná příručka {handout} byla přeinstalována.',
+        duplicate:
+          'Tato přesná kombinace zdroje, subjektu, cíle, stavu a vlastního textu je již aktivní.',
+        noTargets: 'Pro hromadné uplatnění nebyly zadány žádné cílové žetony.',
+        noSelection:
+          'Před použitím --multi-target vyberte alespoň jeden žeton na hrací ploše.',
+        invalidIds:
+          'V aktuálním výběru nebyla nalezena žádná platná ID žetonů.',
+        reSelectTokens:
+          'Žádný z původně vybraných žetonů nebylo možné nalézt. Vyberte žetony znovu a zkuste to znovu.',
+        conditionNotFound: 'ID stavu nebylo nalezeno.',
+        gmOnly: 'Příkazy Condition Trackeru jsou určeny pouze pro GM.',
+        commandFailed:
+          'Příkaz nebylo možné bezpečně dokončit. Zkontrolujte konzoli API.',
+        sourceTokenNotFound: 'Zdrojový žeton nebylo možné nalézt.',
+        targetTokenNotFound: 'Cílový žeton nebylo možné nalézt.',
+        subjectTokenNotFound: 'Žeton subjektu nebylo možné nalézt.',
+        invalidCondition:
+          'Stav musí být jedním z předdefinovaných stavů nebo Jiné.',
+        subjectOnlyCustom:
+          '--subject je platný pouze pro Kouzlo, Schopnost, Výhodu, Nevýhodu a Jiné.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass očekává true nebo false, pokud je zadána hodnota.',
+        customDetailsRequired:
+          'Podrobnosti {condition} jsou povinné. Použijte --other pro jejich zadání.',
+        markerConfigFormat:
+          'Formát konfigurace značky: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Konfigurace značky vyžaduje předdefinovaný název stavu.',
+        markerNameRequired:
+          'Konfigurace značky vyžaduje neprázdný název značky.',
+        markerSet: 'Značka {condition} nastavena na {marker}.',
+        healthBarSet: 'Lišta zdraví nastavena na {bar}.',
+        boolSet: '{key} nastaveno na {value}.',
+        expectedBoolean: 'Očekáváno true nebo false.',
+        invalidHealthBar:
+          'Lišta zdraví musí být bar1_value, bar2_value nebo bar3_value.',
+        markersDisabled: 'Značky jsou zakázány.',
+        noMarkerConfigured: 'Pro tento stav není nakonfigurována žádná značka.',
+        markerApplied: 'Značka uplatněna: {marker}',
+        markerPresent: 'Značka již přítomna: {marker}',
+        langSet: 'Jazyk nastaven na {locale}.',
+        invalidLocale: 'Neplatný jazyk. Podporované jazyky: {locales}.',
+        otherDurationRequiresRounds:
+          'Jiné trvání vyžaduje číselný počet kol, například --duration 5 rounds.',
+        invalidDuration:
+          'Trvání musí být Do odebrání, možnost konce tahu nebo kladný počet kol.',
+        zeroHpNoConditions:
+          '{name} dosáhl 0 životů a nemá žádné aktivní stavy.',
+        zeroHpConditions: '{name} dosáhl 0 životů. Vyberte stavy k odebrání:',
+        removeAllBtn: 'Odebrat všechny stavy pro {name}',
+        markIncapacitated: 'Označit jako vyřazeného',
+        removeFromTurnOrder: 'Odebrat z pořadí tahů',
+        alreadyIncapacitated: '{name} je již vyřazený.',
+        tokenRemovedFromTurn: '{name} byl odebrán z pořadí tahů.',
+        tokenNotInTurn: '{name} nebyl nalezen v pořadí tahů.',
+        moveTokenPrompt:
+          'Přesunout {name} na vrstvu mapy, aby zůstal viditelný, ale nerušil ostatní žetony?',
+        moveTokenBtn: 'Přesunout {name} na vrstvu mapy',
+        tokenMoved: '{name} byl přesunut na vrstvu mapy.',
+        tokenNotFound: 'Žeton nenalezen.',
+        noActiveConditions: '{name} nemá žádné aktivní stavy k odebrání.',
+        deadNoConditions:
+          '{name} byl označen jako mrtvý. Nebyly aktivní žádné stavy.',
+        scriptReady: '{name} je aktivní a používáte verzi {version}.',
+        reachedZeroHp: '{name} dosáhl 0 životů',
+        manuallyRemoved: 'bylo ručně odebráno',
+        durationExpired: 'trvání vypršelo',
+        markedAsDead: '{name} byl označen jako mrtvý',
+        conditionReorder:
+          'Pořadí tahů se změnilo a {count} sledovaný (sledovaných) řádek stavů může být mimo pořadí. Klikněte níže pro jejich obnovení za přiřazené žetony.',
+        conditionsReordered:
+          'Řádky stavů byly přesunuty za jejich přiřazené žetony.',
+      },
+      removal: {
+        conditionField: 'Stav',
+        reasonField: 'Důvod',
+        turnRowField: 'Řádek sledování tahů',
+        markerField: 'Značka',
+        notConfigured: 'Nenakonfigurováno',
+        markerRemoved: 'Odebráno ({marker})',
+        markerRetained: 'Zachováno ({marker})',
+        rowRemoved: 'Odebráno',
+        rowMissing: 'Již chybí',
+        manualReason: 'Ruční odebrání',
+      },
+      cleanup: {
+        orphaned: 'Osiřelé záznamy stavů',
+        stale: 'Zastaralé záznamy stavů',
+        orphanedRows: 'Osiřelé řádky sledování tahů',
+        unusedMarkers: 'Nepoužívané značky',
+      },
+      apply: {
+        turnAppended:
+          'Cíl nebyl v pořadí tahů; řádek stavu byl připojen na konec.',
+        turnInserted: 'Řádek stavu vložen pod žeton cíle.',
+      },
+    },
+    handout: {
+      versionLabel: 'Verze',
+      subtitle: 'Správce stavových efektů pro D&D 5e',
+      footerNote:
+        'Tato příručka je automaticky vytvářena a aktualizována při každém načtení skriptu.',
+      overview: {
+        heading: 'Přehled',
+        body: 'Condition Tracker spravuje stavy D&D 5e a vlastní efekty jako pojmenované řádky ve sledovači tahů Roll20. Uplatňujte stavy na žetony, sledujte doby trvání podle iniciativního pořadí a automaticky odstraňujte vypršelé efekty na konci tahu. Všechny příkazy jsou určeny pouze pro GM a lze je spouštět z chatu nebo prostřednictvím nainstalovaných maker.',
+      },
+      quickStart: {
+        heading: 'Rychlý start',
+        colCommand: 'Příkaz',
+        colDesc: 'Popis',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Průvodce krok za krokem — interaktivně vyberte stav, žetony a dobu trvání. Dostupné také jako makro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Uplatnit jeden stav na více žetonů současně. Dostupné také jako makro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Otevřít hlavní nabídku správy s tlačítky pro uplatnění, prohlížení nebo odebrání stavů.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Přehled příkazů',
+        colFlag: 'Přepínač',
+        colDesc: 'Popis',
+        rows: [
+          ['--prompt', 'Interaktivní průvodce krok za krokem'],
+          ['--multi-target', 'Uplatnit stav na více cílových žetonů najednou'],
+          [
+            '--menu',
+            'Zobrazit hlavní nabídku (přidat remove pro nabídku odebrání)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Uplatnit stav přímo bez průvodce',
+          ],
+          [
+            '--duration &lt;hodnota&gt;',
+            'Trvání pro přímé uplatnění (např. 2 rounds)',
+          ],
+          [
+            '--other &lt;text&gt;',
+            'Vlastní text pro typy efektů Kouzlo / Schopnost / Jiné',
+          ],
+          [
+            '--remove &lt;ID stavu&gt;',
+            'Odebrat konkrétní stav podle jeho jedinečného ID',
+          ],
+          [
+            '--config &lt;možnost&gt; &lt;hodnota&gt;',
+            'Upravit nastavení konfigurace (viz sekce Konfigurace níže)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Přepsat subjectPromptBypass pouze pro tento příkaz (podporuje také --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Sladit stav — odebrat osiřelé stavy a řádky sledování tahů',
+          ],
+          [
+            '--reorder-conditions',
+            'Ručně přemístit řádky podmínek za přiřazené tokeny v pořadí kol',
+          ],
+          ['--reinstall-macro', 'Znovu vytvořit nebo aktualizovat makra GM'],
+          [
+            '--reinstall-handout',
+            'Znovu vytvořit nebo aktualizovat lokalizovanou pomocnou příručku',
+          ],
+          [
+            '--lang &lt;jazyk&gt;',
+            'Výstup zpráv tohoto příkazu v dalším jazyce (dvojjazyčný režim)',
+          ],
+          ['--help', 'Zobrazit stručnou nápovědní kartu v chatu'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standardní stavy (D&amp;D 5e)',
+        colCondition: 'Stav',
+      },
+      customEffects: {
+        heading: 'Vlastní typy efektů',
+        colType: 'Typ',
+        colNotes: 'Poznámky',
+        rows: [
+          [
+            '🔮 Kouzlo',
+            'Sledování pojmenovaného kouzlového efektu — budete vyzváni k zadání názvu kouzla',
+          ],
+          [
+            '🎯 Schopnost',
+            'Sledování pojmenované schopnosti třídy nebo rasy — budete vyzváni k zadání názvu',
+          ],
+          [
+            '🍀 Výhoda',
+            'Zaznamenat výhodu udělenou od jednoho žetonu druhému; seskupeno se zdrojem v iniciativě',
+          ],
+          [
+            '⬇️ Nevýhoda',
+            'Zaznamenat uloženou nevýhodu; seskupeno se zdrojem v iniciativě',
+          ],
+          ['📝 Jiné', 'Volný vlastní popisek — budete vyzváni k zadání popisu'],
+        ],
+      },
+      durationOptions: {
+        heading: 'Možnosti trvání',
+        intro:
+          'Zbývající počet je zobrazen ve sloupci pr sledovače tahů a snižuje se, když skončí tah kotevního žetonu.',
+        colOption: 'Možnost',
+        colBehaviour: 'Chování',
+        rows: [
+          [
+            'Do odebrání',
+            'Trvalé — musí být odebrán ručně přes nabídku nebo --remove',
+          ],
+          [
+            'Konec příštího tahu cíle',
+            'Vyprší na konci příštího tahu cílového žetonu v iniciativě',
+          ],
+          [
+            'Konec příštího tahu zdroje',
+            'Vyprší na konci příštího tahu zdrojového žetonu v iniciativě',
+          ],
+          [
+            '1 / 2 / 3 / 10 kol',
+            'Pevný odpočet; jedno snížení za konec tahu kotevního žetonu',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Konfigurace',
+        intro:
+          'Použijte !condition-tracker --config &lt;možnost&gt; &lt;hodnota&gt; nebo tlačítko Konfigurace v hlavní nabídce.',
+        colOption: 'Možnost',
+        colValues: 'Hodnoty',
+        colDesc: 'Popis',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Uplatnit stavové značky Roll20 na žetony při přidání stavu',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Zobrazovat krátké kódy ikon (např. [G]) místo emoji v řádcích sledovače tahů',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Přeskočit volitelný krok výběru subjektu pro efekty Kouzlo / Schopnost / Jiné',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Sledovaná lišta; když klesne na 0, GM je vyzván k vyčištění stavů',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Výstupní jazyk pro chatové zprávy a pomocnou příručku',
+          ],
+          [
+            'marker',
+            '&lt;Stav&gt;=&lt;název značky&gt;',
+            'Přepsat stavovou značku použitou pro konkrétní stav (např. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Výchozí stavové značky',
+        colCondition: 'Stav',
+        colMarker: 'Název značky',
+      },
+      availableLocales: {
+        heading: 'Dostupné překlady',
+        intro:
+          'Použijte možnost konfigurace jazyka k nastavení chatových zpráv a pomocné příručky na jakýkoliv podporovaný jazyk. Pro en, zh a pt jsou také přijímány krátké aliasy.',
+        colLocale: 'Locale',
+        colLanguage: 'Jazyk',
+        colFile: 'Soubor překladu',
       },
     },
   };
@@ -1391,28 +2590,420 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} påvirket af {effect} ({source})',
+        advantage: '{emoji} {source} har fordel mod {target}{subject}',
+        disadvantage: '{emoji} {source} har ulempe mod {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} af {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} påfører {effect} på {target}.',
+        advantage: '{source} har fordel mod {target}{subject}.',
+        disadvantage: '{source} har ulempe mod {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
-        disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+        custom: '{target} er ikke længere påvirket af {effect}.',
+        advantage: '{source} har ikke længere fordel mod {target}{subject}.',
+        disadvantage: '{source} har ikke længere ulempe mod {target}{subject}.',
+        noBy: '{target} er ikke længere {past}.',
+        standard: '{target} er ikke længere {past} af {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Vælg tilstand',
+        selectSource: 'Vælg kildetoken',
+        selectTarget: 'Vælg måltoken',
+        selectSubject: 'Vælg subjekt',
+        selectDuration: 'Vælg varighed',
+        confirmTargetTitle: 'Bekræft målliste',
+        applyEffectTitle: 'Anvend {condition}-effekt',
+        noTokens: 'Ingen navngivne tokens fundet på den aktive side.',
+        confirmIntro: 'Følgende tokens vil modtage tilstanden:',
+        confirmBtn: 'Bekræft målliste',
+        enterDetails: 'Indtast effektdetaljer',
+        noneBtn: 'Ingen',
+        subjectDesc: 'Vælg hvem eller hvad der leverer effekten.',
+        sourceDesc:
+          'Vælg den skabning, der opretter/genererer tilstanden eller effekten.',
+        targetDesc:
+          'Vælg den skabning, der vil modtage tilstanden eller effekten.',
+        otherText: 'Brugerdefineret tilstandstekst',
+        effectDetails: '{condition}-detaljer',
+      },
+      col: {
+        players: 'Spillere',
+        npcs: "NPC'er",
+        conditions: 'Tilstande',
+        customEffects: 'Brugerdefinerede effekter',
+        permanentTurnEnd: 'Permanent / Rundeslutten',
+        rounds: 'Runder',
+        command: 'Kommando',
+        result: 'Resultat',
+        field: 'Felt',
+        value: 'Værdi',
+        option: 'Indstilling',
+        condition: 'Tilstand',
+        marker: 'Markør',
+        item: 'Element',
+        removed: 'Fjernet',
+        details: 'Detaljer',
+        description: 'Beskrivelse',
+        scenario: 'Scenarie',
+      },
+      dur: {
+        untilRemoved: 'Indtil fjernet',
+        endOfTargetTurn: 'Slutningen af målets næste tur',
+        endOfSourceTurn: 'Slutningen af kildens næste tur',
+        round1: '1 runde',
+        round2: '2 runder',
+        round3: '3 runder',
+        round10: '10 runder',
+        custom: 'Brugerdefineret',
+        customPrompt: 'Antal runder',
+        untilRemovedDisplay: 'Indtil fjernet',
+        turnsRemaining: '{n} sporing(er) af turslut tilbage',
+      },
+      btn: {
+        openWizard: 'Åbn guide',
+        openMultiTarget: 'Åbn guide til flere mål',
+        openRemovalList: 'Åbn fjernelsesliste',
+        showConfig: 'Vis konfiguration',
+        runCleanup: 'Kør oprydning',
+        reinstallMacro: 'Geninstaller makro',
+        reinstallHandout: 'Geninstaller handout',
+        showHelp: 'Vis hjælp',
+        reorderConditions: 'Omarranger tilstandsrækker',
+      },
+      title: {
+        menu: 'Menu',
+        removalMenu: 'Condition Tracker — fjernelse',
+        config: 'Konfiguration',
+        configTracker: 'Condition Tracker — konfiguration',
+        help: 'Hjælp',
+        applied: 'Anvendt',
+        removed: 'Tilstand fjernet',
+        cleanup: 'Oprydning fuldført',
+        macroReinstalled: 'Makro geninstalleret',
+        handoutReinstalled: 'Handout geninstalleret',
+        warning: 'Advarsel',
+        error: 'Fejl',
+        turnOrder: 'Turrækkefølge',
+        noConditions: 'Ingen tilstande',
+        tokenMoved: 'Token flyttet',
+        markedDead: 'Markeret som død',
+        zeroHp: '{name} — 0 HP',
+        moveToken: '{name} — Flyt token?',
+        scriptReady: 'Script klar',
+        conditionReorder: 'Turrækkefølge ændret',
+      },
+      heading: {
+        quickActions: 'Hurtighandlinger',
+        settings: 'Indstillinger',
+        markerMappings: 'Markørtilknytninger',
+        result: 'Resultat',
+        info: 'Info',
+        commandOptions: 'Kommandoindstillinger',
+        promptUi: 'Guide-brugerflade',
+        examples: 'Eksempler',
+        summary: 'Oversigt',
+      },
+      msg: {
+        noActive: 'Ingen aktive tilstande spores.',
+        configReset: 'Konfiguration nulstillet til modstandarder.',
+        unknownConfig:
+          'Ukendt konfigurationsindstilling. Brug --config for at se understøttede indstillinger.',
+        macroReinstalled:
+          'Makroerne {wizard} og {multiTarget} er geninstalleret for alle nuværende GM-spillere.',
+        handoutReinstalled: 'Hjælpe-handouttet {handout} er geninstalleret.',
+        duplicate:
+          'Den præcise kombination af kilde, subjekt, mål, tilstand og brugerdefineret tekst er allerede aktiv.',
+        noTargets: 'Ingen måltoken angivet til multi-mål-anvendelse.',
+        noSelection:
+          'Vælg mindst ét token på brættet, før du bruger --multi-target.',
+        invalidIds:
+          "Ingen gyldige token-id'er fundet i den aktuelle markering.",
+        reSelectTokens:
+          'Ingen af de oprindeligt valgte tokens kunne findes. Vælg tokens igen og prøv på ny.',
+        conditionNotFound: 'Tilstands-id blev ikke fundet.',
+        gmOnly: "Condition Tracker-kommandoer er kun for GM'er.",
+        commandFailed:
+          'Kommandoen kunne ikke gennemføres sikkert. Tjek API-konsollen for detaljer.',
+        sourceTokenNotFound: 'Kildetoken kunne ikke findes.',
+        targetTokenNotFound: 'Måltoken kunne ikke findes.',
+        subjectTokenNotFound: 'Subjekttoken kunne ikke findes.',
+        invalidCondition:
+          'Tilstanden skal være en af de foruddefinerede tilstande eller Andet.',
+        subjectOnlyCustom:
+          '--subject er kun gyldigt for Besværgelse, Evne, Fordel, Ulempe og Andet.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass forventer true eller false, når en værdi angives.',
+        customDetailsRequired:
+          '{condition}-detaljer er påkrævet. Brug --other til at angive dem.',
+        markerConfigFormat:
+          'Markørkonfigurationsformat: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Markørkonfiguration kræver et foruddefineret tilstandsnavn.',
+        markerNameRequired:
+          'Markørkonfiguration kræver et ikke-tomt markørnavn.',
+        markerSet: '{condition}-markør sat til {marker}.',
+        healthBarSet: 'Helsebjælke sat til {bar}.',
+        boolSet: '{key} sat til {value}.',
+        expectedBoolean: 'Forventede true eller false.',
+        invalidHealthBar:
+          'Helsebjælken skal være bar1_value, bar2_value eller bar3_value.',
+        markersDisabled: 'Markører er deaktiverede.',
+        noMarkerConfigured: 'Ingen markør er konfigureret for denne tilstand.',
+        markerApplied: 'Markør anvendt: {marker}',
+        markerPresent: 'Markør allerede til stede: {marker}',
+        langSet: 'Sprog sat til {locale}.',
+        invalidLocale: 'Ugyldig locale. Understøttede locales: {locales}.',
+        otherDurationRequiresRounds:
+          'Anden varighed kræver et numerisk rundeantal, for eksempel --duration 5 rounds.',
+        invalidDuration:
+          'Varighed skal være Indtil fjernet, en turslut-indstilling eller et positivt rundeantal.',
+        zeroHpNoConditions:
+          '{name} har nået 0 HP og har ingen aktive tilstande.',
+        zeroHpConditions:
+          '{name} har nået 0 HP. Vælg tilstande, der skal fjernes:',
+        removeAllBtn: 'Fjern alle tilstande for {name}',
+        markIncapacitated: 'Markér som ukampdygtig',
+        removeFromTurnOrder: 'Fjern fra turrækkefølge',
+        alreadyIncapacitated: '{name} er allerede ukampdygtig.',
+        tokenRemovedFromTurn: '{name} er fjernet fra turrækkefølgen.',
+        tokenNotInTurn: '{name} blev ikke fundet i turrækkefølgen.',
+        moveTokenPrompt:
+          'Flyt {name} til kortlaget, så det forbliver synligt men ikke forstyrrer andre tokens?',
+        moveTokenBtn: 'Flyt {name} til kortlaget',
+        tokenMoved: '{name} er blevet flyttet til kortlaget.',
+        tokenNotFound: 'Token ikke fundet.',
+        noActiveConditions: '{name} har ingen aktive tilstande at fjerne.',
+        deadNoConditions:
+          '{name} blev markeret som død. Ingen tilstande var aktive.',
+        scriptReady: '{name} er aktiv, og du bruger version {version}.',
+        reachedZeroHp: '{name} nåede 0 HP',
+        manuallyRemoved: 'manuelt fjernet',
+        durationExpired: 'varighed udløbet',
+        markedAsDead: '{name} blev markeret som død',
+        conditionReorder:
+          'Turrækkefølgen ændrede sig, og {count} sporet tilstandsrække(r) kan nu være fejlplaceret. Klik nedenfor for at gendanne dem efter deres tildelte tokens.',
+        conditionsReordered:
+          'Tilstandsrækker er omplaceret efter deres tildelte tokens.',
+      },
+      removal: {
+        conditionField: 'Tilstand',
+        reasonField: 'Årsag',
+        turnRowField: 'Tursporing-række',
+        markerField: 'Markør',
+        notConfigured: 'Ikke konfigureret',
+        markerRemoved: 'Fjernet ({marker})',
+        markerRetained: 'Beholdt ({marker})',
+        rowRemoved: 'Fjernet',
+        rowMissing: 'Allerede manglende',
+        manualReason: 'Manuel fjernelse',
+      },
+      cleanup: {
+        orphaned: 'Forladte tilstandsposter',
+        stale: 'Forældede tilstandsposter',
+        orphanedRows: 'Forladte tursporing-rækker',
+        unusedMarkers: 'Ubrugte markører',
+      },
+      apply: {
+        turnAppended:
+          'Mål var ikke i turrækkefølgen; tilstandsrække tilføjet til sidst.',
+        turnInserted: 'Tilstandsrække indsat under måltoken.',
+      },
+    },
+    handout: {
+      versionLabel: 'Version',
+      subtitle: 'D&D 5e-statuseffektstyring',
+      footerNote:
+        'Dette handout oprettes og opdateres automatisk, hver gang scriptet indlæses.',
+      overview: {
+        heading: 'Oversigt',
+        body: "Condition Tracker styrer D&D 5e-statustilstande og brugerdefinerede effekter som mærkede rækker i Roll20's tursporing. Anvend tilstande på tokens, spor varigheder efter initiativrækkefølge, og fjern automatisk udløbne effekter, når en tur slutter. Alle kommandoer er kun tilgængelige for GM'en og kan udløses fra chatten eller via de installerede makroer.",
+      },
+      quickStart: {
+        heading: 'Hurtig start',
+        colCommand: 'Kommando',
+        colDesc: 'Beskrivelse',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Trin-for-trin-guide — vælg tilstand, tokens og varighed interaktivt. Også tilgængelig som makroen ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Anvend én tilstand på flere tokens samtidig. Også tilgængelig som makroen ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Åbn hovedmenuen med knapper til at anvende, gennemse eller fjerne tilstande.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Kommandoreference',
+        colFlag: 'Flag',
+        colDesc: 'Beskrivelse',
+        rows: [
+          ['--prompt', 'Interaktiv trin-for-trin-guide'],
+          ['--multi-target', 'Anvend en tilstand på flere måltoken på én gang'],
+          ['--menu', 'Vis hovedmenu (tilføj remove for fjernelsesmenu)'],
+          [
+            '--source X --target Y --condition Z',
+            'Anvend en tilstand direkte uden guiden',
+          ],
+          [
+            '--duration &lt;værdi&gt;',
+            'Varighed for direkte anvendelse (f.eks. 2 rounds)',
+          ],
+          [
+            '--other &lt;tekst&gt;',
+            'Brugerdefineret tekst til Besværgelse / Evne / Anden effekttype',
+          ],
+          [
+            '--remove &lt;tilstands-id&gt;',
+            'Fjern en bestemt tilstand via dens unikke id',
+          ],
+          [
+            '--config &lt;indstilling&gt; &lt;værdi&gt;',
+            'Juster konfigurationsindstillinger (se afsnittet Konfiguration nedenfor)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Tilsidesæt subjectPromptBypass kun for denne kommando (understøtter også --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Afstem tilstand — fjern forladte tilstande og tursporing-rækker',
+          ],
+          [
+            '--reorder-conditions',
+            'Flyt betingelsesrækker manuelt bag de tilknyttede tokens i turordenen',
+          ],
+          ['--reinstall-macro', 'Genopret eller opdater GM-makroerne'],
+          [
+            '--reinstall-handout',
+            'Genopret eller opdater det lokaliserede hjælpe-handout',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Udsend denne kommandos meddelelser på en yderligere locale (tosproget tilstand)',
+          ],
+          ['--help', 'Vis et kort hjælpekort i chatten'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standardtilstande (D&amp;D 5e)',
+        colCondition: 'Tilstand',
+      },
+      customEffects: {
+        heading: 'Brugerdefinerede effekttyper',
+        colType: 'Type',
+        colNotes: 'Noter',
+        rows: [
+          [
+            '🔮 Besværgelse',
+            'Spor en navngiven besværgelseseffekt — du vil blive bedt om besværgelsens navn',
+          ],
+          [
+            '🎯 Evne',
+            'Spor en navngiven klasse- eller raceevne — du vil blive bedt om evnens navn',
+          ],
+          [
+            '🍀 Fordel',
+            'Registrer fordel givet fra ét token til et andet; grupperet med kilden i initiativet',
+          ],
+          [
+            '⬇️ Ulempe',
+            'Registrer pålagt ulempe; grupperet med kilden i initiativet',
+          ],
+          [
+            '📝 Andet',
+            'Friform brugerdefineret etiket — du vil blive bedt om en beskrivelse',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Varighedsindstillinger',
+        intro:
+          'Det resterende antal vises i pr-kolonnen i tursporing og nedsættes, når ankertokenets tur slutter.',
+        colOption: 'Indstilling',
+        colBehaviour: 'Adfærd',
+        rows: [
+          [
+            'Indtil fjernet',
+            'Permanent — skal fjernes manuelt via menuen eller --remove',
+          ],
+          [
+            'Slutningen af målets næste tur',
+            "Udløber, når måltoken's næste tur slutter i initiativet",
+          ],
+          [
+            'Slutningen af kildens næste tur',
+            "Udløber, når kildetoken's næste tur slutter i initiativet",
+          ],
+          [
+            '1 / 2 / 3 / 10 runder',
+            'Fast nedtælling; ét trin per ankertokens turslut',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Konfiguration',
+        intro:
+          'Brug !condition-tracker --config &lt;indstilling&gt; &lt;værdi&gt; eller knappen Konfiguration i hovedmenuen.',
+        colOption: 'Indstilling',
+        colValues: 'Værdier',
+        colDesc: 'Beskrivelse',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Anvend Roll20-statusmarkører på tokens, når en tilstand tilføjes',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Vis korte ikonkoder (f.eks. [G]) i stedet for emoji i tursporing-rækker',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Spring det valgfrie subjekttrin over for Besværgelse / Evne / Andre effekter',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Tokenbjælke der overvåges; når den når 0, bliver GM bedt om at rydde op i tilstande',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Outputsprog for chatbeskeder og hjælpe-handouttet',
+          ],
+          [
+            'marker',
+            '&lt;Tilstand&gt;=&lt;markørnavn&gt;',
+            'Tilsidesæt statusmarkøren for en bestemt tilstand (f.eks. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Standardstatusmarkører',
+        colCondition: 'Tilstand',
+        colMarker: 'Markørnavn',
+      },
+      availableLocales: {
+        heading: 'Tilgængelige oversættelser',
+        intro:
+          'Brug sprogkonfigurationsindstillingen til at indstille chatbeskeder og hjælpe-handouttet til en understøttet locale. Korte aliaser accepteres også for en, zh og pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Sprog',
+        colFile: 'Oversættelsesfil',
       },
     },
   };
@@ -1516,28 +3107,426 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} beïnvloed door {effect} ({source})',
+        advantage: '{emoji} {source} heeft voordeel tegen {target}{subject}',
+        disadvantage: '{emoji} {source} heeft nadeel tegen {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} door {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} past {effect} toe op {target}.',
+        advantage: '{source} heeft voordeel tegen {target}{subject}.',
+        disadvantage: '{source} heeft nadeel tegen {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} wordt niet langer beïnvloed door {effect}.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} heeft niet langer voordeel tegen {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} heeft niet langer nadeel tegen {target}{subject}.',
+        noBy: '{target} is niet langer {past}.',
+        standard: '{target} wordt niet langer {past} door {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Kies Conditie',
+        selectSource: 'Kies Brontoken',
+        selectTarget: 'Kies Doeltoken',
+        selectSubject: 'Kies Onderwerp',
+        selectDuration: 'Kies Duur',
+        confirmTargetTitle: 'Bevestig Doellijst',
+        applyEffectTitle: 'Pas {condition}-effect toe',
+        noTokens: 'Geen benoemde tokens gevonden op de actieve pagina.',
+        confirmIntro: 'De volgende tokens ontvangen de conditie:',
+        confirmBtn: 'Bevestig doellijst',
+        enterDetails: 'Voer effectdetails in',
+        noneBtn: 'Geen',
+        subjectDesc: 'Selecteer wie of wat het effect veroorzaakt.',
+        sourceDesc:
+          'Selecteer het wezen dat de conditie of het effect creëert.',
+        targetDesc:
+          'Selecteer het wezen dat de conditie of het effect ontvangt.',
+        otherText: 'Aangepaste conditietekst',
+        effectDetails: '{condition}-details',
+      },
+      col: {
+        players: 'Spelers',
+        npcs: "NPC's",
+        conditions: 'Condities',
+        customEffects: 'Aangepaste Effecten',
+        permanentTurnEnd: 'Permanent / Beurt Einde',
+        rounds: 'Rondes',
+        command: 'Opdracht',
+        result: 'Resultaat',
+        field: 'Veld',
+        value: 'Waarde',
+        option: 'Optie',
+        condition: 'Conditie',
+        marker: 'Markering',
+        item: 'Item',
+        removed: 'Verwijderd',
+        details: 'Details',
+        description: 'Beschrijving',
+        scenario: 'Scenario',
+      },
+      dur: {
+        untilRemoved: 'Tot verwijdering',
+        endOfTargetTurn: 'Einde van de volgende beurt van het doel',
+        endOfSourceTurn: 'Einde van de volgende beurt van de bron',
+        round1: '1 ronde',
+        round2: '2 rondes',
+        round3: '3 rondes',
+        round10: '10 rondes',
+        custom: 'Aangepast',
+        customPrompt: 'Aantal rondes',
+        untilRemovedDisplay: 'Tot verwijdering',
+        turnsRemaining: '{n} bijgehouden beurteinde(s) resterend',
+      },
+      btn: {
+        openWizard: 'Open Wizard',
+        openMultiTarget: 'Open Multidoel-wizard',
+        openRemovalList: 'Open Verwijderlijst',
+        showConfig: 'Toon Configuratie',
+        runCleanup: 'Voer Opruiming Uit',
+        reinstallMacro: 'Macro Herinstalleren',
+        reinstallHandout: 'Handout Herinstalleren',
+        showHelp: 'Toon Help',
+        reorderConditions: 'Conditierijen Herordenen',
+      },
+      title: {
+        menu: 'Menu',
+        removalMenu: 'Condition Tracker — Verwijdering',
+        config: 'Configuratie',
+        configTracker: 'Condition Tracker — Configuratie',
+        help: 'Help',
+        applied: 'Toegepast',
+        removed: 'Conditie Verwijderd',
+        cleanup: 'Opruiming Voltooid',
+        macroReinstalled: 'Macro Herinstalleerd',
+        handoutReinstalled: 'Handout Herinstalleerd',
+        warning: 'Waarschuwing',
+        error: 'Fout',
+        turnOrder: 'Beurtenvolgorde',
+        noConditions: 'Geen Condities',
+        tokenMoved: 'Token Verplaatst',
+        markedDead: 'Gemarkeerd als Dood',
+        zeroHp: '{name} — 0 LP',
+        moveToken: '{name} — Token Verplaatsen?',
+        scriptReady: 'Script Gereed',
+        conditionReorder: 'Beurtenvolgorde Gewijzigd',
+      },
+      heading: {
+        quickActions: 'Snelle Acties',
+        settings: 'Instellingen',
+        markerMappings: 'Markeertoewijzingen',
+        result: 'Resultaat',
+        info: 'Informatie',
+        commandOptions: 'Opdrachtopties',
+        promptUi: 'Wizard-interface',
+        examples: 'Voorbeelden',
+        summary: 'Samenvatting',
+      },
+      msg: {
+        noActive: 'Er worden geen actieve condities bijgehouden.',
+        configReset: 'Configuratie teruggezet naar standaardwaarden.',
+        unknownConfig:
+          'Onbekende configuratieoptie. Gebruik --config om ondersteunde instellingen te bekijken.',
+        macroReinstalled:
+          "De {wizard}- en {multiTarget}-macro's zijn herinstalleerd voor alle huidige GM-spelers.",
+        handoutReinstalled: 'De help-handout {handout} is herinstalleerd.',
+        duplicate:
+          'Deze exacte combinatie van bron, onderwerp, doel, conditie en aangepaste tekst is al actief.',
+        noTargets: 'Geen doeltokens opgegeven voor multidoel-toepassing.',
+        noSelection:
+          'Selecteer ten minste één token op het bord voordat je --multi-target gebruikt.',
+        invalidIds: "Geen geldige token-ID's gevonden in de huidige selectie.",
+        reSelectTokens:
+          'Geen van de oorspronkelijk geselecteerde tokens kon worden gevonden. Selecteer tokens opnieuw en probeer het nogmaals.',
+        conditionNotFound: 'Conditie-ID niet gevonden.',
+        gmOnly: 'Condition Tracker-opdrachten zijn alleen voor de GM.',
+        commandFailed:
+          'De opdracht kon niet veilig worden voltooid. Controleer de API-console voor details.',
+        sourceTokenNotFound: 'Brontoken kon niet worden gevonden.',
+        targetTokenNotFound: 'Doeltoken kon niet worden gevonden.',
+        subjectTokenNotFound: 'Onderwerptoken kon niet worden gevonden.',
+        invalidCondition:
+          'Conditie moet een van de voorgedefinieerde condities of Overig zijn.',
+        subjectOnlyCustom:
+          '--subject is alleen geldig voor Spreuk, Vaardigheid, Voordeel, Nadeel en Overig.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass verwacht true of false wanneer een waarde wordt opgegeven.',
+        customDetailsRequired:
+          '{condition}-details zijn vereist. Gebruik --other om deze op te geven.',
+        markerConfigFormat:
+          'Markeringsconfiguratieformaat is: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Markeringsconfiguratie vereist een voorgedefinieerde conditienaam.',
+        markerNameRequired:
+          'Markeringsconfiguratie vereist een niet-lege markeringsnaam.',
+        markerSet: '{condition}-markering ingesteld op {marker}.',
+        healthBarSet: 'Gezondheidsbalk ingesteld op {bar}.',
+        boolSet: '{key} ingesteld op {value}.',
+        expectedBoolean: 'true of false verwacht.',
+        invalidHealthBar:
+          'Gezondheidsbalk moet bar1_value, bar2_value of bar3_value zijn.',
+        markersDisabled: 'Markeringen zijn uitgeschakeld.',
+        noMarkerConfigured:
+          'Er is geen markering geconfigureerd voor deze conditie.',
+        markerApplied: 'Markering toegepast: {marker}',
+        markerPresent: 'Markering al aanwezig: {marker}',
+        langSet: 'Taal ingesteld op {locale}.',
+        invalidLocale: 'Ongeldige locale. Ondersteunde locales: {locales}.',
+        otherDurationRequiresRounds:
+          'Overige duur vereist een numeriek aantal rondes, bijvoorbeeld --duration 5 rounds.',
+        invalidDuration:
+          'Duur moet Tot verwijdering, een beurteindeoptie of een positief aantal rondes zijn.',
+        zeroHpNoConditions:
+          '{name} heeft 0 LP bereikt en heeft geen actieve condities.',
+        zeroHpConditions:
+          '{name} heeft 0 LP bereikt. Kies condities om te verwijderen:',
+        removeAllBtn: 'Verwijder Alle Condities voor {name}',
+        markIncapacitated: 'Markeer als Uitgeschakeld',
+        removeFromTurnOrder: 'Verwijder uit Beurtenvolgorde',
+        alreadyIncapacitated: '{name} is al Uitgeschakeld.',
+        tokenRemovedFromTurn: '{name} is verwijderd uit de beurtenvolgorde.',
+        tokenNotInTurn: '{name} werd niet gevonden in de beurtenvolgorde.',
+        moveTokenPrompt:
+          'Verplaats {name} naar de kaartlaag zodat het zichtbaar blijft maar andere tokens niet hindert?',
+        moveTokenBtn: 'Verplaats {name} naar Kaartlaag',
+        tokenMoved: '{name} is verplaatst naar de kaartlaag.',
+        tokenNotFound: 'Token niet gevonden.',
+        noActiveConditions:
+          '{name} heeft geen actieve condities om te verwijderen.',
+        deadNoConditions:
+          '{name} is gemarkeerd als dood. Er waren geen actieve condities.',
+        scriptReady: '{name} is actief en je gebruikt versie {version}.',
+        reachedZeroHp: '{name} heeft 0 LP bereikt',
+        manuallyRemoved: 'het is handmatig verwijderd',
+        durationExpired: 'de duur is verlopen',
+        markedAsDead: '{name} is gemarkeerd als dood',
+        conditionReorder:
+          'De beurtenvolgorde is gewijzigd en {count} bijgehouden conditierij(en) staan mogelijk op de verkeerde plek. Klik hieronder om ze te herstellen na hun toegewezen tokens.',
+        conditionsReordered:
+          'Conditierijen zijn hergeplaatst na hun toegewezen tokens.',
+      },
+      removal: {
+        conditionField: 'Conditie',
+        reasonField: 'Reden',
+        turnRowField: 'Beurtenvolgorde-rij',
+        markerField: 'Markering',
+        notConfigured: 'Niet geconfigureerd',
+        markerRemoved: 'Verwijderd ({marker})',
+        markerRetained: 'Behouden ({marker})',
+        rowRemoved: 'Verwijderd',
+        rowMissing: 'Al ontbrekend',
+        manualReason: 'Handmatige verwijdering',
+      },
+      cleanup: {
+        orphaned: 'Verweesde conditie-items',
+        stale: 'Verouderde conditie-items',
+        orphanedRows: 'Verweesde beurtenvolgorde-rijen',
+        unusedMarkers: 'Ongebruikte markeringen',
+      },
+      apply: {
+        turnAppended:
+          'Doel stond niet in de beurtenvolgorde; conditierij is toegevoegd.',
+        turnInserted: 'Conditierij ingevoegd onder het doeltoken.',
+      },
+    },
+    handout: {
+      versionLabel: 'Versie',
+      subtitle: 'D&D 5e Statuseffect-beheerder',
+      footerNote:
+        'Deze handout wordt automatisch aangemaakt en bijgewerkt telkens wanneer het script wordt geladen.',
+      overview: {
+        heading: 'Overzicht',
+        body: "Condition Tracker beheert D&D 5e-statuscondities en aangepaste effecten als gelabelde rijen in de Roll20-beurtopvolger. Pas condities toe op tokens, volg duur bij aan de hand van initiatiefvolgorde, en verwijder verlopen effecten automatisch wanneer een beurt eindigt. Alle opdrachten zijn alleen voor de GM en kunnen worden geactiveerd via de chat of de geïnstalleerde macro's.",
+      },
+      quickStart: {
+        heading: 'Snel Starten',
+        colCommand: 'Opdracht',
+        colDesc: 'Beschrijving',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Stap-voor-stap wizard — kies conditie, tokens en duur interactief. Ook beschikbaar als de ConditionTrackerWizard-macro.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Pas één conditie tegelijkertijd toe op meerdere tokens. Ook beschikbaar als de ConditionTrackerMultiTarget-macro.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Open het hoofdbeheermenu met knoppen om condities toe te passen, te bekijken of te verwijderen.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Opdrachtenoverzicht',
+        colFlag: 'Vlag',
+        colDesc: 'Beschrijving',
+        rows: [
+          ['--prompt', 'Interactieve stap-voor-stap wizard-interface'],
+          [
+            '--multi-target',
+            'Pas een conditie tegelijkertijd toe op meerdere doeltokens',
+          ],
+          ['--menu', 'Toon hoofdmenu (voeg remove toe voor verwijdermenu)'],
+          [
+            '--source X --target Y --condition Z',
+            'Pas een conditie direct toe zonder de wizard',
+          ],
+          [
+            '--duration &lt;waarde&gt;',
+            'Duur voor directe toepassing (bijv. 2 rounds)',
+          ],
+          [
+            '--other &lt;tekst&gt;',
+            'Aangepaste tekst voor Spreuk / Vaardigheid / Overige effecttypen',
+          ],
+          [
+            '--remove &lt;conditie-ID&gt;',
+            'Verwijder een specifieke conditie via zijn unieke ID',
+          ],
+          [
+            '--config &lt;optie&gt; &lt;waarde&gt;',
+            'Pas configuratie-instellingen aan (zie het Configuratie-gedeelte hieronder)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Overschrijf subjectPromptBypass alleen voor deze opdracht (ondersteunt ook --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Herstel staat — verwijder verweesde condities en beurtenvolgorde-rijen',
+          ],
+          [
+            '--reorder-conditions',
+            'Conditierijen handmatig herpositioneren achter hun toegewezen tokens in de beurtvolgorde',
+          ],
+          ['--reinstall-macro', "Maak GM-macro's opnieuw aan of werk ze bij"],
+          [
+            '--reinstall-handout',
+            'Maak de gelokaliseerde help-handout opnieuw aan of werk deze bij',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Geef de berichten van deze opdracht uit in een aanvullende locale (tweetalige modus)',
+          ],
+          ['--help', 'Toon een beknopte helpkaart in de chat'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standaard Condities (D&amp;D 5e)',
+        colCondition: 'Conditie',
+      },
+      customEffects: {
+        heading: 'Aangepaste Effecttypen',
+        colType: 'Type',
+        colNotes: 'Notities',
+        rows: [
+          [
+            '🔮 Spreuk',
+            'Volg een benoemd spreukeneffect — je wordt gevraagd naar de spreuknaam',
+          ],
+          [
+            '🎯 Vaardigheid',
+            'Volg een benoemde klasse- of rasvaardigheid — je wordt gevraagd naar de naam',
+          ],
+          [
+            '🍀 Voordeel',
+            'Registreer voordeel van het ene token naar het andere; gegroepeerd bij de bron in initiatief',
+          ],
+          [
+            '⬇️ Nadeel',
+            'Registreer opgelegd nadeel; gegroepeerd bij de bron in initiatief',
+          ],
+          [
+            '📝 Overig',
+            'Vrij aangepast label — je wordt gevraagd naar een beschrijving',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Duuropties',
+        intro:
+          'Het resterende aantal wordt weergegeven in de pr-kolom van de beurtopvolger en vermindert telkens wanneer de beurt van het ankertToken eindigt.',
+        colOption: 'Optie',
+        colBehaviour: 'Gedrag',
+        rows: [
+          [
+            'Tot verwijdering',
+            'Permanent — moet handmatig worden verwijderd via het menu of --remove',
+          ],
+          [
+            'Einde van de volgende beurt van het doel',
+            'Verloopt wanneer de volgende beurt van het doeltoken eindigt in het initiatief',
+          ],
+          [
+            'Einde van de volgende beurt van de bron',
+            'Verloopt wanneer de volgende beurt van het brontoken eindigt in het initiatief',
+          ],
+          [
+            '1 / 2 / 3 / 10 rondes',
+            'Vaste aftelling; één vermindering per beurteindigng van het ankertoken',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Configuratie',
+        intro:
+          'Gebruik !condition-tracker --config &lt;optie&gt; &lt;waarde&gt; of de Configuratie-knop in het hoofdmenu.',
+        colOption: 'Optie',
+        colValues: 'Waarden',
+        colDesc: 'Beschrijving',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Pas Roll20-statusmarkeringen toe op tokens wanneer een conditie wordt toegevoegd',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Toon korte pictogramcodes (bijv. [G]) in plaats van emoji in beurtopvolger-rijen',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Sla de optionele onderwerptokenstap over voor Spreuk / Vaardigheid / Overige effecten',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Token-balk om te bewaken; wanneer deze op 0 komt, wordt de GM gevraagd condities op te ruimen',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Uitvoertaal voor chatberichten en de help-handout',
+          ],
+          [
+            'marker',
+            '&lt;Conditie&gt;=&lt;markeringsnaam&gt;',
+            'Overschrijf de statusmarkering voor een specifieke conditie (bijv. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Standaard Statusmarkeringen',
+        colCondition: 'Conditie',
+        colMarker: 'Markeringsnaam',
+      },
+      availableLocales: {
+        heading: 'Beschikbare Vertalingen',
+        intro:
+          'Gebruik de taalconfiguratieopties om chatberichten en de help-handout in te stellen op een ondersteunde locale. Korte aliassen worden ook geaccepteerd voor en, zh en pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Taal',
+        colFile: 'Vertaalbestand',
       },
     },
   };
@@ -1728,6 +3717,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: 'Reinstall Macro',
         reinstallHandout: 'Reinstall Handout',
         showHelp: 'Show Help',
+        reorderConditions: 'Reorder Condition Rows',
       },
       title: {
         menu: 'Menu',
@@ -1749,6 +3739,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 HP',
         moveToken: '{name} — Move Token?',
         scriptReady: 'Script Ready',
+        conditionReorder: 'Turn Order Changed',
       },
       heading: {
         quickActions: 'Quick Actions',
@@ -1837,6 +3828,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'it was manually removed',
         durationExpired: 'its duration expired',
         markedAsDead: '{name} was marked as dead',
+        conditionReorder:
+          'The turn order changed and {count} tracked condition row(s) may now be out of place. Click below to restore them after their assigned tokens.',
+        conditionsReordered:
+          'Condition rows have been repositioned after their assigned tokens.',
       },
       removal: {
         conditionField: 'Condition',
@@ -1928,6 +3923,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Reconcile state — remove orphaned conditions and Turn Tracker rows',
+          ],
+          [
+            '--reorder-conditions',
+            'Manually reposition condition rows after their assigned tokens in the Turn Tracker',
           ],
           ['--reinstall-macro', 'Recreate or update the GM macros'],
           [
@@ -2151,28 +4150,418 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} vaikutuksen alainen: {effect} ({source})',
+        advantage: '{emoji} {source} on etu {target}{subject} vastaan',
+        disadvantage: '{emoji} {source} on haitta {target}{subject} vastaan',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} — {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} soveltaa {effect} kohteeseen {target}.',
+        advantage: '{source} on etu {target}{subject} vastaan.',
+        disadvantage: '{source} on haitta {target}{subject} vastaan.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
-        disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+        custom: '{target} ei enää ole {effect} vaikutuksen alainen.',
+        advantage: '{source} ei enää ole etu {target}{subject} vastaan.',
+        disadvantage: '{source} ei enää ole haitta {target}{subject} vastaan.',
+        noBy: '{target} ei enää ole {past}.',
+        standard: '{target} ei enää ole {past} — {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Valitse tila',
+        selectSource: 'Valitse lähde-token',
+        selectTarget: 'Valitse kohde-token',
+        selectSubject: 'Valitse kohde',
+        selectDuration: 'Valitse kesto',
+        confirmTargetTitle: 'Vahvista kohdelista',
+        applyEffectTitle: 'Käytä {condition}-vaikutus',
+        noTokens: 'Aktiiviselta sivulta ei löydy nimettyjä tokeneita.',
+        confirmIntro: 'Seuraavat tokenit saavat tilan:',
+        confirmBtn: 'Vahvista kohdelista',
+        enterDetails: 'Syötä vaikutuksen tiedot',
+        noneBtn: 'Ei mitään',
+        subjectDesc: 'Valitse kuka tai mikä tuottaa vaikutuksen.',
+        sourceDesc:
+          'Valitse olento, joka luo tai tuottaa tilan tai vaikutuksen.',
+        targetDesc: 'Valitse olento, joka vastaanottaa tilan tai vaikutuksen.',
+        otherText: 'Mukautettu tilateksti',
+        effectDetails: '{condition}-tiedot',
+      },
+      col: {
+        players: 'Pelaajat',
+        npcs: 'HMH',
+        conditions: 'Tilat',
+        customEffects: 'Mukautetut vaikutukset',
+        permanentTurnEnd: 'Pysyvä / Vuoron loppu',
+        rounds: 'Kierrokset',
+        command: 'Komento',
+        result: 'Tulos',
+        field: 'Kenttä',
+        value: 'Arvo',
+        option: 'Asetus',
+        condition: 'Tila',
+        marker: 'Merkki',
+        item: 'Kohde',
+        removed: 'Poistettu',
+        details: 'Tiedot',
+        description: 'Kuvaus',
+        scenario: 'Tilanne',
+      },
+      dur: {
+        untilRemoved: 'Kunnes poistetaan',
+        endOfTargetTurn: 'Kohteen seuraavan vuoron lopussa',
+        endOfSourceTurn: 'Lähteen seuraavan vuoron lopussa',
+        round1: '1 kierros',
+        round2: '2 kierrosta',
+        round3: '3 kierrosta',
+        round10: '10 kierrosta',
+        custom: 'Mukautettu',
+        customPrompt: 'Kierrosten määrä',
+        untilRemovedDisplay: 'Kunnes poistetaan',
+        turnsRemaining: '{n} jäljellä olevaa vuoron loppua',
+      },
+      btn: {
+        openWizard: 'Avaa ohjattu toiminto',
+        openMultiTarget: 'Avaa monikohde-ohjattu toiminto',
+        openRemovalList: 'Avaa poistolistaus',
+        showConfig: 'Näytä asetukset',
+        runCleanup: 'Suorita siivous',
+        reinstallMacro: 'Asenna makro uudelleen',
+        reinstallHandout: 'Asenna handout uudelleen',
+        showHelp: 'Näytä ohje',
+        reorderConditions: 'Järjestä tilarivit uudelleen',
+      },
+      title: {
+        menu: 'Valikko',
+        removalMenu: 'Condition Tracker — poisto',
+        config: 'Asetukset',
+        configTracker: 'Condition Tracker — asetukset',
+        help: 'Ohje',
+        applied: 'Sovellettu',
+        removed: 'Tila poistettu',
+        cleanup: 'Siivous valmis',
+        macroReinstalled: 'Makro asennettu uudelleen',
+        handoutReinstalled: 'Handout asennettu uudelleen',
+        warning: 'Varoitus',
+        error: 'Virhe',
+        turnOrder: 'Vuorojärjestys',
+        noConditions: 'Ei tiloja',
+        tokenMoved: 'Token siirretty',
+        markedDead: 'Merkitty kuolleeksi',
+        zeroHp: '{name} — 0 HP',
+        moveToken: '{name} — siirretäänkö token?',
+        scriptReady: 'Skripti valmis',
+        conditionReorder: 'Vuorojärjestys muuttui',
+      },
+      heading: {
+        quickActions: 'Pikavalinnat',
+        settings: 'Asetukset',
+        markerMappings: 'Merkkimääritykset',
+        result: 'Tulos',
+        info: 'Tiedot',
+        commandOptions: 'Komentovaihtoehdot',
+        promptUi: 'Ohjatun toiminnon käyttöliittymä',
+        examples: 'Esimerkit',
+        summary: 'Yhteenveto',
+      },
+      msg: {
+        noActive: 'Aktiivisia tiloja ei seurata.',
+        configReset: 'Asetukset palautettu oletuksiin.',
+        unknownConfig:
+          'Tuntematon asetusvaihtoehto. Käytä --config nähdäksesi tuetut asetukset.',
+        macroReinstalled:
+          'Makrot {wizard} ja {multiTarget} on asennettu uudelleen kaikille nykyisille GM-pelaajille.',
+        handoutReinstalled: 'Ohje-handout {handout} on asennettu uudelleen.',
+        duplicate:
+          'Täsmälleen sama lähde, kohde, tila ja mukautettu teksti on jo aktiivinen.',
+        noTargets: 'Monikohdesovellukselle ei määritetty kohde-tokeneita.',
+        noSelection:
+          'Valitse vähintään yksi token laudalta ennen --multi-target-komennon käyttöä.',
+        invalidIds:
+          'Nykyisestä valinnasta ei löydy kelvollisia token-tunnuksia.',
+        reSelectTokens:
+          'Yhtään alun perin valituista tokeneista ei löydy. Valitse tokenit uudelleen ja yritä uudelleen.',
+        conditionNotFound: 'Tilatunnusta ei löydy.',
+        gmOnly: 'Condition Tracker -komennot ovat vain GM:n käytettävissä.',
+        commandFailed:
+          'Komentoa ei voitu suorittaa turvallisesti. Tarkista API-konsoli lisätietoja varten.',
+        sourceTokenNotFound: 'Lähde-tokenia ei löydy.',
+        targetTokenNotFound: 'Kohde-tokenia ei löydy.',
+        subjectTokenNotFound: 'Kohde-tokenia ei löydy.',
+        invalidCondition:
+          'Tilan on oltava jokin ennalta määritetyistä tiloista tai Muu.',
+        subjectOnlyCustom:
+          '--subject on kelvollinen vain Loitsulle, Kyvylle, Edulle, Haitalle ja Muulle.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass odottaa arvoa true tai false.',
+        customDetailsRequired:
+          '{condition}-tiedot ovat pakollisia. Käytä --other antaaksesi ne.',
+        markerConfigFormat:
+          'Merkkimäärityksen muoto: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Merkkimääritys edellyttää ennalta määritettyä tilanimeä.',
+        markerNameRequired: 'Merkkimääritys edellyttää ei-tyhjää merkin nimeä.',
+        markerSet: 'Tilan {condition} merkiksi asetettu {marker}.',
+        healthBarSet: 'Elämäpalkki asetettu: {bar}.',
+        boolSet: '{key} asetettu arvoon {value}.',
+        expectedBoolean: 'Odotettiin true tai false.',
+        invalidHealthBar:
+          'Elämäpalkin on oltava bar1_value, bar2_value tai bar3_value.',
+        markersDisabled: 'Merkit ovat poistettu käytöstä.',
+        noMarkerConfigured: 'Tälle tilalle ei ole määritetty merkkiä.',
+        markerApplied: 'Merkki sovellettu: {marker}',
+        markerPresent: 'Merkki on jo olemassa: {marker}',
+        langSet: 'Kieleksi asetettu {locale}.',
+        invalidLocale: 'Virheellinen locale. Tuetut localet: {locales}.',
+        otherDurationRequiresRounds:
+          'Mukautettu kesto edellyttää numeerista kierrosmäärää, esim. --duration 5 rounds.',
+        invalidDuration:
+          'Keston on oltava Kunnes poistetaan, vuoron loppuvaihtoehto tai positiivinen kierrosmäärä.',
+        zeroHpNoConditions:
+          '{name} saavutti 0 HP eikä sillä ole aktiivisia tiloja.',
+        zeroHpConditions: '{name} saavutti 0 HP. Valitse poistettavat tilat:',
+        removeAllBtn: 'Poista kaikki {name}-tilat',
+        markIncapacitated: 'Merkitse toimintakyvyttömäksi',
+        removeFromTurnOrder: 'Poista vuorojärjestyksestä',
+        alreadyIncapacitated: '{name} on jo toimintakyvytön.',
+        tokenRemovedFromTurn: '{name} poistettiin vuorojärjestyksestä.',
+        tokenNotInTurn: '{name} ei löydy vuorojärjestyksestä.',
+        moveTokenPrompt:
+          'Siirretäänkö {name} karttatasolle niin, että se pysyy näkyvänä eikä häiritse muita tokeneita?',
+        moveTokenBtn: 'Siirrä {name} karttatasolle',
+        tokenMoved: '{name} siirrettiin karttatasolle.',
+        tokenNotFound: 'Tokenia ei löydy.',
+        noActiveConditions:
+          '{name}:llä ei ole aktiivisia tiloja poistettavaksi.',
+        deadNoConditions:
+          '{name} merkittiin kuolleeksi. Aktiivisia tiloja ei ollut.',
+        scriptReady: '{name} on aktiivinen ja käytät versiota {version}.',
+        reachedZeroHp: '{name} saavutti 0 HP',
+        manuallyRemoved: 'poistettiin manuaalisesti',
+        durationExpired: 'kesto päättyi',
+        markedAsDead: '{name} merkittiin kuolleeksi',
+        conditionReorder:
+          'Vuorojärjestys muuttui ja {count} seurattu tilarivi voi nyt olla väärässä paikassa. Palauta ne klikkaamalla alla niille kuuluvien tokeneiden jälkeen.',
+        conditionsReordered:
+          'Tilarivit on sijoitettu uudelleen niille kuuluvien tokeneiden jälkeen.',
+      },
+      removal: {
+        conditionField: 'Tila',
+        reasonField: 'Syy',
+        turnRowField: 'Turn Tracker -rivi',
+        markerField: 'Merkki',
+        notConfigured: 'Ei määritetty',
+        markerRemoved: 'Poistettu ({marker})',
+        markerRetained: 'Säilytetty ({marker})',
+        rowRemoved: 'Poistettu',
+        rowMissing: 'Jo puuttuu',
+        manualReason: 'Manuaalinen poisto',
+      },
+      cleanup: {
+        orphaned: 'Orpoja tilamerkintöjä',
+        stale: 'Vanhentuneita tilamerkintöjä',
+        orphanedRows: 'Orpoja Turn Tracker -rivejä',
+        unusedMarkers: 'Käyttämättömiä merkkejä',
+      },
+      apply: {
+        turnAppended:
+          'Kohde ei ollut vuorojärjestyksessä; tilarivi lisättiin loppuun.',
+        turnInserted: 'Tilarivi lisätty kohde-tokenin alapuolelle.',
+      },
+    },
+    handout: {
+      versionLabel: 'Versio',
+      subtitle: 'D&D 5e -tilavaikutusten hallinta',
+      footerNote:
+        'Tämä handout luodaan ja päivitetään automaattisesti aina, kun skripti latautuu.',
+      overview: {
+        heading: 'Yleiskatsaus',
+        body: 'Condition Tracker hallitsee D&D 5e -tiloja ja mukautettuja vaikutuksia nimettyinä riveinä Roll20:n Turn Trackerissa. Sovella tiloja tokeneihin, seuraa kestoja aloitejärjestyksessä ja poista vanhentuneet vaikutukset automaattisesti vuoron päättyessä. Kaikki komennot ovat vain GM:n käytettävissä ja ne voidaan käynnistää chatissa tai asennettujen makrojen kautta.',
+      },
+      quickStart: {
+        heading: 'Pika-aloitus',
+        colCommand: 'Komento',
+        colDesc: 'Kuvaus',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Vaiheittainen ohjattu toiminto — valitse tila, tokenit ja kesto vuorovaikutteisesti. Saatavilla myös ConditionTrackerWizard-makrona.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Sovella yksi tila useisiin tokeneihin samanaikaisesti. Saatavilla myös ConditionTrackerMultiTarget-makrona.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Avaa päähallinnointi valikko, jossa on painikkeet tilojen soveltamiseen, tarkasteluun tai poistamiseen.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Komentoviite',
+        colFlag: 'Lippu',
+        colDesc: 'Kuvaus',
+        rows: [
+          ['--prompt', 'Vuorovaikutteinen vaiheittainen ohjaustoiminto'],
+          ['--multi-target', 'Sovella tila useisiin kohde-tokeneihin kerralla'],
+          ['--menu', 'Näytä päävalikko (lisää remove poistovalikkoa varten)'],
+          [
+            '--source X --target Y --condition Z',
+            'Sovella tila suoraan ilman ohjaustoimintoa',
+          ],
+          [
+            '--duration &lt;arvo&gt;',
+            'Kesto suoraa soveltamista varten (esim. 2 rounds)',
+          ],
+          [
+            '--other &lt;teksti&gt;',
+            'Mukautettu teksti Loitsu / Kyky / Muu -vaikutustyypeille',
+          ],
+          [
+            '--remove &lt;condition-id&gt;',
+            'Poista tietty tila sen yksilöllisellä tunnuksella',
+          ],
+          [
+            '--config &lt;option&gt; &lt;value&gt;',
+            'Muuta asetuksia (katso alla oleva Asetukset-osio)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Ohita subjectPromptBypass vain tätä komentoa varten (tukee myös --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Täsmäytä tila — poista orpot tilat ja Turn Tracker -rivit',
+          ],
+          [
+            '--reorder-conditions',
+            'Siirrä ehtoriviä manuaalisesti niille määrättyjen pelinappuloiden taakse vuorojärjestyksessä',
+          ],
+          ['--reinstall-macro', 'Luo GM-makrot uudelleen tai päivitä ne'],
+          [
+            '--reinstall-handout',
+            'Luo lokalisoitu ohje-handout uudelleen tai päivitä se',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Tulosta tämän komennon viestit lisälocalella (kaksikielinen tila)',
+          ],
+          ['--help', 'Näytä lyhyt ohjekortti chatissa'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Vakiotilat (D&amp;D 5e)',
+        colCondition: 'Tila',
+      },
+      customEffects: {
+        heading: 'Mukautetut vaikutustyypit',
+        colType: 'Tyyppi',
+        colNotes: 'Huomautukset',
+        rows: [
+          [
+            '🔮 Loitsu',
+            'Seuraa nimettyä loitsuvaikutusta — sinulta pyydetään loitsun nimi',
+          ],
+          [
+            '🎯 Kyky',
+            'Seuraa nimettyä luokka- tai rotukyvykkyyttä — sinulta pyydetään kyvyn nimi',
+          ],
+          [
+            '🍀 Etu',
+            'Kirjaa etulyöntiasema, joka annetaan tokenilta toiselle; ryhmitellään lähteen kanssa aloitejärjestyksessä',
+          ],
+          [
+            '⬇️ Haitta',
+            'Kirjaa asetettu haitta; ryhmitellään lähteen kanssa aloitejärjestyksessä',
+          ],
+          [
+            '📝 Muu',
+            'Vapaamuotoinen mukautettu tunniste — sinulta pyydetään kuvaus',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Kestovaihtoehdot',
+        intro:
+          'Jäljellä oleva laskuri näkyy Turn Trackerin pr-sarakkeessa ja pienenee ankkuri-tokenin vuoron päättyessä.',
+        colOption: 'Vaihtoehto',
+        colBehaviour: 'Toiminta',
+        rows: [
+          [
+            'Kunnes poistetaan',
+            'Pysyvä — on poistettava manuaalisesti valikon tai --remove-komennon kautta',
+          ],
+          [
+            'Kohteen seuraavan vuoron lopussa',
+            'Vanhenee kun kohde-tokenin seuraava vuoro päättyy aloitejärjestyksessä',
+          ],
+          [
+            'Lähteen seuraavan vuoron lopussa',
+            'Vanhenee kun lähde-tokenin seuraava vuoro päättyy aloitejärjestyksessä',
+          ],
+          [
+            '1 / 2 / 3 / 10 kierrosta',
+            'Kiinteä laskuri; yksi pienennys ankkuri-tokenin vuoron päättyessä',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Asetukset',
+        intro:
+          'Käytä !condition-tracker --config &lt;option&gt; &lt;value&gt; tai päävalikon Asetukset-painiketta.',
+        colOption: 'Vaihtoehto',
+        colValues: 'Arvot',
+        colDesc: 'Kuvaus',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Lisää Roll20-tilamarkerit tokeneihin, kun tila lisätään',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Näytä lyhyet kuvakekoodit (esim. [G]) emojien sijaan Turn Tracker -riveillä',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Ohita valinnainen kohde-tokenin vaihe Loitsu / Kyky / Muu -vaikutuksille',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Seurattava tokenpalkki; kun se tippuu 0:aan, GM:ää kehotetaan siivoamaan tilat',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Chat-viestien ja ohje-handoutin tulostuskieli',
+          ],
+          [
+            'marker',
+            '&lt;Condition&gt;=&lt;marker name&gt;',
+            'Korvaa tietyn tilan tilamerkki (esim. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Oletustilamarkerit',
+        colCondition: 'Tila',
+        colMarker: 'Merkin nimi',
+      },
+      availableLocales: {
+        heading: 'Saatavilla olevat käännökset',
+        intro:
+          'Käytä language-asetusta asettaaksesi chat-viestit ja ohje-handoutin mihin tahansa tuettuun localeen. Lyhyet aliakset ovat myös hyväksyttyjä muodoille en, zh ja pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Kieli',
+        colFile: 'Käännöstiedosto',
       },
     },
   };
@@ -2362,6 +4751,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: 'Réinstaller la macro',
         reinstallHandout: 'Réinstaller le livret',
         showHelp: 'Afficher l’aide',
+        reorderConditions: 'Réorganiser les lignes de condition',
       },
       title: {
         menu: 'Menu',
@@ -2383,6 +4773,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 PV',
         moveToken: '{name} — Déplacer le jeton ?',
         scriptReady: 'Script prêt',
+        conditionReorder: 'Ordre de tour modifié',
       },
       heading: {
         quickActions: 'Actions rapides',
@@ -2474,6 +4865,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'suppression manuelle',
         durationExpired: 'sa durée a expiré',
         markedAsDead: '{name} a été marqué comme mort',
+        conditionReorder:
+          "L'ordre de tour a changé et {count} ligne(s) de condition suivie(s) peut être mal placée. Cliquez ci-dessous pour les restaurer après leurs tokens assignés.",
+        conditionsReordered:
+          'Les lignes de condition ont été repositionnées après leurs tokens assignés.',
       },
       removal: {
         conditionField: 'Condition',
@@ -2568,6 +4963,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Nettoyer l’état — supprimer les conditions et lignes orphelines',
+          ],
+          [
+            '--reorder-conditions',
+            'Repositionner manuellement les lignes de condition après leurs jetons assignés dans l’ordre d’initiative',
           ],
           ['--reinstall-macro', 'Recréer ou mettre à jour les macros MJ'],
           [
@@ -2681,6 +5080,14 @@ const ConditionTrackerMod = (() => {
         heading: 'Marqueurs de statut par défaut',
         colCondition: 'Condition',
         colMarker: 'Nom du marqueur',
+      },
+      availableLocales: {
+        heading: 'Traductions disponibles',
+        intro:
+          "Utilisez l'option de configuration language pour définir les messages de chat et le livret d'aide sur n'importe quelle locale prise en charge. Les alias courts sont également acceptés pour en, zh et pt.",
+        colLocale: 'Locale',
+        colLanguage: 'Langue',
+        colFile: 'Fichier de traduction',
       },
     },
   };
@@ -2868,7 +5275,9 @@ const ConditionTrackerMod = (() => {
         showConfig: 'Konfiguration anzeigen',
         runCleanup: 'Bereinigung starten',
         reinstallMacro: 'Makro neu installieren',
+        reinstallHandout: 'Handout neu installieren',
         showHelp: 'Hilfe anzeigen',
+        reorderConditions: 'Bedingungszeilen neu anordnen',
       },
       title: {
         menu: 'Menü',
@@ -2890,6 +5299,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 TP',
         moveToken: '{name} — Token verschieben?',
         scriptReady: 'Skript bereit',
+        conditionReorder: 'Rundenreihenfolge geändert',
       },
       heading: {
         quickActions: 'Schnellaktionen',
@@ -2981,6 +5391,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'manuell entfernt',
         durationExpired: 'Dauer abgelaufen',
         markedAsDead: '{name} wurde als tot markiert',
+        conditionReorder:
+          'Die Rundenreihenfolge wurde geändert und {count} verfolgte Bedingungszeile(n) könnte(n) nun falsch platziert sein. Klicke unten, um sie hinter ihre zugewiesenen Tokens zu verschieben.',
+        conditionsReordered:
+          'Bedingungszeilen wurden hinter ihre zugewiesenen Tokens verschoben.',
       },
       removal: {
         conditionField: 'Zustand',
@@ -3072,6 +5486,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Status bereinigen — verwaiste Zustände und Zeilen entfernen',
+          ],
+          [
+            '--reorder-conditions',
+            'Bedingungszeilen manuell hinter ihre zugewiesenen Tokens in der Rundenreihenfolge verschieben',
           ],
           ['--reinstall-macro', 'GM-Makros neu erstellen oder aktualisieren'],
           [
@@ -3186,6 +5604,14 @@ const ConditionTrackerMod = (() => {
         colCondition: 'Zustand',
         colMarker: 'Markername',
       },
+      availableLocales: {
+        heading: 'Verfügbare Übersetzungen',
+        intro:
+          'Verwende die Konfigurationsoption language, um Chat-Nachrichten und das Hilfe-Handout auf eine unterstützte Locale einzustellen. Kurze Aliase werden auch für en, zh und pt akzeptiert.',
+        colLocale: 'Locale',
+        colLanguage: 'Sprache',
+        colFile: 'Übersetzungsdatei',
+      },
     },
   };
 
@@ -3288,28 +5714,428 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} υπό επίδραση {effect} ({source})',
+        advantage:
+          '{emoji} {source} έχει πλεονέκτημα εναντίον {target}{subject}',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source} έχει μειονέκτημα εναντίον {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} από {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} εφαρμόζει {effect} στον {target}.',
+        advantage: '{source} έχει πλεονέκτημα εναντίον {target}{subject}.',
+        disadvantage: '{source} έχει μειονέκτημα εναντίον {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} δεν επηρεάζεται πλέον από {effect}.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} δεν έχει πλέον πλεονέκτημα εναντίον {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} δεν έχει πλέον μειονέκτημα εναντίον {target}{subject}.',
+        noBy: '{target} δεν είναι πλέον {past}.',
+        standard: '{target} δεν είναι πλέον {past} από {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Επιλογή Κατάστασης',
+        selectSource: 'Επιλογή Token Πηγής',
+        selectTarget: 'Επιλογή Token Στόχου',
+        selectSubject: 'Επιλογή Υποκειμένου',
+        selectDuration: 'Επιλογή Διάρκειας',
+        confirmTargetTitle: 'Επιβεβαίωση Λίστας Στόχων',
+        applyEffectTitle: 'Εφαρμογή Εφέ {condition}',
+        noTokens: 'Δεν βρέθηκαν ονομαστά tokens στην ενεργή σελίδα.',
+        confirmIntro: 'Τα παρακάτω tokens θα λάβουν την κατάσταση:',
+        confirmBtn: 'Επιβεβαίωση λίστας στόχων',
+        enterDetails: 'Εισαγωγή λεπτομερειών εφέ',
+        noneBtn: 'Κανένα',
+        subjectDesc: 'Επιλέξτε ποιος ή τι παράγει το εφέ.',
+        sourceDesc:
+          'Επιλέξτε το πλάσμα που δημιουργεί ή παράγει την κατάσταση ή το εφέ.',
+        targetDesc: 'Επιλέξτε το πλάσμα που θα λάβει την κατάσταση ή το εφέ.',
+        otherText: 'Προσαρμοσμένο κείμενο κατάστασης',
+        effectDetails: 'Λεπτομέρειες {condition}',
+      },
+      col: {
+        players: 'Παίκτες',
+        npcs: 'ΜΠΧ',
+        conditions: 'Καταστάσεις',
+        customEffects: 'Προσαρμοσμένα Εφέ',
+        permanentTurnEnd: 'Μόνιμο / Τέλος Γύρου',
+        rounds: 'Γύροι',
+        command: 'Εντολή',
+        result: 'Αποτέλεσμα',
+        field: 'Πεδίο',
+        value: 'Τιμή',
+        option: 'Επιλογή',
+        condition: 'Κατάσταση',
+        marker: 'Δείκτης',
+        item: 'Στοιχείο',
+        removed: 'Αφαιρέθηκε',
+        details: 'Λεπτομέρειες',
+        description: 'Περιγραφή',
+        scenario: 'Σενάριο',
+      },
+      dur: {
+        untilRemoved: 'Μέχρι αφαίρεσης',
+        endOfTargetTurn: 'Τέλος επόμενης σειράς στόχου',
+        endOfSourceTurn: 'Τέλος επόμενης σειράς πηγής',
+        round1: '1 γύρος',
+        round2: '2 γύροι',
+        round3: '3 γύροι',
+        round10: '10 γύροι',
+        custom: 'Προσαρμοσμένο',
+        customPrompt: 'Αριθμός γύρων',
+        untilRemovedDisplay: 'Μέχρι αφαίρεσης',
+        turnsRemaining: '{n} εναπομείναντα τέλη σειράς',
+      },
+      btn: {
+        openWizard: 'Άνοιγμα Οδηγού',
+        openMultiTarget: 'Άνοιγμα Οδηγού Πολλών Στόχων',
+        openRemovalList: 'Άνοιγμα Λίστας Αφαίρεσης',
+        showConfig: 'Εμφάνιση Ρυθμίσεων',
+        runCleanup: 'Εκτέλεση Εκκαθάρισης',
+        reinstallMacro: 'Επανεγκατάσταση Macro',
+        reinstallHandout: 'Επανεγκατάσταση Handout',
+        showHelp: 'Εμφάνιση Βοήθειας',
+        reorderConditions: 'Αναδιάταξη Σειρών Κατάστασης',
+      },
+      title: {
+        menu: 'Μενού',
+        removalMenu: 'Condition Tracker — Αφαίρεση',
+        config: 'Ρυθμίσεις',
+        configTracker: 'Condition Tracker — Ρυθμίσεις',
+        help: 'Βοήθεια',
+        applied: 'Εφαρμόστηκε',
+        removed: 'Κατάσταση Αφαιρέθηκε',
+        cleanup: 'Εκκαθάριση Ολοκληρώθηκε',
+        macroReinstalled: 'Το Macro Επανεγκαταστάθηκε',
+        handoutReinstalled: 'Το Handout Επανεγκαταστάθηκε',
+        warning: 'Προειδοποίηση',
+        error: 'Σφάλμα',
+        turnOrder: 'Σειρά Πρωτοβουλίας',
+        noConditions: 'Καμία Κατάσταση',
+        tokenMoved: 'Το Token Μετακινήθηκε',
+        markedDead: 'Σημειώθηκε ως Νεκρός',
+        zeroHp: '{name} — 0 ΒΖ',
+        moveToken: '{name} — Μετακίνηση Token;',
+        scriptReady: 'Το Script Είναι Έτοιμο',
+        conditionReorder: 'Η Σειρά Πρωτοβουλίας Άλλαξε',
+      },
+      heading: {
+        quickActions: 'Γρήγορες Ενέργειες',
+        settings: 'Ρυθμίσεις',
+        markerMappings: 'Αντιστοιχίσεις Δεικτών',
+        result: 'Αποτέλεσμα',
+        info: 'Πληροφορίες',
+        commandOptions: 'Επιλογές Εντολών',
+        promptUi: 'Διεπαφή Οδηγού',
+        examples: 'Παραδείγματα',
+        summary: 'Σύνοψη',
+      },
+      msg: {
+        noActive: 'Δεν παρακολουθούνται ενεργές καταστάσεις.',
+        configReset: 'Οι ρυθμίσεις επαναφέρθηκαν στις προεπιλογές.',
+        unknownConfig:
+          'Άγνωστη επιλογή ρύθμισης. Χρησιμοποιήστε --config για να δείτε τις υποστηριζόμενες ρυθμίσεις.',
+        macroReinstalled:
+          'Τα macros {wizard} και {multiTarget} επανεγκαταστάθηκαν για όλους τους τρέχοντες παίκτες-DM.',
+        handoutReinstalled: 'Το handout βοήθειας {handout} επανεγκαταστάθηκε.',
+        duplicate:
+          'Αυτός ακριβώς ο συνδυασμός πηγής, υποκειμένου, στόχου, κατάστασης και προσαρμοσμένου κειμένου είναι ήδη ενεργός.',
+        noTargets: 'Δεν ορίστηκαν tokens-στόχοι για πολλαπλή εφαρμογή.',
+        noSelection:
+          'Επιλέξτε τουλάχιστον ένα token στο ταμπλό πριν χρησιμοποιήσετε --multi-target.',
+        invalidIds: 'Δεν βρέθηκαν έγκυρα IDs tokens στην τρέχουσα επιλογή.',
+        reSelectTokens:
+          'Κανένα από τα αρχικά επιλεγμένα tokens δεν βρέθηκε. Επαναλάβετε την επιλογή tokens και προσπαθήστε ξανά.',
+        conditionNotFound: 'Το ID κατάστασης δεν βρέθηκε.',
+        gmOnly: 'Οι εντολές Condition Tracker είναι αποκλειστικά για DM.',
+        commandFailed:
+          'Η εντολή δεν μπόρεσε να ολοκληρωθεί με ασφάλεια. Ελέγξτε την κονσόλα API για λεπτομέρειες.',
+        sourceTokenNotFound: 'Το token πηγής δεν βρέθηκε.',
+        targetTokenNotFound: 'Το token στόχου δεν βρέθηκε.',
+        subjectTokenNotFound: 'Το token υποκειμένου δεν βρέθηκε.',
+        invalidCondition:
+          'Η κατάσταση πρέπει να είναι μία από τις προκαθορισμένες καταστάσεις ή Άλλο.',
+        subjectOnlyCustom:
+          '--subject ισχύει μόνο για Ξόρκι, Ικανότητα, Πλεονέκτημα, Μειονέκτημα και Άλλο.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass αναμένει true ή false όταν παρέχεται τιμή.',
+        customDetailsRequired:
+          'Απαιτούνται λεπτομέρειες για {condition}. Χρησιμοποιήστε --other για να τις δώσετε.',
+        markerConfigFormat:
+          'Μορφή ρύθμισης δείκτη: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Η ρύθμιση δείκτη απαιτεί προκαθορισμένο όνομα κατάστασης.',
+        markerNameRequired: 'Η ρύθμιση δείκτη απαιτεί μη κενό όνομα δείκτη.',
+        markerSet: 'Ο δείκτης για {condition} ορίστηκε σε {marker}.',
+        healthBarSet: 'Η μπάρα υγείας ορίστηκε σε {bar}.',
+        boolSet: 'Το {key} ορίστηκε σε {value}.',
+        expectedBoolean: 'Αναμένεται true ή false.',
+        invalidHealthBar:
+          'Η μπάρα υγείας πρέπει να είναι bar1_value, bar2_value ή bar3_value.',
+        markersDisabled: 'Οι δείκτες είναι απενεργοποιημένοι.',
+        noMarkerConfigured:
+          'Δεν έχει ρυθμιστεί δείκτης για αυτήν την κατάσταση.',
+        markerApplied: 'Ο δείκτης εφαρμόστηκε: {marker}',
+        markerPresent: 'Ο δείκτης υπάρχει ήδη: {marker}',
+        langSet: 'Η γλώσσα ορίστηκε σε {locale}.',
+        invalidLocale: 'Μη έγκυρη locale. Υποστηριζόμενες locales: {locales}.',
+        otherDurationRequiresRounds:
+          'Η προσαρμοσμένη διάρκεια απαιτεί αριθμητικό πλήθος γύρων, π.χ. --duration 5 rounds.',
+        invalidDuration:
+          'Η διάρκεια πρέπει να είναι Μέχρι αφαίρεσης, επιλογή τέλους σειράς ή θετικός αριθμός γύρων.',
+        zeroHpNoConditions:
+          '{name} έφτασε στα 0 ΒΖ και δεν έχει ενεργές καταστάσεις.',
+        zeroHpConditions:
+          '{name} έφτασε στα 0 ΒΖ. Επιλέξτε καταστάσεις για αφαίρεση:',
+        removeAllBtn: 'Αφαίρεση Όλων των Καταστάσεων για τον {name}',
+        markIncapacitated: 'Σήμανση ως Ανίκανος',
+        removeFromTurnOrder: 'Αφαίρεση από τη Σειρά Πρωτοβουλίας',
+        alreadyIncapacitated: '{name} είναι ήδη Ανίκανος.',
+        tokenRemovedFromTurn: '{name} αφαιρέθηκε από τη σειρά πρωτοβουλίας.',
+        tokenNotInTurn: '{name} δεν βρέθηκε στη σειρά πρωτοβουλίας.',
+        moveTokenPrompt:
+          'Μετακίνηση του {name} στο επίπεδο χάρτη ώστε να παραμένει ορατό χωρίς να παρεμβάλλεται με άλλα tokens;',
+        moveTokenBtn: 'Μετακίνηση {name} στο Επίπεδο Χάρτη',
+        tokenMoved: '{name} μετακινήθηκε στο επίπεδο χάρτη.',
+        tokenNotFound: 'Το token δεν βρέθηκε.',
+        noActiveConditions: '{name} δεν έχει ενεργές καταστάσεις για αφαίρεση.',
+        deadNoConditions:
+          '{name} σημειώθηκε ως νεκρός. Δεν υπήρχαν ενεργές καταστάσεις.',
+        scriptReady: '{name} είναι ενεργό και χρησιμοποιείτε έκδοση {version}.',
+        reachedZeroHp: '{name} έφτασε στα 0 ΒΖ',
+        manuallyRemoved: 'αφαιρέθηκε χειροκίνητα',
+        durationExpired: 'η διάρκεια έληξε',
+        markedAsDead: '{name} σημειώθηκε ως νεκρός',
+        conditionReorder:
+          'Η σειρά πρωτοβουλίας άλλαξε και {count} παρακολουθούμενη/ες σειρά/ές κατάστασης μπορεί να είναι εκτός θέσης. Κάντε κλικ παρακάτω για να τις επαναφέρετε μετά τα αντίστοιχα tokens.',
+        conditionsReordered:
+          'Οι σειρές κατάστασης επανατοποθετήθηκαν μετά τα αντίστοιχα tokens.',
+      },
+      removal: {
+        conditionField: 'Κατάσταση',
+        reasonField: 'Αιτία',
+        turnRowField: 'Σειρά Turn Tracker',
+        markerField: 'Δείκτης',
+        notConfigured: 'Μη ρυθμισμένο',
+        markerRemoved: 'Αφαιρέθηκε ({marker})',
+        markerRetained: 'Διατηρήθηκε ({marker})',
+        rowRemoved: 'Αφαιρέθηκε',
+        rowMissing: 'Ήδη απούσα',
+        manualReason: 'Χειροκίνητη αφαίρεση',
+      },
+      cleanup: {
+        orphaned: 'Ορφανές καταχωρήσεις κατάστασης',
+        stale: 'Παλιές καταχωρήσεις κατάστασης',
+        orphanedRows: 'Ορφανές σειρές Turn Tracker',
+        unusedMarkers: 'Αχρησιμοποίητοι δείκτες',
+      },
+      apply: {
+        turnAppended:
+          'Ο στόχος δεν ήταν στη σειρά πρωτοβουλίας· η σειρά κατάστασης προστέθηκε στο τέλος.',
+        turnInserted: 'Η σειρά κατάστασης εισήχθη κάτω από το token στόχου.',
+      },
+    },
+    handout: {
+      versionLabel: 'Έκδοση',
+      subtitle: 'Διαχειριστής Καταστάσεων D&D 5e',
+      footerNote:
+        'Αυτό το handout δημιουργείται και ενημερώνεται αυτόματα κάθε φορά που φορτώνει το script.',
+      overview: {
+        heading: 'Επισκόπηση',
+        body: 'Το Condition Tracker διαχειρίζεται καταστάσεις D&D 5e και προσαρμοσμένα εφέ ως επονομαζόμενες σειρές στον Turn Tracker του Roll20. Εφαρμόστε καταστάσεις σε tokens, παρακολουθήστε διάρκειες κατά σειρά πρωτοβουλίας και αφαιρέστε αυτόματα τα εφέ που έληξαν όταν τελειώνει μια σειρά. Όλες οι εντολές είναι αποκλειστικά για DM και μπορούν να εκτελεστούν από το chat ή μέσω των εγκατεστημένων macros.',
+      },
+      quickStart: {
+        heading: 'Γρήγορη Έναρξη',
+        colCommand: 'Εντολή',
+        colDesc: 'Περιγραφή',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Οδηγός βήμα-βήμα — επιλέξτε κατάσταση, tokens και διάρκεια διαδραστικά. Διατίθεται επίσης ως macro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Εφαρμογή μιας κατάστασης σε πολλά tokens ταυτόχρονα. Διατίθεται επίσης ως macro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Άνοιγμα του κύριου μενού διαχείρισης με κουμπιά για εφαρμογή, εξέταση ή αφαίρεση καταστάσεων.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Αναφορά Εντολών',
+        colFlag: 'Σημαία',
+        colDesc: 'Περιγραφή',
+        rows: [
+          ['--prompt', 'Διαδραστικός οδηγός βήμα-βήμα'],
+          [
+            '--multi-target',
+            'Εφαρμογή κατάστασης σε πολλά tokens-στόχους ταυτόχρονα',
+          ],
+          [
+            '--menu',
+            'Εμφάνιση κύριου μενού (προσθέστε remove για μενού αφαίρεσης)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Εφαρμογή κατάστασης απευθείας χωρίς τον οδηγό',
+          ],
+          [
+            '--duration &lt;τιμή&gt;',
+            'Διάρκεια για απευθείας εφαρμογή (π.χ. 2 rounds)',
+          ],
+          [
+            '--other &lt;κείμενο&gt;',
+            'Προσαρμοσμένο κείμενο για τύπους εφέ Ξόρκι / Ικανότητα / Άλλο',
+          ],
+          [
+            '--remove &lt;condition-id&gt;',
+            'Αφαίρεση συγκεκριμένης κατάστασης με το μοναδικό της ID',
+          ],
+          [
+            '--config &lt;option&gt; &lt;value&gt;',
+            'Προσαρμογή ρυθμίσεων (βλ. ενότητα Ρυθμίσεων παρακάτω)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Παράκαμψη subjectPromptBypass μόνο για αυτήν την εντολή (υποστηρίζεται επίσης --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Εναρμόνιση κατάστασης — αφαίρεση ορφανών καταστάσεων και σειρών Turn Tracker',
+          ],
+          [
+            '--reorder-conditions',
+            'Χειροκίνητη επανατοποθέτηση γραμμών συνθηκών μετά τα εκχωρημένα τεκμήρια στη σειρά στροφών',
+          ],
+          ['--reinstall-macro', 'Εκ νέου δημιουργία ή ενημέρωση των GM macros'],
+          [
+            '--reinstall-handout',
+            'Εκ νέου δημιουργία ή ενημέρωση του τοπικοποιημένου handout βοήθειας',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Εξαγωγή μηνυμάτων αυτής της εντολής σε πρόσθετη locale (δίγλωσση λειτουργία)',
+          ],
+          ['--help', 'Εμφάνιση σύντομης κάρτας βοήθειας στο chat'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Τυπικές Καταστάσεις (D&amp;D 5e)',
+        colCondition: 'Κατάσταση',
+      },
+      customEffects: {
+        heading: 'Προσαρμοσμένοι Τύποι Εφέ',
+        colType: 'Τύπος',
+        colNotes: 'Σημειώσεις',
+        rows: [
+          [
+            '🔮 Ξόρκι',
+            'Παρακολούθηση ονομαστού εφέ ξορκιού — θα σας ζητηθεί το όνομα του ξορκιού',
+          ],
+          [
+            '🎯 Ικανότητα',
+            'Παρακολούθηση ονομαστής ικανότητας κλάσης ή φυλής — θα σας ζητηθεί το όνομά της',
+          ],
+          [
+            '🍀 Πλεονέκτημα',
+            'Καταγραφή πλεονεκτήματος που δόθηκε από ένα token σε άλλο· ομαδοποιείται με την πηγή στην πρωτοβουλία',
+          ],
+          [
+            '⬇️ Μειονέκτημα',
+            'Καταγραφή επιβληθέντος μειονεκτήματος· ομαδοποιείται με την πηγή στην πρωτοβουλία',
+          ],
+          [
+            '📝 Άλλο',
+            'Ελεύθερη προσαρμοσμένη ετικέτα — θα σας ζητηθεί περιγραφή',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Επιλογές Διάρκειας',
+        intro:
+          'Η εναπομένουσα μέτρηση εμφανίζεται στη στήλη pr του Turn Tracker και μειώνεται όταν τελειώνει η σειρά του token-αγκύρου.',
+        colOption: 'Επιλογή',
+        colBehaviour: 'Συμπεριφορά',
+        rows: [
+          [
+            'Μέχρι αφαίρεσης',
+            'Μόνιμο — πρέπει να αφαιρεθεί χειροκίνητα μέσω του μενού ή --remove',
+          ],
+          [
+            'Τέλος επόμενης σειράς στόχου',
+            'Λήγει όταν τελειώσει η επόμενη σειρά του token-στόχου στην πρωτοβουλία',
+          ],
+          [
+            'Τέλος επόμενης σειράς πηγής',
+            'Λήγει όταν τελειώσει η επόμενη σειρά του token-πηγής στην πρωτοβουλία',
+          ],
+          [
+            '1 / 2 / 3 / 10 γύροι',
+            'Σταθερή αντίστροφη μέτρηση· μία μείωση ανά τέλος σειράς του token-αγκύρου',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Ρυθμίσεις',
+        intro:
+          'Χρησιμοποιήστε !condition-tracker --config &lt;option&gt; &lt;value&gt; ή το κουμπί Ρυθμίσεις στο κύριο μενού.',
+        colOption: 'Επιλογή',
+        colValues: 'Τιμές',
+        colDesc: 'Περιγραφή',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Εφαρμογή δεικτών κατάστασης Roll20 σε tokens όταν προστίθεται κατάσταση',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Εμφάνιση σύντομων κωδικών εικονιδίων (π.χ. [G]) αντί emoji στις σειρές Turn Tracker',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Παράλειψη του προαιρετικού βήματος υποκειμένου για εφέ Ξόρκι / Ικανότητα / Άλλο',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Μπάρα token προς παρακολούθηση· όταν πέσει στο 0 ο DM ειδοποιείται να εκκαθαρίσει καταστάσεις',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Γλώσσα εξόδου για μηνύματα chat και το handout βοήθειας',
+          ],
+          [
+            'marker',
+            '&lt;Condition&gt;=&lt;marker name&gt;',
+            'Αντικατάσταση του δείκτη κατάστασης για συγκεκριμένη κατάσταση (π.χ. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Προεπιλεγμένοι Δείκτες Κατάστασης',
+        colCondition: 'Κατάσταση',
+        colMarker: 'Όνομα Δείκτη',
+      },
+      availableLocales: {
+        heading: 'Διαθέσιμες Μεταφράσεις',
+        intro:
+          'Χρησιμοποιήστε την επιλογή ρύθμισης language για να ορίσετε τα μηνύματα chat και το handout βοήθειας σε οποιαδήποτε υποστηριζόμενη locale. Σύντομα ψευδώνυμα γίνονται επίσης δεκτά για en, zh και pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Γλώσσα',
+        colFile: 'Αρχείο Μετάφρασης',
       },
     },
   };
@@ -3495,6 +6321,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: 'התקן מאקרו מחדש',
         reinstallHandout: 'התקן דף עזרה מחדש',
         showHelp: 'הצג עזרה',
+        reorderConditions: 'סדר מחדש שורות תנאי',
       },
       title: {
         menu: 'תפריט',
@@ -3516,6 +6343,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 נק״פ',
         moveToken: '{name} — להעביר אסימון?',
         scriptReady: 'הסקריפט מוכן',
+        conditionReorder: 'סדר התורות השתנה',
       },
       heading: {
         quickActions: 'פעולות מהירות',
@@ -3595,6 +6423,9 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'הוסר ידנית',
         durationExpired: 'משך הזמן שלו פג',
         markedAsDead: '{name} סומן כמת',
+        conditionReorder:
+          'סדר התורות השתנה ו-{count} שורת/שורות תנאי עקובות עשויות להיות כעת במיקום שגוי. לחץ למטה כדי לשחזר אותן אחרי הטוקנים שהוקצו להן.',
+        conditionsReordered: 'שורות התנאי מוקמו מחדש אחרי הטוקנים שהוקצו להן.',
       },
       removal: {
         conditionField: 'מצב',
@@ -3664,6 +6495,10 @@ const ConditionTrackerMod = (() => {
             'עקיפת שלב הנושא לפקודה זו בלבד',
           ],
           ['--cleanup', 'ניקוי רשומות ושורות יתומות'],
+          [
+            '--reorder-conditions',
+            'מיקום מחדש ידני של שורות תנאי אחרי הטוקנים המוקצים בסדר התורות',
+          ],
           ['--reinstall-macro', 'יצירה או עדכון של מאקרואים ל־GM'],
           ['--reinstall-handout', 'יצירה או עדכון של דף העזרה המקומי'],
           ['--lang &lt;locale&gt;', 'פלט נוסף באזור שפה אחר'],
@@ -3739,6 +6574,14 @@ const ConditionTrackerMod = (() => {
         heading: 'סמני סטטוס ברירת מחדל',
         colCondition: 'מצב',
         colMarker: 'שם סמן',
+      },
+      availableLocales: {
+        heading: 'תרגומים זמינים',
+        intro:
+          "השתמש באפשרות הגדרת language כדי לקבוע את הודעות הצ'אט וחוברת העזרה בכל locale נתמך. כינויים קצרים מקובלים גם עבור en, zh ו-pt.",
+        colLocale: 'Locale',
+        colLanguage: 'שפה',
+        colFile: 'קובץ תרגום',
       },
     },
   };
@@ -3838,28 +6681,430 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} {effect} hatása alatt ({source})',
+        advantage: '{emoji} {source} előnnyel támad {target}{subject} ellen',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source} hátránnyal támad {target}{subject} ellen',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} — {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} alkalmazza a(z) {effect} hatást {target} célpontra.',
+        advantage: '{source} előnnyel támad {target}{subject} ellen.',
+        disadvantage: '{source} hátránnyal támad {target}{subject} ellen.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} már nem áll {effect} hatása alatt.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} már nem rendelkezik előnnyel {target}{subject} ellen.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} már nem rendelkezik hátránnyal {target}{subject} ellen.',
+        noBy: '{target} már nem {past}.',
+        standard: '{target} már nem {past} — {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Állapot kiválasztása',
+        selectSource: 'Forrás token kiválasztása',
+        selectTarget: 'Célpont token kiválasztása',
+        selectSubject: 'Alany kiválasztása',
+        selectDuration: 'Időtartam kiválasztása',
+        confirmTargetTitle: 'Célpontlista megerősítése',
+        applyEffectTitle: '{condition} hatás alkalmazása',
+        noTokens: 'Nem található nevesített token az aktív oldalon.',
+        confirmIntro: 'A következő tokenek kapják meg az állapotot:',
+        confirmBtn: 'Célpontlista megerősítése',
+        enterDetails: 'Hatás részleteinek megadása',
+        noneBtn: 'Egyik sem',
+        subjectDesc: 'Válassza ki, ki vagy mi hozza létre a hatást.',
+        sourceDesc:
+          'Válassza ki azt a lényt, amely létrehozza vagy előidézi az állapotot vagy hatást.',
+        targetDesc:
+          'Válassza ki azt a lényt, amely megkapja az állapotot vagy hatást.',
+        otherText: 'Egyéni állapotszöveg',
+        effectDetails: '{condition} részletei',
+      },
+      col: {
+        players: 'Játékosok',
+        npcs: 'NJK-k',
+        conditions: 'Állapotok',
+        customEffects: 'Egyéni hatások',
+        permanentTurnEnd: 'Állandó / Kör vége',
+        rounds: 'Körök',
+        command: 'Parancs',
+        result: 'Eredmény',
+        field: 'Mező',
+        value: 'Érték',
+        option: 'Beállítás',
+        condition: 'Állapot',
+        marker: 'Jelölő',
+        item: 'Elem',
+        removed: 'Eltávolítva',
+        details: 'Részletek',
+        description: 'Leírás',
+        scenario: 'Forgatókönyv',
+      },
+      dur: {
+        untilRemoved: 'Eltávolításig',
+        endOfTargetTurn: 'A célpont következő körének végén',
+        endOfSourceTurn: 'A forrás következő körének végén',
+        round1: '1 kör',
+        round2: '2 kör',
+        round3: '3 kör',
+        round10: '10 kör',
+        custom: 'Egyéni',
+        customPrompt: 'Körök száma',
+        untilRemovedDisplay: 'Eltávolításig',
+        turnsRemaining: '{n} fennmaradó körjegy',
+      },
+      btn: {
+        openWizard: 'Varázsló megnyitása',
+        openMultiTarget: 'Többcélpontos varázsló megnyitása',
+        openRemovalList: 'Eltávolítási lista megnyitása',
+        showConfig: 'Beállítások megjelenítése',
+        runCleanup: 'Tisztítás futtatása',
+        reinstallMacro: 'Makró újratelepítése',
+        reinstallHandout: 'Handout újratelepítése',
+        showHelp: 'Súgó megjelenítése',
+        reorderConditions: 'Állapotsorok átrendezése',
+      },
+      title: {
+        menu: 'Menü',
+        removalMenu: 'Condition Tracker — eltávolítás',
+        config: 'Beállítások',
+        configTracker: 'Condition Tracker — beállítások',
+        help: 'Súgó',
+        applied: 'Alkalmazva',
+        removed: 'Állapot eltávolítva',
+        cleanup: 'Tisztítás kész',
+        macroReinstalled: 'Makró újratelepítve',
+        handoutReinstalled: 'Handout újratelepítve',
+        warning: 'Figyelmeztetés',
+        error: 'Hiba',
+        turnOrder: 'Körsorend',
+        noConditions: 'Nincsenek állapotok',
+        tokenMoved: 'Token áthelyezve',
+        markedDead: 'Halottnak jelölve',
+        zeroHp: '{name} — 0 ÉP',
+        moveToken: '{name} — token áthelyezése?',
+        scriptReady: 'Szkript kész',
+        conditionReorder: 'Körsorend megváltozott',
+      },
+      heading: {
+        quickActions: 'Gyorsműveletek',
+        settings: 'Beállítások',
+        markerMappings: 'Jelölő-hozzárendelések',
+        result: 'Eredmény',
+        info: 'Információ',
+        commandOptions: 'Parancsbeállítások',
+        promptUi: 'Varázsló felülete',
+        examples: 'Példák',
+        summary: 'Összefoglalás',
+      },
+      msg: {
+        noActive: 'Nincs aktív követett állapot.',
+        configReset: 'A beállítások visszaálltak az alapértelmezett értékekre.',
+        unknownConfig:
+          'Ismeretlen beállítási lehetőség. Használja a --config parancsot a támogatott beállítások megtekintéséhez.',
+        macroReinstalled:
+          'A(z) {wizard} és {multiTarget} makrók újra lettek telepítve az összes jelenlegi GM-játékos számára.',
+        handoutReinstalled: 'A(z) {handout} súgó-handout újra lett telepítve.',
+        duplicate:
+          'Pontosan ugyanez a forrás, alany, célpont, állapot és egyéni szöveg már aktív.',
+        noTargets:
+          'Nem adtak meg célpont tokeneket a többcélpontos alkalmazáshoz.',
+        noSelection:
+          'Jelöljön ki legalább egy tokent a táblán a --multi-target használata előtt.',
+        invalidIds:
+          'Nem találhatók érvényes token-azonosítók a jelenlegi kijelölésben.',
+        reSelectTokens:
+          'Az eredetileg kijelölt tokenek egyike sem található. Jelölje ki újra a tokeneket, és próbálja újra.',
+        conditionNotFound: 'Az állapot azonosítója nem található.',
+        gmOnly: 'A Condition Tracker parancsai csak a GM számára érhetők el.',
+        commandFailed:
+          'A parancs nem hajtható végre biztonságosan. Ellenőrizze az API-konzolt a részletekért.',
+        sourceTokenNotFound: 'A forrás token nem található.',
+        targetTokenNotFound: 'A célpont token nem található.',
+        subjectTokenNotFound: 'Az alany token nem található.',
+        invalidCondition:
+          'Az állapotnak az előre meghatározott állapotok egyikének vagy az Egyébnek kell lennie.',
+        subjectOnlyCustom:
+          'A --subject csak Varázslat, Képesség, Előny, Hátrány és Egyéb esetén érvényes.',
+        subjectBypassInvalid:
+          'A --subjectPromptBypass értékként true vagy false értéket vár.',
+        customDetailsRequired:
+          'A(z) {condition} részletei kötelezők. Adja meg őket a --other kapcsolóval.',
+        markerConfigFormat:
+          'Jelölő-beállítás formátuma: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'A jelölő konfigurálásához előre meghatározott állapotnév szükséges.',
+        markerNameRequired:
+          'A jelölő konfigurálásához nem üres jelölőnév szükséges.',
+        markerSet: 'A(z) {condition} jelölője {marker} értékre állítva.',
+        healthBarSet: 'Az életerő sáv {bar} értékre állítva.',
+        boolSet: 'A(z) {key} {value} értékre állítva.',
+        expectedBoolean: 'True vagy false értéket várunk.',
+        invalidHealthBar:
+          'Az életerő sávnak bar1_value, bar2_value vagy bar3_value értékűnek kell lennie.',
+        markersDisabled: 'A jelölők le vannak tiltva.',
+        noMarkerConfigured: 'Ehhez az állapothoz nincs jelölő konfigurálva.',
+        markerApplied: 'Jelölő alkalmazva: {marker}',
+        markerPresent: 'A jelölő már jelen van: {marker}',
+        langSet: 'A nyelv {locale} értékre állítva.',
+        invalidLocale: 'Érvénytelen locale. Támogatott locale-k: {locales}.',
+        otherDurationRequiresRounds:
+          'Az egyéni időtartamhoz numerikus körmegjelölés szükséges, például --duration 5 rounds.',
+        invalidDuration:
+          'Az időtartamnak Eltávolításig, kör-végi beállítás vagy pozitív körszám kell lennie.',
+        zeroHpNoConditions: '{name} 0 ÉP-re jutott, és nincs aktív állapota.',
+        zeroHpConditions:
+          '{name} 0 ÉP-re jutott. Válassza ki az eltávolítandó állapotokat:',
+        removeAllBtn: 'Minden állapot eltávolítása ({name})',
+        markIncapacitated: 'Megjelölés cselekvőképtelenként',
+        removeFromTurnOrder: 'Eltávolítás a körsorendből',
+        alreadyIncapacitated: '{name} már cselekvőképtelen.',
+        tokenRemovedFromTurn: '{name} eltávolítva a körsorendből.',
+        tokenNotInTurn: '{name} nem található a körsorendben.',
+        moveTokenPrompt:
+          '{name} áthelyezése a térképrétegre, hogy látható maradjon, de ne zavarja a többi tokent?',
+        moveTokenBtn: '{name} áthelyezése a térképrétegre',
+        tokenMoved: '{name} áthelyezve a térképrétegre.',
+        tokenNotFound: 'A token nem található.',
+        noActiveConditions:
+          '{name}-nek nincsenek aktív állapotai az eltávolításhoz.',
+        deadNoConditions:
+          '{name} halottnak lett jelölve. Nem volt aktív állapot.',
+        scriptReady: '{name} aktív, és a(z) {version} verziót használja.',
+        reachedZeroHp: '{name} elérte a 0 ÉP-t',
+        manuallyRemoved: 'kézzel eltávolítva',
+        durationExpired: 'az időtartam lejárt',
+        markedAsDead: '{name} halottnak lett jelölve',
+        conditionReorder:
+          'A körsorend megváltozott, és {count} követett állapotsor lehet rossz helyen. Kattintson alább a visszaállításhoz a hozzárendelt tokenek után.',
+        conditionsReordered:
+          'Az állapotsorok vissza lettek helyezve a hozzárendelt tokenek mögé.',
+      },
+      removal: {
+        conditionField: 'Állapot',
+        reasonField: 'Ok',
+        turnRowField: 'Turn Tracker sor',
+        markerField: 'Jelölő',
+        notConfigured: 'Nincs konfigurálva',
+        markerRemoved: 'Eltávolítva ({marker})',
+        markerRetained: 'Megőrizve ({marker})',
+        rowRemoved: 'Eltávolítva',
+        rowMissing: 'Már hiányzik',
+        manualReason: 'Kézi eltávolítás',
+      },
+      cleanup: {
+        orphaned: 'Árva állapotbejegyzések',
+        stale: 'Elavult állapotbejegyzések',
+        orphanedRows: 'Árva Turn Tracker sorok',
+        unusedMarkers: 'Nem használt jelölők',
+      },
+      apply: {
+        turnAppended:
+          'A célpont nem volt a körsorendben; az állapotsor hozzáfűzve a végéhez.',
+        turnInserted: 'Az állapotsor a célpont token alá lett illesztve.',
+      },
+    },
+    handout: {
+      versionLabel: 'Verzió',
+      subtitle: 'D&D 5e állapothatás-kezelő',
+      footerNote:
+        'Ez a handout automatikusan létrejön és frissül minden alkalommal, amikor a szkript betöltődik.',
+      overview: {
+        heading: 'Áttekintés',
+        body: 'A Condition Tracker D&D 5e állapotokat és egyéni hatásokat kezel megnevezett sorokként a Roll20 Turn Trackerben. Alkalmazzon állapotokat tokenekre, kövesse nyomon az időtartamokat iniciativa-sorrend szerint, és automatikusan távolítsa el a lejárt hatásokat a kör végén. Minden parancs csak a GM számára érhető el, és chatből vagy a telepített makrók révén indítható.',
+      },
+      quickStart: {
+        heading: 'Gyors kezdés',
+        colCommand: 'Parancs',
+        colDesc: 'Leírás',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Lépésről lépésre haladó varázsló — válasszon állapotot, tokeneket és időtartamot interaktívan. Elérhető ConditionTrackerWizard makróként is.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Egy állapot alkalmazása több tokenre egyszerre. Elérhető ConditionTrackerMultiTarget makróként is.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'A fő kezelési menü megnyitása gombokkal az állapotok alkalmazásához, megtekintéséhez vagy eltávolításához.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Parancsreferencia',
+        colFlag: 'Kapcsoló',
+        colDesc: 'Leírás',
+        rows: [
+          ['--prompt', 'Interaktív lépésről lépésre haladó varázsló'],
+          [
+            '--multi-target',
+            'Állapot alkalmazása több célpont tokenre egyszerre',
+          ],
+          [
+            '--menu',
+            'Főmenü megjelenítése (add remove az eltávolítási menühöz)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Állapot közvetlen alkalmazása varázsló nélkül',
+          ],
+          [
+            '--duration &lt;érték&gt;',
+            'Időtartam közvetlen alkalmazáshoz (pl. 2 rounds)',
+          ],
+          [
+            '--other &lt;szöveg&gt;',
+            'Egyéni szöveg Varázslat / Képesség / Egyéb hatástípusokhoz',
+          ],
+          [
+            '--remove &lt;condition-id&gt;',
+            'Adott állapot eltávolítása az egyedi azonosítójával',
+          ],
+          [
+            '--config &lt;option&gt; &lt;value&gt;',
+            'Konfigurációs beállítások módosítása (lásd lent a Beállítások részt)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'A subjectPromptBypass felülbírálása csak erre a parancsra (a --subject-prompt-bypass is támogatott)',
+          ],
+          [
+            '--cleanup',
+            'Állapot egyeztetése — árva állapotok és Turn Tracker sorok eltávolítása',
+          ],
+          [
+            '--reorder-conditions',
+            'Feltétel sorok kézi átrendezése a hozzárendelt tokenek mögé a körsorrendben',
+          ],
+          ['--reinstall-macro', 'GM makrók újralétrehozása vagy frissítése'],
+          [
+            '--reinstall-handout',
+            'A lokalizált súgó-handout újralétrehozása vagy frissítése',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'A parancs üzeneteinek kimenete egy további locale-n (kétnyelvű mód)',
+          ],
+          ['--help', 'Rövid súgókártya megjelenítése a chatben'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Szabványos állapotok (D&amp;D 5e)',
+        colCondition: 'Állapot',
+      },
+      customEffects: {
+        heading: 'Egyéni hatástípusok',
+        colType: 'Típus',
+        colNotes: 'Megjegyzések',
+        rows: [
+          [
+            '🔮 Varázslat',
+            'Nevesített varázslat-hatás követése — a varázslat neve bekérésre kerül',
+          ],
+          [
+            '🎯 Képesség',
+            'Nevesített osztály- vagy fajképesség követése — a képesség neve bekérésre kerül',
+          ],
+          [
+            '🍀 Előny',
+            'Az egyik tokenről a másikra adott előny rögzítése; az iniciativában a forrással csoportosítva',
+          ],
+          [
+            '⬇️ Hátrány',
+            'Kirótt hátrány rögzítése; az iniciativában a forrással csoportosítva',
+          ],
+          [
+            '📝 Egyéb',
+            'Szabad formátumú egyéni címke — leírás bekérésre kerül',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Időtartam-beállítások',
+        intro:
+          'A fennmaradó számláló a Turn Tracker pr oszlopában jelenik meg, és csökken, amikor a horgony token köre véget ér.',
+        colOption: 'Beállítás',
+        colBehaviour: 'Viselkedés',
+        rows: [
+          [
+            'Eltávolításig',
+            'Állandó — kézzel kell eltávolítani a menü vagy a --remove parancs segítségével',
+          ],
+          [
+            'A célpont következő körének végén',
+            'Lejár, amikor a célpont token következő köre véget ér az iniciativában',
+          ],
+          [
+            'A forrás következő körének végén',
+            'Lejár, amikor a forrás token következő köre véget ér az iniciativában',
+          ],
+          [
+            '1 / 2 / 3 / 10 kör',
+            'Rögzített visszaszámlálás; egy csökkentés a horgony token körének végén',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Beállítások',
+        intro:
+          'Használja a !condition-tracker --config &lt;option&gt; &lt;value&gt; parancsot vagy a főmenü Beállítások gombját.',
+        colOption: 'Beállítás',
+        colValues: 'Értékek',
+        colDesc: 'Leírás',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Roll20 állapotjelölők alkalmazása tokenekre állapot hozzáadásakor',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Rövid ikonkódok megjelenítése (pl. [G]) emoji helyett a Turn Tracker sorokban',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Az opcionális alany-token lépés kihagyása Varázslat / Képesség / Egyéb hatásoknál',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'A figyelendő token sáv; ha 0-ra csökken, a GM felszólítást kap az állapotok rendezésére',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'A chat-üzenetek és a súgó-handout kimeneti nyelve',
+          ],
+          [
+            'marker',
+            '&lt;Condition&gt;=&lt;marker name&gt;',
+            'Egy adott állapot állapotjelölőjének felülírása (pl. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Alapértelmezett állapotjelölők',
+        colCondition: 'Állapot',
+        colMarker: 'Jelölő neve',
+      },
+      availableLocales: {
+        heading: 'Elérhető fordítások',
+        intro:
+          'Használja a language konfigurációs beállítást a chat-üzenetek és a súgó-handout bármely támogatott locale-re állításához. Rövid álnevek is elfogadottak en, zh és pt esetén.',
+        colLocale: 'Locale',
+        colLanguage: 'Nyelv',
+        colFile: 'Fordítási fájl',
       },
     },
   };
@@ -3962,28 +7207,432 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} influenzato da {effect} ({source})',
+        advantage: '{emoji} {source} ha vantaggio contro {target}{subject}',
+        disadvantage: '{emoji} {source} ha svantaggio contro {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} da {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} applica {effect} a {target}.',
+        advantage: '{source} ha vantaggio contro {target}{subject}.',
+        disadvantage: '{source} ha svantaggio contro {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+        custom: '{target} non è più influenzato da {effect}.',
+        advantage: '{source} non ha più vantaggio contro {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} non ha più svantaggio contro {target}{subject}.',
+        noBy: '{target} non è più {past}.',
+        standard: '{target} non è più {past} da {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Seleziona condizione',
+        selectSource: 'Seleziona token sorgente',
+        selectTarget: 'Seleziona token bersaglio',
+        selectSubject: 'Seleziona soggetto',
+        selectDuration: 'Seleziona durata',
+        confirmTargetTitle: 'Conferma lista bersagli',
+        applyEffectTitle: 'Applica effetto {condition}',
+        noTokens: 'Nessun token con nome trovato nella pagina attiva.',
+        confirmIntro: 'I seguenti token riceveranno la condizione:',
+        confirmBtn: 'Conferma lista bersagli',
+        enterDetails: 'Inserisci dettagli effetto',
+        noneBtn: 'Nessuno',
+        subjectDesc: "Seleziona chi o cosa applica l'effetto.",
+        sourceDesc:
+          "Seleziona la creatura che crea o genera la condizione o l'effetto.",
+        targetDesc:
+          "Seleziona la creatura che riceverà la condizione o l'effetto.",
+        otherText: 'Testo condizione personalizzato',
+        effectDetails: 'Dettagli {condition}',
+      },
+      col: {
+        players: 'Giocatori',
+        npcs: 'PNG',
+        conditions: 'Condizioni',
+        customEffects: 'Effetti personalizzati',
+        permanentTurnEnd: 'Permanente / Fine turno',
+        rounds: 'Round',
+        command: 'Comando',
+        result: 'Risultato',
+        field: 'Campo',
+        value: 'Valore',
+        option: 'Opzione',
+        condition: 'Condizione',
+        marker: 'Indicatore',
+        item: 'Elemento',
+        removed: 'Rimosso',
+        details: 'Dettagli',
+        description: 'Descrizione',
+        scenario: 'Scenario',
+      },
+      dur: {
+        untilRemoved: 'Fino alla rimozione',
+        endOfTargetTurn: 'Fine del prossimo turno del bersaglio',
+        endOfSourceTurn: 'Fine del prossimo turno della sorgente',
+        round1: '1 round',
+        round2: '2 round',
+        round3: '3 round',
+        round10: '10 round',
+        custom: 'Personalizzato',
+        customPrompt: 'Numero di round',
+        untilRemovedDisplay: 'Fino alla rimozione',
+        turnsRemaining: '{n} fine/i turno rimanente/i',
+      },
+      btn: {
+        openWizard: 'Apri procedura guidata',
+        openMultiTarget: 'Apri procedura guidata multi-bersaglio',
+        openRemovalList: 'Apri lista rimozione',
+        showConfig: 'Mostra configurazione',
+        runCleanup: 'Esegui pulizia',
+        reinstallMacro: 'Reinstalla macro',
+        reinstallHandout: 'Reinstalla documento',
+        showHelp: 'Mostra aiuto',
+        reorderConditions: 'Riordina righe condizioni',
+      },
+      title: {
+        menu: 'Menu',
+        removalMenu: 'Rimozione — Condition Tracker',
+        config: 'Configurazione',
+        configTracker: 'Configurazione — Condition Tracker',
+        help: 'Aiuto',
+        applied: 'Applicato',
+        removed: 'Condizione rimossa',
+        cleanup: 'Pulizia completata',
+        macroReinstalled: 'Macro reinstallata',
+        handoutReinstalled: 'Documento reinstallato',
+        warning: 'Avviso',
+        error: 'Errore',
+        turnOrder: 'Ordine di iniziativa',
+        noConditions: 'Nessuna condizione',
+        tokenMoved: 'Token spostato',
+        markedDead: 'Segnato come morto',
+        zeroHp: '{name} — 0 PF',
+        moveToken: '{name} — Spostare il token?',
+        scriptReady: 'Script pronto',
+        conditionReorder: 'Ordine di turno modificato',
+      },
+      heading: {
+        quickActions: 'Azioni rapide',
+        settings: 'Impostazioni',
+        markerMappings: 'Mappatura indicatori',
+        result: 'Risultato',
+        info: 'Informazioni',
+        commandOptions: 'Opzioni comando',
+        promptUi: 'Interfaccia procedura guidata',
+        examples: 'Esempi',
+        summary: 'Riepilogo',
+      },
+      msg: {
+        noActive: 'Nessuna condizione attiva è tracciata.',
+        configReset:
+          'Configurazione ripristinata ai valori predefiniti del mod.',
+        unknownConfig:
+          'Opzione di configurazione sconosciuta. Usa --config per visualizzare le impostazioni supportate.',
+        macroReinstalled:
+          'Le macro {wizard} e {multiTarget} sono state reinstallate per tutti i GM attivi.',
+        handoutReinstalled:
+          'Il documento di aiuto {handout} è stato reinstallato.',
+        duplicate:
+          'Questa combinazione esatta di sorgente, soggetto, bersaglio, condizione e testo personalizzato è già attiva.',
+        noTargets:
+          "Nessun token bersaglio specificato per l'applicazione multi-bersaglio.",
+        noSelection:
+          'Seleziona almeno un token sulla mappa prima di usare --multi-target.',
+        invalidIds: 'Nessun ID token valido trovato nella selezione corrente.',
+        reSelectTokens:
+          'Nessuno dei token originariamente selezionati è stato trovato. Seleziona nuovamente i token e riprova.',
+        conditionNotFound: 'ID condizione non trovato.',
+        gmOnly: 'I comandi di Condition Tracker sono riservati al GM.',
+        commandFailed:
+          'Il comando non è stato completato in modo sicuro. Controlla la console API per i dettagli.',
+        sourceTokenNotFound: 'Token sorgente non trovato.',
+        targetTokenNotFound: 'Token bersaglio non trovato.',
+        subjectTokenNotFound: 'Token soggetto non trovato.',
+        invalidCondition:
+          'La condizione deve essere una delle condizioni predefinite oppure Altro.',
+        subjectOnlyCustom:
+          '--subject è valido solo per Incantesimo, Abilità, Vantaggio, Svantaggio e Altro.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass richiede true o false quando viene fornito un valore.',
+        customDetailsRequired:
+          'I dettagli di {condition} sono obbligatori. Usa --other per fornirli.',
+        markerConfigFormat:
+          "Il formato di configurazione dell'indicatore è: --config marker Grappled=grab",
+        markerPredefinedRequired:
+          "La configurazione dell'indicatore richiede un nome di condizione predefinito.",
+        markerNameRequired:
+          "La configurazione dell'indicatore richiede un nome di indicatore non vuoto.",
+        markerSet: 'Indicatore di {condition} impostato su {marker}.',
+        healthBarSet: 'Barra della salute impostata su {bar}.',
+        boolSet: '{key} impostato su {value}.',
+        expectedBoolean: 'Previsto true o false.',
+        invalidHealthBar:
+          'La barra della salute deve essere bar1_value, bar2_value o bar3_value.',
+        markersDisabled: 'Gli indicatori sono disabilitati.',
+        noMarkerConfigured:
+          'Nessun indicatore configurato per questa condizione.',
+        markerApplied: 'Indicatore applicato: {marker}',
+        markerPresent: 'Indicatore già presente: {marker}',
+        langSet: 'Lingua impostata su {locale}.',
+        invalidLocale: 'Lingua non valida. Lingue supportate: {locales}.',
+        otherDurationRequiresRounds:
+          'La durata Altro richiede un numero di round, ad esempio --duration 5 rounds.',
+        invalidDuration:
+          "La durata deve essere Fino alla rimozione, un'opzione di fine turno o un numero positivo di round.",
+        zeroHpNoConditions:
+          '{name} ha raggiunto 0 PF e non ha condizioni attive.',
+        zeroHpConditions:
+          '{name} ha raggiunto 0 PF. Scegli le condizioni da rimuovere:',
+        removeAllBtn: 'Rimuovi tutte le condizioni di {name}',
+        markIncapacitated: 'Segna come Incapacitato',
+        removeFromTurnOrder: "Rimuovi dall'ordine di iniziativa",
+        alreadyIncapacitated: '{name} è già Incapacitato.',
+        tokenRemovedFromTurn:
+          "{name} è stato rimosso dall'ordine di iniziativa.",
+        tokenNotInTurn: "{name} non è stato trovato nell'ordine di iniziativa.",
+        moveTokenPrompt:
+          'Sposta {name} al livello mappa in modo che rimanga visibile senza interferire con altri token?',
+        moveTokenBtn: 'Sposta {name} al livello mappa',
+        tokenMoved: '{name} è stato spostato al livello mappa.',
+        tokenNotFound: 'Token non trovato.',
+        noActiveConditions: '{name} non ha condizioni attive da rimuovere.',
+        deadNoConditions:
+          '{name} è stato segnato come morto. Nessuna condizione era attiva.',
+        scriptReady: '{name} è attivo e stai usando la versione {version}.',
+        reachedZeroHp: '{name} ha raggiunto 0 PF',
+        manuallyRemoved: 'è stata rimossa manualmente',
+        durationExpired: 'la sua durata è scaduta',
+        markedAsDead: '{name} è stato segnato come morto',
+        conditionReorder:
+          "L'ordine di turno è cambiato e {count} riga/righe di condizione tracciata/e potrebbe/potrebbero essere fuori posto. Clicca sotto per riposizionarle dopo i rispettivi token assegnati.",
+        conditionsReordered:
+          'Le righe delle condizioni sono state riposizionate dopo i rispettivi token assegnati.',
+      },
+      removal: {
+        conditionField: 'Condizione',
+        reasonField: 'Motivo',
+        turnRowField: 'Riga del registro dei turni',
+        markerField: 'Indicatore',
+        notConfigured: 'Non configurato',
+        markerRemoved: 'Rimosso ({marker})',
+        markerRetained: 'Mantenuto ({marker})',
+        rowRemoved: 'Rimosso',
+        rowMissing: 'Già assente',
+        manualReason: 'Rimozione manuale',
+      },
+      cleanup: {
+        orphaned: 'Voci di condizione orfane',
+        stale: 'Voci di condizione obsolete',
+        orphanedRows: 'Righe orfane del registro dei turni',
+        unusedMarkers: 'Indicatori inutilizzati',
+      },
+      apply: {
+        turnAppended:
+          "Il bersaglio non era nell'ordine di iniziativa; la riga della condizione è stata aggiunta in fondo.",
+        turnInserted:
+          'Riga della condizione inserita sotto il token bersaglio.',
+      },
+    },
+    handout: {
+      versionLabel: 'Versione',
+      subtitle: 'Gestore effetti di stato D&D 5e',
+      footerNote:
+        'Questo documento viene creato e aggiornato automaticamente ogni volta che lo script viene caricato.',
+      overview: {
+        heading: 'Panoramica',
+        body: 'Condition Tracker gestisce le condizioni di stato di D&D 5e e gli effetti personalizzati come righe etichettate nel Registro dei Turni di Roll20. Applica condizioni ai token, tieni traccia delle durate per ordine di iniziativa e rimuovi automaticamente gli effetti scaduti al termine di un turno. Tutti i comandi sono riservati al GM e possono essere attivati dalla chat o tramite le macro installate.',
+      },
+      quickStart: {
+        heading: 'Avvio rapido',
+        colCommand: 'Comando',
+        colDesc: 'Descrizione',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Procedura guidata passo dopo passo — scegli condizione, token e durata in modo interattivo. Disponibile anche come macro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Applica una condizione a più token contemporaneamente. Disponibile anche come macro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Apri il menu principale di gestione con pulsanti per applicare, rivedere o rimuovere condizioni.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Riferimento comandi',
+        colFlag: 'Flag',
+        colDesc: 'Descrizione',
+        rows: [
+          ['--prompt', 'Interfaccia della procedura guidata passo dopo passo'],
+          [
+            '--multi-target',
+            'Applica una condizione a più token bersaglio contemporaneamente',
+          ],
+          [
+            '--menu',
+            'Mostra il menu principale (aggiungi remove per il menu di rimozione)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Applica una condizione direttamente senza la procedura guidata',
+          ],
+          [
+            '--duration &lt;valore&gt;',
+            "Durata per un'applicazione diretta (es. 2 rounds)",
+          ],
+          [
+            '--other &lt;testo&gt;',
+            'Testo personalizzato per i tipi di effetto Incantesimo / Abilità / Altro',
+          ],
+          [
+            '--remove &lt;id-condizione&gt;',
+            'Rimuovi una condizione specifica tramite il suo ID univoco',
+          ],
+          [
+            '--config &lt;opzione&gt; &lt;valore&gt;',
+            'Modifica le impostazioni di configurazione (vedi sezione Configurazione)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Sostituisci subjectPromptBypass solo per questo comando (supporta anche --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Riconcilia lo stato — rimuovi condizioni e righe del registro dei turni orfane',
+          ],
+          [
+            '--reorder-conditions',
+            "Riposizionare manualmente le righe di condizione dopo i token assegnati nell'ordine dei turni",
+          ],
+          ['--reinstall-macro', 'Ricrea o aggiorna le macro del GM'],
+          [
+            '--reinstall-handout',
+            'Ricrea o aggiorna il documento di aiuto localizzato',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Mostra i messaggi di questo comando in una lingua aggiuntiva (modalità bilingue)',
+          ],
+          ['--help', 'Mostra una scheda di aiuto rapida nella chat'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Condizioni standard (D&amp;D 5e)',
+        colCondition: 'Condizione',
+      },
+      customEffects: {
+        heading: 'Tipi di effetti personalizzati',
+        colType: 'Tipo',
+        colNotes: 'Note',
+        rows: [
+          [
+            '🔮 Incantesimo',
+            "Traccia un effetto di incantesimo nominato — ti verrà chiesto il nome dell'incantesimo",
+          ],
+          [
+            '🎯 Abilità',
+            "Traccia un'abilità di classe o razza nominata — ti verrà chiesto il nome",
+          ],
+          [
+            '🍀 Vantaggio',
+            "Registra un vantaggio concesso da un token a un altro; raggruppato con la sorgente nell'iniziativa",
+          ],
+          [
+            '⬇️ Svantaggio',
+            "Registra uno svantaggio imposto; raggruppato con la sorgente nell'iniziativa",
+          ],
+          [
+            '📝 Altro',
+            'Etichetta personalizzata libera — ti verrà chiesta una descrizione',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Opzioni durata',
+        intro:
+          'Il conteggio rimanente viene mostrato nella colonna pr del Registro dei Turni e si decrementa al termine del turno del token ancora.',
+        colOption: 'Opzione',
+        colBehaviour: 'Comportamento',
+        rows: [
+          [
+            'Fino alla rimozione',
+            'Permanente — deve essere rimossa manualmente tramite il menu o --remove',
+          ],
+          [
+            'Fine del prossimo turno del bersaglio',
+            "Scade al termine del prossimo turno del token bersaglio nell'iniziativa",
+          ],
+          [
+            'Fine del prossimo turno della sorgente',
+            "Scade al termine del prossimo turno del token sorgente nell'iniziativa",
+          ],
+          [
+            '1 / 2 / 3 / 10 round',
+            'Conto alla rovescia fisso; un decremento per ogni fine turno del token ancora',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Configurazione',
+        intro:
+          'Usa !condition-tracker --config &lt;opzione&gt; &lt;valore&gt; o il pulsante Configurazione nel menu principale.',
+        colOption: 'Opzione',
+        colValues: 'Valori',
+        colDesc: 'Descrizione',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Applica indicatori di stato Roll20 ai token quando viene aggiunta una condizione',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Mostra codici icona brevi (es. [G]) invece di emoji nelle righe del Registro dei Turni',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Salta il passaggio facoltativo del token soggetto per gli effetti Incantesimo / Abilità / Altro',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Barra del token da monitorare; quando scende a 0 il GM viene invitato a rimuovere le condizioni',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Lingua dei messaggi nella chat e del documento di aiuto',
+          ],
+          [
+            'marker',
+            '&lt;Condizione&gt;=&lt;nome indicatore&gt;',
+            "Sostituisci l'indicatore di stato usato per una condizione specifica (es. marker Grappled=grab)",
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Indicatori di stato predefiniti',
+        colCondition: 'Condizione',
+        colMarker: 'Nome indicatore',
+      },
+      availableLocales: {
+        heading: 'Traduzioni disponibili',
+        intro:
+          "Usa l'opzione di configurazione language per impostare i messaggi della chat e il documento di aiuto su qualsiasi lingua supportata. Gli alias brevi sono accettati anche per en, zh e pt.",
+        colLocale: 'Locale',
+        colLanguage: 'Lingua',
+        colFile: 'File di traduzione',
       },
     },
   };
@@ -4083,28 +7732,408 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
-        noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        custom: '{emoji} {target}は{effect}の影響下にある（{source}）',
+        advantage: '{emoji} {source}は{target}{subject}に対して有利を持つ',
+        disadvantage: '{emoji} {source}は{target}{subject}に対して不利を持つ',
+        noBy: '{emoji} {target}は{past}（{source}）',
+        standard: '{emoji} {target}は{source}によって{past}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
-        withSuffix: '{source} {verb} {target} {suffix}.',
-        standard: '{source} {verb} {target}.',
+        custom: '{source}は{target}に{effect}を適用した。',
+        advantage: '{source}は{target}{subject}に対して有利を持つ。',
+        disadvantage: '{source}は{target}{subject}に対して不利を持つ。',
+        withSuffix: '{source}は{target}を{suffix}状態にした（{verb}）。',
+        standard: '{source}は{target}を{verb}。',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+        custom: '{target}はもはや{effect}の影響を受けていない。',
+        advantage: '{source}はもはや{target}{subject}に対して有利を持たない。',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source}はもはや{target}{subject}に対して不利を持たない。',
+        noBy: '{target}はもはや{past}ではない。',
+        standard: '{target}はもはや{source}によって{past}ではない。',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: '状態を選択',
+        selectSource: 'ソーストークンを選択',
+        selectTarget: 'ターゲットトークンを選択',
+        selectSubject: '対象を選択',
+        selectDuration: '継続時間を選択',
+        confirmTargetTitle: 'ターゲットリストを確認',
+        applyEffectTitle: '{condition}の効果を適用',
+        noTokens: 'アクティブなページに名前付きトークンが見つかりません。',
+        confirmIntro: '以下のトークンが状態を受け取ります：',
+        confirmBtn: 'ターゲットリストを確認',
+        enterDetails: '効果の詳細を入力',
+        noneBtn: 'なし',
+        subjectDesc: '効果をもたらすものを選択してください。',
+        sourceDesc: '状態または効果を生み出すクリーチャーを選択してください。',
+        targetDesc: '状態または効果を受け取るクリーチャーを選択してください。',
+        otherText: 'カスタム状態テキスト',
+        effectDetails: '{condition}の詳細',
+      },
+      col: {
+        players: 'プレイヤー',
+        npcs: 'NPC',
+        conditions: '状態',
+        customEffects: 'カスタム効果',
+        permanentTurnEnd: '恒久的 / ターン終了',
+        rounds: 'ラウンド',
+        command: 'コマンド',
+        result: '結果',
+        field: 'フィールド',
+        value: '値',
+        option: 'オプション',
+        condition: '状態',
+        marker: 'マーカー',
+        item: '項目',
+        removed: '削除済み',
+        details: '詳細',
+        description: '説明',
+        scenario: 'シナリオ',
+      },
+      dur: {
+        untilRemoved: '削除されるまで',
+        endOfTargetTurn: 'ターゲットの次のターン終了時',
+        endOfSourceTurn: 'ソースの次のターン終了時',
+        round1: '1ラウンド',
+        round2: '2ラウンド',
+        round3: '3ラウンド',
+        round10: '10ラウンド',
+        custom: 'カスタム',
+        customPrompt: 'ラウンド数',
+        untilRemovedDisplay: '削除されるまで',
+        turnsRemaining: '残りターン終了数：{n}',
+      },
+      btn: {
+        openWizard: 'ウィザードを開く',
+        openMultiTarget: 'マルチターゲットウィザードを開く',
+        openRemovalList: '削除リストを開く',
+        showConfig: '設定を表示',
+        runCleanup: 'クリーンアップを実行',
+        reinstallMacro: 'マクロを再インストール',
+        reinstallHandout: 'ハンドアウトを再インストール',
+        showHelp: 'ヘルプを表示',
+        reorderConditions: '状態行を並び替え',
+      },
+      title: {
+        menu: 'メニュー',
+        removalMenu: 'Condition Tracker — 削除',
+        config: '設定',
+        configTracker: 'Condition Tracker 設定',
+        help: 'ヘルプ',
+        applied: '適用済み',
+        removed: '状態削除済み',
+        cleanup: 'クリーンアップ完了',
+        macroReinstalled: 'マクロ再インストール済み',
+        handoutReinstalled: 'ハンドアウト再インストール済み',
+        warning: '警告',
+        error: 'エラー',
+        turnOrder: 'ターン順序',
+        noConditions: '状態なし',
+        tokenMoved: 'トークン移動済み',
+        markedDead: '死亡としてマーク',
+        zeroHp: '{name} — HP 0',
+        moveToken: '{name} — トークンを移動しますか？',
+        scriptReady: 'スクリプト準備完了',
+        conditionReorder: 'ターン順序変更',
+      },
+      heading: {
+        quickActions: 'クイックアクション',
+        settings: '設定',
+        markerMappings: 'マーカーマッピング',
+        result: '結果',
+        info: '情報',
+        commandOptions: 'コマンドオプション',
+        promptUi: 'ウィザードUI',
+        examples: '例',
+        summary: 'まとめ',
+      },
+      msg: {
+        noActive: '追跡中のアクティブな状態はありません。',
+        configReset: '設定がMODのデフォルトにリセットされました。',
+        unknownConfig:
+          '不明な設定オプションです。--configを使用してサポートされている設定を確認してください。',
+        macroReinstalled:
+          '{wizard}および{multiTarget}マクロが現在のすべてのGMプレイヤーに再インストールされました。',
+        handoutReinstalled:
+          'ヘルプハンドアウト{handout}が再インストールされました。',
+        duplicate:
+          '同一のソース、対象、ターゲット、状態、カスタムテキストの組み合わせがすでにアクティブです。',
+        noTargets:
+          'マルチターゲット適用のためのターゲットトークンが指定されていません。',
+        noSelection:
+          '--multi-targetを使用する前に、ボード上で少なくとも1つのトークンを選択してください。',
+        invalidIds: '現在の選択に有効なトークンIDが見つかりません。',
+        reSelectTokens:
+          '元々選択されたトークンが見つかりません。トークンを再選択してもう一度お試しください。',
+        conditionNotFound: '状態IDが見つかりません。',
+        gmOnly: 'Condition TrackerのコマンドはGM専用です。',
+        commandFailed:
+          'コマンドを安全に完了できませんでした。詳細はAPIコンソールを確認してください。',
+        sourceTokenNotFound: 'ソーストークンが見つかりません。',
+        targetTokenNotFound: 'ターゲットトークンが見つかりません。',
+        subjectTokenNotFound: '対象トークンが見つかりません。',
+        invalidCondition:
+          '状態は事前定義された状態またはその他のいずれかである必要があります。',
+        subjectOnlyCustom:
+          '--subjectは呪文、能力、有利、不利、その他にのみ有効です。',
+        subjectBypassInvalid:
+          '--subjectPromptBypassは値が指定された場合、trueまたはfalseを期待します。',
+        customDetailsRequired:
+          '{condition}の詳細が必要です。--otherを使用して指定してください。',
+        markerConfigFormat: 'マーカー設定の形式：--config marker Grappled=grab',
+        markerPredefinedRequired:
+          'マーカー設定には事前定義された状態名が必要です。',
+        markerNameRequired: 'マーカー設定には空でないマーカー名が必要です。',
+        markerSet: '{condition}のマーカーを{marker}に設定しました。',
+        healthBarSet: 'ヘルスバーを{bar}に設定しました。',
+        boolSet: '{key}を{value}に設定しました。',
+        expectedBoolean: 'trueまたはfalseが必要です。',
+        invalidHealthBar:
+          'ヘルスバーはbar1_value、bar2_value、またはbar3_valueである必要があります。',
+        markersDisabled: 'マーカーは無効になっています。',
+        noMarkerConfigured: 'この状態に設定されたマーカーはありません。',
+        markerApplied: 'マーカーを適用しました：{marker}',
+        markerPresent: 'マーカーはすでに存在します：{marker}',
+        langSet: '言語を{locale}に設定しました。',
+        invalidLocale:
+          '無効なロケールです。サポートされているロケール：{locales}。',
+        otherDurationRequiresRounds:
+          'その他の継続時間には数値のラウンド数が必要です（例：--duration 5 rounds）。',
+        invalidDuration:
+          '継続時間は「削除されるまで」、ターン終了オプション、または正のラウンド数である必要があります。',
+        zeroHpNoConditions:
+          '{name}はHP0になりましたが、アクティブな状態はありません。',
+        zeroHpConditions:
+          '{name}はHP0になりました。削除する状態を選択してください：',
+        removeAllBtn: '{name}のすべての状態を削除',
+        markIncapacitated: '無力状態としてマーク',
+        removeFromTurnOrder: 'ターン順序から削除',
+        alreadyIncapacitated: '{name}はすでに無力状態です。',
+        tokenRemovedFromTurn: '{name}がターン順序から削除されました。',
+        tokenNotInTurn: '{name}はターン順序に見つかりませんでした。',
+        moveTokenPrompt:
+          '{name}を表示したまま他のトークンの邪魔にならないよう、マップレイヤーに移動しますか？',
+        moveTokenBtn: '{name}をマップレイヤーに移動',
+        tokenMoved: '{name}がマップレイヤーに移動されました。',
+        tokenNotFound: 'トークンが見つかりません。',
+        noActiveConditions: '{name}には削除するアクティブな状態がありません。',
+        deadNoConditions:
+          '{name}は死亡としてマークされました。アクティブな状態はありませんでした。',
+        scriptReady:
+          '{name}はアクティブで、バージョン{version}を使用しています。',
+        reachedZeroHp: '{name}がHP0に達しました',
+        manuallyRemoved: '手動で削除されました',
+        durationExpired: '継続時間が終了しました',
+        markedAsDead: '{name}が死亡としてマークされました',
+        conditionReorder:
+          'ターン順序が変更され、追跡中の{count}件の状態行が正しい位置にない可能性があります。割り当てられたトークンの後に復元するには以下をクリックしてください。',
+        conditionsReordered:
+          '状態行が割り当てられたトークンの後に再配置されました。',
+      },
+      removal: {
+        conditionField: '状態',
+        reasonField: '理由',
+        turnRowField: 'ターントラッカー行',
+        markerField: 'マーカー',
+        notConfigured: '未設定',
+        markerRemoved: '削除済み（{marker}）',
+        markerRetained: '保持（{marker}）',
+        rowRemoved: '削除済み',
+        rowMissing: 'すでに存在しない',
+        manualReason: '手動削除',
+      },
+      cleanup: {
+        orphaned: '孤立した状態エントリ',
+        stale: '古くなった状態エントリ',
+        orphanedRows: '孤立したターントラッカー行',
+        unusedMarkers: '未使用のマーカー',
+      },
+      apply: {
+        turnAppended:
+          'ターゲットはターン順序にありませんでした。状態行を末尾に追加しました。',
+        turnInserted: 'ターゲットトークンの下に状態行を挿入しました。',
+      },
+    },
+    handout: {
+      versionLabel: 'バージョン',
+      subtitle: 'D&D 5e ステータス効果マネージャー',
+      footerNote:
+        'このハンドアウトはスクリプトが読み込まれるたびに自動的に作成・更新されます。',
+      overview: {
+        heading: '概要',
+        body: 'Condition TrackerはD&D 5eのステータス状態およびカスタム効果を、Roll20のターントラッカー内のラベル付き行として管理します。トークンに状態を適用し、イニシアチブ順に継続時間を追跡し、ターン終了時に期限切れの効果を自動的に削除します。すべてのコマンドはGM専用で、チャットまたはインストール済みマクロから実行できます。',
+      },
+      quickStart: {
+        heading: 'クイックスタート',
+        colCommand: 'コマンド',
+        colDesc: '説明',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'ステップバイステップのウィザード — 状態、トークン、継続時間をインタラクティブに選択します。ConditionTrackerWizardマクロとしても利用できます。',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            '1つの状態を複数のトークンに同時に適用します。ConditionTrackerMultiTargetマクロとしても利用できます。',
+          ],
+          [
+            '!condition-tracker --menu',
+            '状態の適用・確認・削除ボタンを含むメインメニューを開きます。',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'コマンドリファレンス',
+        colFlag: 'フラグ',
+        colDesc: '説明',
+        rows: [
+          ['--prompt', 'インタラクティブなステップバイステップウィザードUI'],
+          ['--multi-target', '複数のターゲットトークンに状態を一括適用'],
+          ['--menu', 'メインメニューを表示（削除メニューにはremoveを追加）'],
+          [
+            '--source X --target Y --condition Z',
+            'ウィザードを使わずに直接状態を適用',
+          ],
+          ['--duration &lt;値&gt;', '直接適用時の継続時間（例：2 rounds）'],
+          [
+            '--other &lt;テキスト&gt;',
+            '呪文・能力・その他の効果タイプ用のカスタムテキスト',
+          ],
+          ['--remove &lt;状態ID&gt;', '一意のIDで特定の状態を削除'],
+          [
+            '--config &lt;オプション&gt; &lt;値&gt;',
+            '設定を変更する（下記の設定セクションを参照）',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'このコマンドのみsubjectPromptBypassを上書き（--subject-prompt-bypassも使用可）',
+          ],
+          [
+            '--cleanup',
+            '状態を整合する — 孤立した状態とターントラッカー行を削除',
+          ],
+          [
+            '--reorder-conditions',
+            'ターン順序において条件行を割り当てられたトークンの後ろに手動で再配置します',
+          ],
+          ['--reinstall-macro', 'GMマクロを再作成または更新'],
+          [
+            '--reinstall-handout',
+            'ローカライズされたヘルプハンドアウトを再作成または更新',
+          ],
+          [
+            '--lang &lt;ロケール&gt;',
+            'このコマンドのメッセージを追加のロケールで出力（バイリンガルモード）',
+          ],
+          ['--help', 'チャットに簡単なヘルプカードを表示'],
+        ],
+      },
+      standardConditions: {
+        heading: '標準状態（D&amp;D 5e）',
+        colCondition: '状態',
+      },
+      customEffects: {
+        heading: 'カスタム効果タイプ',
+        colType: 'タイプ',
+        colNotes: '備考',
+        rows: [
+          [
+            '🔮 呪文',
+            '名前付き呪文効果を追跡します — 呪文名の入力を求められます',
+          ],
+          [
+            '🎯 能力',
+            '名前付きクラスまたは種族能力を追跡します — 能力名の入力を求められます',
+          ],
+          [
+            '🍀 有利',
+            'あるトークンから別のトークンへ付与された有利を記録します。イニシアチブではソースとグループ化されます',
+          ],
+          [
+            '⬇️ 不利',
+            '課された不利を記録します。イニシアチブではソースとグループ化されます',
+          ],
+          ['📝 その他', '自由形式のカスタムラベル — 説明の入力を求められます'],
+        ],
+      },
+      durationOptions: {
+        heading: '継続時間オプション',
+        intro:
+          '残数はターントラッカーのpr列に表示され、アンカートークンのターン終了時に減少します。',
+        colOption: 'オプション',
+        colBehaviour: '動作',
+        rows: [
+          ['削除されるまで', '恒久的 — メニューまたは--removeで手動削除が必要'],
+          [
+            'ターゲットの次のターン終了時',
+            'イニシアチブでターゲットトークンの次のターンが終了したときに失効',
+          ],
+          [
+            'ソースの次のターン終了時',
+            'イニシアチブでソーストークンの次のターンが終了したときに失効',
+          ],
+          [
+            '1 / 2 / 3 / 10 ラウンド',
+            '固定カウントダウン。アンカートークンのターン終了ごとに1減少',
+          ],
+        ],
+      },
+      configuration: {
+        heading: '設定',
+        intro:
+          '!condition-tracker --config &lt;オプション&gt; &lt;値&gt;またはメインメニューの設定ボタンを使用してください。',
+        colOption: 'オプション',
+        colValues: '値',
+        colDesc: '説明',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            '状態追加時にトークンへRoll20ステータスマーカーを適用する',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'ターントラッカー行で絵文字の代わりに短いアイコンコード（例：[G]）を表示する',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            '呪文・能力・その他の効果でオプションの対象トークン手順をスキップする',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            '監視するトークンバー。0になるとGMに状態のクリーンアップを促す',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'チャットメッセージとヘルプハンドアウトの出力言語',
+          ],
+          [
+            'marker',
+            '&lt;状態&gt;=&lt;マーカー名&gt;',
+            '特定の状態に使用するステータスマーカーを上書き（例：marker Grappled=grab）',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'デフォルトステータスマーカー',
+        colCondition: '状態',
+        colMarker: 'マーカー名',
+      },
+      availableLocales: {
+        heading: '利用可能な翻訳',
+        intro:
+          'languageの設定オプションを使用して、チャットメッセージとヘルプハンドアウトをサポートされている任意のロケールに設定できます。en、zh、ptの短縮エイリアスも使用できます。',
+        colLocale: 'ロケール',
+        colLanguage: '言語',
+        colFile: '翻訳ファイル',
       },
     },
   };
@@ -4294,6 +8323,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: '매크로 재설치',
         reinstallHandout: '유인물 재설치',
         showHelp: '도움말 표시',
+        reorderConditions: '조건 행 재정렬',
       },
       title: {
         menu: '메뉴',
@@ -4315,6 +8345,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 HP',
         moveToken: '{name} — 토큰을 이동하시겠습니까?',
         scriptReady: '스크립트 준비됨',
+        conditionReorder: '턴 순서 변경됨',
       },
       heading: {
         quickActions: '빠른 작업',
@@ -4403,6 +8434,9 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: '수동으로 제거됨',
         durationExpired: '지속 시간이 만료됨',
         markedAsDead: '{name} 이(가) 사망으로 표시됨',
+        conditionReorder:
+          '턴 순서가 변경되어 {count}개의 추적된 조건 행이 잘못된 위치에 있을 수 있습니다. 아래를 클릭하여 지정된 토큰 뒤에 복원하세요.',
+        conditionsReordered: '조건 행이 지정된 토큰 뒤로 재배치되었습니다.',
       },
       removal: {
         conditionField: '상태',
@@ -4479,6 +8513,10 @@ const ConditionTrackerMod = (() => {
             '이 명령어에 대해서만 subjectPromptBypass 재정의 (--subject-prompt-bypass 도 지원)',
           ],
           ['--cleanup', '상태 조정 — 연결이 끊긴 상태 및 턴 추적기 행 제거'],
+          [
+            '--reorder-conditions',
+            '턴 순서에서 조건 행을 할당된 토큰 뒤로 수동으로 재배치',
+          ],
           ['--reinstall-macro', 'GM 매크로 재생성 또는 업데이트'],
           [
             '--reinstall-handout',
@@ -4592,6 +8630,14 @@ const ConditionTrackerMod = (() => {
         colCondition: '상태',
         colMarker: '마커 이름',
       },
+      availableLocales: {
+        heading: '사용 가능한 번역',
+        intro:
+          'language 설정 옵션을 사용하여 채팅 메시지와 도움말 유인물을 지원되는 locale로 설정하세요. en, zh, pt에 대한 짧은 별칭도 허용됩니다.',
+        colLocale: '로케일',
+        colLanguage: '언어',
+        colFile: '번역 파일',
+      },
     },
   };
 
@@ -4691,28 +8737,422 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} pod wpływem {effect} ({source})',
+        advantage: '{emoji} {source} ma ułatwienie przeciwko {target}{subject}',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source} ma utrudnienie przeciwko {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} przez {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} nakłada {effect} na {target}.',
+        advantage: '{source} ma ułatwienie przeciwko {target}{subject}.',
+        disadvantage: '{source} ma utrudnienie przeciwko {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} nie jest już pod wpływem {effect}.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} nie ma już ułatwienia przeciwko {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} nie ma już utrudnienia przeciwko {target}{subject}.',
+        noBy: '{target} nie jest już {past}.',
+        standard: '{target} nie jest już {past} przez {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Wybierz stan',
+        selectSource: 'Wybierz żeton źródła',
+        selectTarget: 'Wybierz żeton celu',
+        selectSubject: 'Wybierz podmiot',
+        selectDuration: 'Wybierz czas trwania',
+        confirmTargetTitle: 'Potwierdź listę celów',
+        applyEffectTitle: 'Zastosuj efekt {condition}',
+        noTokens: 'Nie znaleziono nazwanych żetonów na aktywnej stronie.',
+        confirmIntro: 'Następujące żetony otrzymają stan:',
+        confirmBtn: 'Potwierdź listę celów',
+        enterDetails: 'Wprowadź szczegóły efektu',
+        noneBtn: 'Żaden',
+        subjectDesc: 'Wybierz, kto lub co wywołuje efekt.',
+        sourceDesc:
+          'Wybierz stworzenie, które tworzy lub generuje stan albo efekt.',
+        targetDesc: 'Wybierz stworzenie, które otrzyma stan lub efekt.',
+        otherText: 'Własny tekst stanu',
+        effectDetails: 'Szczegóły {condition}',
+      },
+      col: {
+        players: 'Gracze',
+        npcs: 'BN',
+        conditions: 'Stany',
+        customEffects: 'Własne efekty',
+        permanentTurnEnd: 'Trwały / Koniec tury',
+        rounds: 'Rundy',
+        command: 'Polecenie',
+        result: 'Wynik',
+        field: 'Pole',
+        value: 'Wartość',
+        option: 'Opcja',
+        condition: 'Stan',
+        marker: 'Znacznik',
+        item: 'Element',
+        removed: 'Usunięto',
+        details: 'Szczegóły',
+        description: 'Opis',
+        scenario: 'Scenariusz',
+      },
+      dur: {
+        untilRemoved: 'Do usunięcia',
+        endOfTargetTurn: 'Koniec następnej tury celu',
+        endOfSourceTurn: 'Koniec następnej tury źródła',
+        round1: '1 runda',
+        round2: '2 rundy',
+        round3: '3 rundy',
+        round10: '10 rund',
+        custom: 'Własny',
+        customPrompt: 'Liczba rund',
+        untilRemovedDisplay: 'Do usunięcia',
+        turnsRemaining: 'Pozostało {n} koniec (końców) tury',
+      },
+      btn: {
+        openWizard: 'Otwórz kreator',
+        openMultiTarget: 'Otwórz kreator wielu celów',
+        openRemovalList: 'Otwórz listę usuwania',
+        showConfig: 'Pokaż konfigurację',
+        runCleanup: 'Uruchom czyszczenie',
+        reinstallMacro: 'Zainstaluj ponownie makro',
+        reinstallHandout: 'Zainstaluj ponownie handout',
+        showHelp: 'Pokaż pomoc',
+        reorderConditions: 'Zmień kolejność wierszy stanów',
+      },
+      title: {
+        menu: 'Menu',
+        removalMenu: 'Usuwanie stanów',
+        config: 'Konfiguracja',
+        configTracker: 'Konfiguracja Condition Trackera',
+        help: 'Pomoc',
+        applied: 'Zastosowano',
+        removed: 'Stan usunięty',
+        cleanup: 'Czyszczenie zakończone',
+        macroReinstalled: 'Makro zainstalowane ponownie',
+        handoutReinstalled: 'Handout zainstalowany ponownie',
+        warning: 'Ostrzeżenie',
+        error: 'Błąd',
+        turnOrder: 'Kolejność tur',
+        noConditions: 'Brak stanów',
+        tokenMoved: 'Żeton przeniesiony',
+        markedDead: 'Oznaczony jako martwy',
+        zeroHp: '{name} — 0 PŻ',
+        moveToken: '{name} — Przenieść żeton?',
+        scriptReady: 'Skrypt gotowy',
+        conditionReorder: 'Kolejność tur zmieniona',
+      },
+      heading: {
+        quickActions: 'Szybkie akcje',
+        settings: 'Ustawienia',
+        markerMappings: 'Mapowania znaczników',
+        result: 'Wynik',
+        info: 'Informacje',
+        commandOptions: 'Opcje poleceń',
+        promptUi: 'Interfejs kreatora',
+        examples: 'Przykłady',
+        summary: 'Podsumowanie',
+      },
+      msg: {
+        noActive: 'Nie są śledzone żadne aktywne stany.',
+        configReset: 'Konfiguracja zresetowana do domyślnych wartości modułu.',
+        unknownConfig:
+          'Nieznana opcja konfiguracji. Użyj --config, aby wyświetlić obsługiwane ustawienia.',
+        macroReinstalled:
+          'Makra {wizard} i {multiTarget} zostały ponownie zainstalowane dla wszystkich obecnych graczy z rolą MG.',
+        handoutReinstalled:
+          'Handout pomocy {handout} został ponownie zainstalowany.',
+        duplicate:
+          'Ta dokładna kombinacja źródła, podmiotu, celu, stanu i własnego tekstu jest już aktywna.',
+        noTargets: 'Nie podano żetonów celu dla zastosowania wielu celów.',
+        noSelection:
+          'Wybierz przynajmniej jeden żeton na planszy przed użyciem --multi-target.',
+        invalidIds:
+          'Nie znaleziono prawidłowych identyfikatorów żetonów w bieżącym zaznaczeniu.',
+        reSelectTokens:
+          'Żaden z pierwotnie wybranych żetonów nie mógł zostać znaleziony. Wybierz żetony ponownie i spróbuj jeszcze raz.',
+        conditionNotFound: 'Nie znaleziono identyfikatora stanu.',
+        gmOnly: 'Polecenia Condition Trackera są dostępne tylko dla MG.',
+        commandFailed:
+          'Polecenia nie można było bezpiecznie wykonać. Sprawdź konsolę API.',
+        sourceTokenNotFound: 'Nie można było znaleźć żetonu źródła.',
+        targetTokenNotFound: 'Nie można było znaleźć żetonu celu.',
+        subjectTokenNotFound: 'Nie można było znaleźć żetonu podmiotu.',
+        invalidCondition:
+          'Stan musi być jednym ze wstępnie zdefiniowanych stanów lub Inne.',
+        subjectOnlyCustom:
+          '--subject jest prawidłowy tylko dla Zaklęcia, Zdolności, Ułatwienia, Utrudnienia i Innego.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass oczekuje wartości true lub false, gdy wartość jest podana.',
+        customDetailsRequired:
+          'Szczegóły {condition} są wymagane. Użyj --other, aby je podać.',
+        markerConfigFormat:
+          'Format konfiguracji znacznika: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Konfiguracja znacznika wymaga wstępnie zdefiniowanej nazwy stanu.',
+        markerNameRequired:
+          'Konfiguracja znacznika wymaga niepustej nazwy znacznika.',
+        markerSet: 'Znacznik {condition} ustawiony na {marker}.',
+        healthBarSet: 'Pasek zdrowia ustawiony na {bar}.',
+        boolSet: '{key} ustawione na {value}.',
+        expectedBoolean: 'Oczekiwano true lub false.',
+        invalidHealthBar:
+          'Pasek zdrowia musi być bar1_value, bar2_value lub bar3_value.',
+        markersDisabled: 'Znaczniki są wyłączone.',
+        noMarkerConfigured:
+          'Dla tego stanu nie skonfigurowano żadnego znacznika.',
+        markerApplied: 'Znacznik zastosowany: {marker}',
+        markerPresent: 'Znacznik już obecny: {marker}',
+        langSet: 'Język ustawiony na {locale}.',
+        invalidLocale: 'Nieprawidłowy język. Obsługiwane języki: {locales}.',
+        otherDurationRequiresRounds:
+          'Czas trwania Inne wymaga numerycznej liczby rund, na przykład --duration 5 rounds.',
+        invalidDuration:
+          'Czas trwania musi być Do usunięcia, opcją końca tury lub dodatnią liczbą rund.',
+        zeroHpNoConditions: '{name} osiągnął 0 PŻ i nie ma aktywnych stanów.',
+        zeroHpConditions: '{name} osiągnął 0 PŻ. Wybierz stany do usunięcia:',
+        removeAllBtn: 'Usuń wszystkie stany dla {name}',
+        markIncapacitated: 'Oznacz jako ubezwłasnowolnionego',
+        removeFromTurnOrder: 'Usuń z kolejności tur',
+        alreadyIncapacitated: '{name} jest już ubezwłasnowolniony.',
+        tokenRemovedFromTurn: '{name} został usunięty z kolejności tur.',
+        tokenNotInTurn: '{name} nie został znaleziony w kolejności tur.',
+        moveTokenPrompt:
+          'Przenieść {name} na warstwę mapy, żeby pozostał widoczny, ale nie przeszkadzał innym żetonom?',
+        moveTokenBtn: 'Przenieś {name} na warstwę mapy',
+        tokenMoved: '{name} został przeniesiony na warstwę mapy.',
+        tokenNotFound: 'Nie znaleziono żetonu.',
+        noActiveConditions: '{name} nie ma aktywnych stanów do usunięcia.',
+        deadNoConditions:
+          '{name} został oznaczony jako martwy. Nie było aktywnych stanów.',
+        scriptReady: '{name} jest aktywny i używasz wersji {version}.',
+        reachedZeroHp: '{name} osiągnął 0 PŻ',
+        manuallyRemoved: 'zostało ręcznie usunięte',
+        durationExpired: 'czas trwania wygasł',
+        markedAsDead: '{name} został oznaczony jako martwy',
+        conditionReorder:
+          'Kolejność tur zmieniła się i {count} śledzony (śledzonych) wiersz stanów może być teraz poza kolejnością. Kliknij poniżej, aby przywrócić je po przypisanych żetonach.',
+        conditionsReordered:
+          'Wiersze stanów zostały przesunięte po ich przypisanych żetonach.',
+      },
+      removal: {
+        conditionField: 'Stan',
+        reasonField: 'Powód',
+        turnRowField: 'Wiersz śledzenia tur',
+        markerField: 'Znacznik',
+        notConfigured: 'Nie skonfigurowano',
+        markerRemoved: 'Usunięto ({marker})',
+        markerRetained: 'Zachowano ({marker})',
+        rowRemoved: 'Usunięto',
+        rowMissing: 'Już brakuje',
+        manualReason: 'Ręczne usunięcie',
+      },
+      cleanup: {
+        orphaned: 'Osierocone wpisy stanów',
+        stale: 'Przestarzałe wpisy stanów',
+        orphanedRows: 'Osierocone wiersze śledzenia tur',
+        unusedMarkers: 'Nieużywane znaczniki',
+      },
+      apply: {
+        turnAppended:
+          'Cel nie był w kolejności tur; wiersz stanu został dołączony na końcu.',
+        turnInserted: 'Wiersz stanu wstawiony poniżej żetonu celu.',
+      },
+    },
+    handout: {
+      versionLabel: 'Wersja',
+      subtitle: 'Menedżer efektów statusu D&D 5e',
+      footerNote:
+        'Ten handout jest automatycznie tworzony i aktualizowany przy każdym załadowaniu skryptu.',
+      overview: {
+        heading: 'Przegląd',
+        body: 'Condition Tracker zarządza stanami D&D 5e i własnymi efektami jako oznaczonymi wierszami w Śledzoniku Tur Roll20. Stosuj stany do żetonów, śledź czas trwania według kolejności inicjatywy i automatycznie usuwaj wygasłe efekty na końcu tury. Wszystkie polecenia są dostępne tylko dla MG i można je uruchamiać z czatu lub za pomocą zainstalowanych makr.',
+      },
+      quickStart: {
+        heading: 'Szybki start',
+        colCommand: 'Polecenie',
+        colDesc: 'Opis',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Kreator krok po kroku — interaktywnie wybierz stan, żetony i czas trwania. Dostępny również jako makro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Zastosuj jeden stan do kilku żetonów jednocześnie. Dostępny również jako makro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Otwórz główne menu zarządzania z przyciskami do stosowania, przeglądania lub usuwania stanów.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Dokumentacja poleceń',
+        colFlag: 'Flaga',
+        colDesc: 'Opis',
+        rows: [
+          ['--prompt', 'Interaktywny kreator krok po kroku'],
+          ['--multi-target', 'Zastosuj stan do wielu żetonów celu naraz'],
+          ['--menu', 'Pokaż główne menu (dodaj remove dla menu usuwania)'],
+          [
+            '--source X --target Y --condition Z',
+            'Zastosuj stan bezpośrednio bez kreatora',
+          ],
+          [
+            '--duration &lt;wartość&gt;',
+            'Czas trwania dla bezpośredniego zastosowania (np. 2 rounds)',
+          ],
+          [
+            '--other &lt;tekst&gt;',
+            'Własny tekst dla typów efektów Zaklęcie / Zdolność / Inne',
+          ],
+          [
+            '--remove &lt;ID stanu&gt;',
+            'Usuń konkretny stan według jego unikalnego identyfikatora',
+          ],
+          [
+            '--config &lt;opcja&gt; &lt;wartość&gt;',
+            'Dostosuj ustawienia konfiguracji (patrz sekcja Konfiguracja poniżej)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Nadpisz subjectPromptBypass tylko dla tego polecenia (obsługuje również --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Uzgodnij stan — usuń osierocone stany i wiersze Śledzika Tur',
+          ],
+          [
+            '--reorder-conditions',
+            'Ręcznie przenieść wiersze warunków za przypisane tokeny w kolejności tur',
+          ],
+          ['--reinstall-macro', 'Utwórz ponownie lub zaktualizuj makra MG'],
+          [
+            '--reinstall-handout',
+            'Utwórz ponownie lub zaktualizuj zlokalizowany handout pomocy',
+          ],
+          [
+            '--lang &lt;język&gt;',
+            'Wyświetl wiadomości tego polecenia w dodatkowym języku (tryb dwujęzyczny)',
+          ],
+          ['--help', 'Pokaż krótką kartę pomocy w czacie'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standardowe stany (D&amp;D 5e)',
+        colCondition: 'Stan',
+      },
+      customEffects: {
+        heading: 'Własne typy efektów',
+        colType: 'Typ',
+        colNotes: 'Uwagi',
+        rows: [
+          [
+            '🔮 Zaklęcie',
+            'Śledź nazwany efekt zaklęcia — zostaniesz poproszony o podanie nazwy zaklęcia',
+          ],
+          [
+            '🎯 Zdolność',
+            'Śledź nazwaną zdolność klasy lub rasy — zostaniesz poproszony o podanie nazwy',
+          ],
+          [
+            '🍀 Ułatwienie',
+            'Zapisz ułatwienie przyznane od jednego żetonu drugiemu; zgrupowane ze źródłem w inicjatywie',
+          ],
+          [
+            '⬇️ Utrudnienie',
+            'Zapisz nałożone utrudnienie; zgrupowane ze źródłem w inicjatywie',
+          ],
+          [
+            '📝 Inne',
+            'Dowolna własna etykieta — zostaniesz poproszony o podanie opisu',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Opcje czasu trwania',
+        intro:
+          'Pozostała liczba jest wyświetlana w kolumnie pr Śledzika Tur i zmniejsza się, gdy kończy się tura żetonu kotwicy.',
+        colOption: 'Opcja',
+        colBehaviour: 'Zachowanie',
+        rows: [
+          [
+            'Do usunięcia',
+            'Trwały — musi być usunięty ręcznie przez menu lub --remove',
+          ],
+          [
+            'Koniec następnej tury celu',
+            'Wygasa gdy kończy się następna tura żetonu celu w inicjatywie',
+          ],
+          [
+            'Koniec następnej tury źródła',
+            'Wygasa gdy kończy się następna tura żetonu źródła w inicjatywie',
+          ],
+          [
+            '1 / 2 / 3 / 10 rund',
+            'Stały odliczanie; jedno zmniejszenie na koniec tury żetonu kotwicy',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Konfiguracja',
+        intro:
+          'Użyj !condition-tracker --config &lt;opcja&gt; &lt;wartość&gt; lub przycisku Konfiguracja w głównym menu.',
+        colOption: 'Opcja',
+        colValues: 'Wartości',
+        colDesc: 'Opis',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Zastosuj znaczniki statusu Roll20 do żetonów przy dodawaniu stanu',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Pokaż krótkie kody ikon (np. [G]) zamiast emoji w wierszach Śledzika Tur',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Pomiń opcjonalny krok wyboru podmiotu dla efektów Zaklęcie / Zdolność / Inne',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Pasek do obserwacji; gdy spadnie do 0, MG jest proszony o wyczyszczenie stanów',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Język wyjściowy dla wiadomości czatu i handoutu pomocy',
+          ],
+          [
+            'marker',
+            '&lt;Stan&gt;=&lt;nazwa znacznika&gt;',
+            'Nadpisz znacznik statusu używany dla konkretnego stanu (np. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Domyślne znaczniki statusu',
+        colCondition: 'Stan',
+        colMarker: 'Nazwa znacznika',
+      },
+      availableLocales: {
+        heading: 'Dostępne tłumaczenia',
+        intro:
+          'Użyj opcji konfiguracji języka, aby ustawić wiadomości czatu i handout pomocy na dowolny obsługiwany język. Krótkie aliasy są również akceptowane dla en, zh i pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Język',
+        colFile: 'Plik tłumaczenia',
       },
     },
   };
@@ -4814,28 +9254,430 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} afetado por {effect} ({source})',
+        advantage: '{emoji} {source} tem vantagem contra {target}{subject}',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source} tem desvantagem contra {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} por {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} aplica {effect} a {target}.',
+        advantage: '{source} tem vantagem contra {target}{subject}.',
+        disadvantage: '{source} tem desvantagem contra {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+        custom: '{target} já não está afetado por {effect}.',
+        advantage: '{source} já não tem vantagem contra {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} já não tem desvantagem contra {target}{subject}.',
+        noBy: '{target} já não {past}.',
+        standard: '{target} já não está {past} por {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Selecionar condição',
+        selectSource: 'Selecionar ficha de origem',
+        selectTarget: 'Selecionar ficha alvo',
+        selectSubject: 'Selecionar sujeito',
+        selectDuration: 'Selecionar duração',
+        confirmTargetTitle: 'Confirmar lista de alvos',
+        applyEffectTitle: 'Aplicar efeito {condition}',
+        noTokens: 'Não foram encontradas fichas com nome na página activa.',
+        confirmIntro: 'As seguintes fichas receberão a condição:',
+        confirmBtn: 'Confirmar lista de alvos',
+        enterDetails: 'Introduzir detalhes do efeito',
+        noneBtn: 'Nenhum',
+        subjectDesc: 'Selecione quem ou o que aplica o efeito.',
+        sourceDesc:
+          'Selecione a criatura que cria ou gera a condição ou o efeito.',
+        targetDesc:
+          'Selecione a criatura que irá receber a condição ou o efeito.',
+        otherText: 'Texto de condição personalizado',
+        effectDetails: 'Detalhes de {condition}',
+      },
+      col: {
+        players: 'Jogadores',
+        npcs: 'PNJs',
+        conditions: 'Condições',
+        customEffects: 'Efeitos personalizados',
+        permanentTurnEnd: 'Permanente / Fim de turno',
+        rounds: 'Rondas',
+        command: 'Comando',
+        result: 'Resultado',
+        field: 'Campo',
+        value: 'Valor',
+        option: 'Opção',
+        condition: 'Condição',
+        marker: 'Marcador',
+        item: 'Item',
+        removed: 'Removido',
+        details: 'Detalhes',
+        description: 'Descrição',
+        scenario: 'Cenário',
+      },
+      dur: {
+        untilRemoved: 'Até ser removido',
+        endOfTargetTurn: 'Fim do próximo turno do alvo',
+        endOfSourceTurn: 'Fim do próximo turno da origem',
+        round1: '1 ronda',
+        round2: '2 rondas',
+        round3: '3 rondas',
+        round10: '10 rondas',
+        custom: 'Personalizado',
+        customPrompt: 'Número de rondas',
+        untilRemovedDisplay: 'Até ser removido',
+        turnsRemaining: '{n} fim(ns) de turno restante(s)',
+      },
+      btn: {
+        openWizard: 'Abrir assistente',
+        openMultiTarget: 'Abrir assistente multi-alvo',
+        openRemovalList: 'Abrir lista de remoção',
+        showConfig: 'Mostrar configuração',
+        runCleanup: 'Executar limpeza',
+        reinstallMacro: 'Reinstalar macro',
+        reinstallHandout: 'Reinstalar documento',
+        showHelp: 'Mostrar ajuda',
+        reorderConditions: 'Reordenar linhas de condições',
+      },
+      title: {
+        menu: 'Menu',
+        removalMenu: 'Remoção — Condition Tracker',
+        config: 'Configuração',
+        configTracker: 'Configuração — Condition Tracker',
+        help: 'Ajuda',
+        applied: 'Aplicado',
+        removed: 'Condição removida',
+        cleanup: 'Limpeza concluída',
+        macroReinstalled: 'Macro reinstalada',
+        handoutReinstalled: 'Documento reinstalado',
+        warning: 'Aviso',
+        error: 'Erro',
+        turnOrder: 'Ordem de iniciativa',
+        noConditions: 'Sem condições',
+        tokenMoved: 'Ficha movida',
+        markedDead: 'Marcado como morto',
+        zeroHp: '{name} — 0 PV',
+        moveToken: '{name} — Mover ficha?',
+        scriptReady: 'Script pronto',
+        conditionReorder: 'Ordem de turno alterada',
+      },
+      heading: {
+        quickActions: 'Acções rápidas',
+        settings: 'Definições',
+        markerMappings: 'Mapeamento de marcadores',
+        result: 'Resultado',
+        info: 'Informação',
+        commandOptions: 'Opções de comando',
+        promptUi: 'Interface do assistente',
+        examples: 'Exemplos',
+        summary: 'Resumo',
+      },
+      msg: {
+        noActive: 'Não há condições activas a ser rastreadas.',
+        configReset: 'Configuração reposta para os valores predefinidos.',
+        unknownConfig:
+          'Opção de configuração desconhecida. Utilize --config para ver as definições suportadas.',
+        macroReinstalled:
+          'As macros {wizard} e {multiTarget} foram reinstaladas para todos os mestres activos.',
+        handoutReinstalled: 'O documento de ajuda {handout} foi reinstalado.',
+        duplicate:
+          'Esta combinação exacta de origem, sujeito, alvo, condição e texto personalizado já está activa.',
+        noTargets:
+          'Não foram especificadas fichas alvo para a aplicação multi-alvo.',
+        noSelection:
+          'Seleccione pelo menos uma ficha no tabuleiro antes de utilizar --multi-target.',
+        invalidIds:
+          'Não foram encontrados IDs de ficha válidos na selecção actual.',
+        reSelectTokens:
+          'Nenhuma das fichas originalmente seleccionadas foi encontrada. Volte a seleccionar as fichas e tente novamente.',
+        conditionNotFound: 'ID de condição não encontrado.',
+        gmOnly: 'Os comandos do Condition Tracker são exclusivos do Mestre.',
+        commandFailed:
+          'O comando não pôde ser concluído com segurança. Consulte a consola da API para mais detalhes.',
+        sourceTokenNotFound: 'Ficha de origem não encontrada.',
+        targetTokenNotFound: 'Ficha alvo não encontrada.',
+        subjectTokenNotFound: 'Ficha do sujeito não encontrada.',
+        invalidCondition:
+          'A condição deve ser uma das condições predefinidas ou Outro.',
+        subjectOnlyCustom:
+          '--subject só é válido para Feitiço, Habilidade, Vantagem, Desvantagem e Outro.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass espera true ou false quando um valor é fornecido.',
+        customDetailsRequired:
+          'São necessários detalhes de {condition}. Utilize --other para os fornecer.',
+        markerConfigFormat:
+          'O formato de configuração do marcador é: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'A configuração do marcador requer um nome de condição predefinido.',
+        markerNameRequired:
+          'A configuração do marcador requer um nome de marcador não vazio.',
+        markerSet: 'Marcador de {condition} definido para {marker}.',
+        healthBarSet: 'Barra de saúde definida para {bar}.',
+        boolSet: '{key} definido para {value}.',
+        expectedBoolean: 'Esperado true ou false.',
+        invalidHealthBar:
+          'A barra de saúde deve ser bar1_value, bar2_value ou bar3_value.',
+        markersDisabled: 'Os marcadores estão desactivados.',
+        noMarkerConfigured:
+          'Não há nenhum marcador configurado para esta condição.',
+        markerApplied: 'Marcador aplicado: {marker}',
+        markerPresent: 'Marcador já presente: {marker}',
+        langSet: 'Idioma definido para {locale}.',
+        invalidLocale:
+          'Configuração regional inválida. Configurações regionais suportadas: {locales}.',
+        otherDurationRequiresRounds:
+          'A duração Outro requer um número de rondas, por exemplo --duration 5 rounds.',
+        invalidDuration:
+          'A duração deve ser Até ser removido, uma opção de fim de turno ou um número positivo de rondas.',
+        zeroHpNoConditions: '{name} chegou a 0 PV e não tem condições activas.',
+        zeroHpConditions:
+          '{name} chegou a 0 PV. Escolha as condições a remover:',
+        removeAllBtn: 'Remover todas as condições de {name}',
+        markIncapacitated: 'Marcar como Incapacitado',
+        removeFromTurnOrder: 'Remover da ordem de iniciativa',
+        alreadyIncapacitated: '{name} já está Incapacitado.',
+        tokenRemovedFromTurn: '{name} foi removido da ordem de iniciativa.',
+        tokenNotInTurn: '{name} não foi encontrado na ordem de iniciativa.',
+        moveTokenPrompt:
+          'Mover {name} para a camada do mapa para que permaneça visível sem interferir com outras fichas?',
+        moveTokenBtn: 'Mover {name} para a camada do mapa',
+        tokenMoved: '{name} foi movido para a camada do mapa.',
+        tokenNotFound: 'Ficha não encontrada.',
+        noActiveConditions: '{name} não tem condições activas para remover.',
+        deadNoConditions:
+          '{name} foi marcado como morto. Não havia condições activas.',
+        scriptReady: '{name} está activo e está a utilizar a versão {version}.',
+        reachedZeroHp: '{name} chegou a 0 PV',
+        manuallyRemoved: 'foi removida manualmente',
+        durationExpired: 'a sua duração expirou',
+        markedAsDead: '{name} foi marcado como morto',
+        conditionReorder:
+          'A ordem de turno foi alterada e {count} linha(s) de condição rastreada(s) pode(m) estar fora do lugar. Clique abaixo para as restaurar após as fichas atribuídas.',
+        conditionsReordered:
+          'As linhas de condições foram reposicionadas após as fichas atribuídas.',
+      },
+      removal: {
+        conditionField: 'Condição',
+        reasonField: 'Motivo',
+        turnRowField: 'Linha do registo de turnos',
+        markerField: 'Marcador',
+        notConfigured: 'Não configurado',
+        markerRemoved: 'Removido ({marker})',
+        markerRetained: 'Mantido ({marker})',
+        rowRemoved: 'Removido',
+        rowMissing: 'Já ausente',
+        manualReason: 'Remoção manual',
+      },
+      cleanup: {
+        orphaned: 'Entradas de condição órfãs',
+        stale: 'Entradas de condição obsoletas',
+        orphanedRows: 'Linhas órfãs do registo de turnos',
+        unusedMarkers: 'Marcadores não utilizados',
+      },
+      apply: {
+        turnAppended:
+          'O alvo não estava na ordem de iniciativa; a linha de condição foi adicionada no fim.',
+        turnInserted: 'Linha de condição inserida abaixo da ficha alvo.',
+      },
+    },
+    handout: {
+      versionLabel: 'Versão',
+      subtitle: 'Gestor de efeitos de estado D&D 5e',
+      footerNote:
+        'Este documento é criado e actualizado automaticamente sempre que o script é carregado.',
+      overview: {
+        heading: 'Visão geral',
+        body: 'O Condition Tracker gere as condições de estado de D&D 5e e os efeitos personalizados como linhas etiquetadas no Registo de Turnos do Roll20. Aplique condições a fichas, acompanhe as durações por ordem de iniciativa e remova automaticamente os efeitos expirados quando um turno termina. Todos os comandos são exclusivos do Mestre e podem ser activados a partir do chat ou através das macros instaladas.',
+      },
+      quickStart: {
+        heading: 'Início rápido',
+        colCommand: 'Comando',
+        colDesc: 'Descrição',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Assistente passo a passo — escolha condição, fichas e duração de forma interactiva. Disponível também como macro ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Aplique uma condição a várias fichas simultaneamente. Disponível também como macro ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Abra o menu principal de gestão com botões para aplicar, rever ou remover condições.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Referência de comandos',
+        colFlag: 'Opção',
+        colDesc: 'Descrição',
+        rows: [
+          ['--prompt', 'Interface do assistente passo a passo'],
+          [
+            '--multi-target',
+            'Aplicar uma condição a várias fichas alvo de uma vez',
+          ],
+          [
+            '--menu',
+            'Mostrar o menu principal (adicione remove para o menu de remoção)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Aplicar uma condição directamente sem o assistente',
+          ],
+          [
+            '--duration &lt;valor&gt;',
+            'Duração para uma aplicação directa (ex. 2 rounds)',
+          ],
+          [
+            '--other &lt;texto&gt;',
+            'Texto personalizado para os tipos de efeito Feitiço / Habilidade / Outro',
+          ],
+          [
+            '--remove &lt;id-condição&gt;',
+            'Remover uma condição específica pelo seu ID único',
+          ],
+          [
+            '--config &lt;opção&gt; &lt;valor&gt;',
+            'Ajustar as definições de configuração (consulte a secção Configuração)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Substituir subjectPromptBypass apenas para este comando (suporta também --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Reconciliar o estado — remover condições e linhas do registo de turnos órfãs',
+          ],
+          [
+            '--reorder-conditions',
+            'Reposicionar manualmente as linhas de condição a seguir aos tokens atribuídos na ordem de turnos',
+          ],
+          ['--reinstall-macro', 'Recriar ou actualizar as macros do Mestre'],
+          [
+            '--reinstall-handout',
+            'Recriar ou actualizar o documento de ajuda localizado',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Apresentar as mensagens deste comando numa configuração regional adicional (modo bilingue)',
+          ],
+          ['--help', 'Mostrar um cartão de ajuda rápida no chat'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Condições padrão (D&amp;D 5e)',
+        colCondition: 'Condição',
+      },
+      customEffects: {
+        heading: 'Tipos de efeitos personalizados',
+        colType: 'Tipo',
+        colNotes: 'Notas',
+        rows: [
+          [
+            '🔮 Feitiço',
+            'Rastrear um efeito de feitiço com nome — ser-lhe-á pedido o nome do feitiço',
+          ],
+          [
+            '🎯 Habilidade',
+            'Rastrear uma habilidade de classe ou raça com nome — ser-lhe-á pedido o nome',
+          ],
+          [
+            '🍀 Vantagem',
+            'Registar uma vantagem concedida de uma ficha a outra; agrupada com a origem na iniciativa',
+          ],
+          [
+            '⬇️ Desvantagem',
+            'Registar uma desvantagem imposta; agrupada com a origem na iniciativa',
+          ],
+          [
+            '📝 Outro',
+            'Etiqueta personalizada livre — ser-lhe-á pedida uma descrição',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Opções de duração',
+        intro:
+          'O contador restante é mostrado na coluna pr do Registo de Turnos e diminui quando o turno da ficha âncora termina.',
+        colOption: 'Opção',
+        colBehaviour: 'Comportamento',
+        rows: [
+          [
+            'Até ser removido',
+            'Permanente — deve ser removido manualmente através do menu ou --remove',
+          ],
+          [
+            'Fim do próximo turno do alvo',
+            'Expira quando o próximo turno da ficha alvo termina na iniciativa',
+          ],
+          [
+            'Fim do próximo turno da origem',
+            'Expira quando o próximo turno da ficha de origem termina na iniciativa',
+          ],
+          [
+            '1 / 2 / 3 / 10 rondas',
+            'Contagem decrescente fixa; um decréscimo por fim de turno da ficha âncora',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Configuração',
+        intro:
+          'Utilize !condition-tracker --config &lt;opção&gt; &lt;valor&gt; ou o botão Configuração no menu principal.',
+        colOption: 'Opção',
+        colValues: 'Valores',
+        colDesc: 'Descrição',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Aplicar marcadores de estado Roll20 às fichas quando uma condição é adicionada',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Mostrar códigos de ícone curtos (ex. [G]) em vez de carinhas nas linhas do Registo de Turnos',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Ignorar o passo opcional da ficha sujeito para efeitos de Feitiço / Habilidade / Outro',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Barra da ficha a monitorizar; quando chega a 0 o Mestre é alertado para limpar as condições',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Idioma das mensagens do chat e do documento de ajuda',
+          ],
+          [
+            'marker',
+            '&lt;Condição&gt;=&lt;nome do marcador&gt;',
+            'Substituir o marcador de estado utilizado para uma condição específica (ex. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Marcadores de estado predefinidos',
+        colCondition: 'Condição',
+        colMarker: 'Nome do marcador',
+      },
+      availableLocales: {
+        heading: 'Traduções disponíveis',
+        intro:
+          'Utilize a opção de configuração language para definir as mensagens do chat e o documento de ajuda para qualquer configuração regional suportada. Os aliases curtos também são aceites para en, zh e pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Idioma',
+        colFile: 'Ficheiro de tradução',
       },
     },
   };
@@ -5022,7 +9864,9 @@ const ConditionTrackerMod = (() => {
         showConfig: 'Mostrar configuração',
         runCleanup: 'Executar limpeza',
         reinstallMacro: 'Reinstalar macro',
+        reinstallHandout: 'Reinstalar livreto',
         showHelp: 'Mostrar ajuda',
+        reorderConditions: 'Reordenar linhas de condição',
       },
       title: {
         menu: 'Menu',
@@ -5044,6 +9888,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 PV',
         moveToken: '{name} — Mover ficha?',
         scriptReady: 'Script pronto',
+        conditionReorder: 'Ordem de turno alterada',
       },
       heading: {
         quickActions: 'Ações rápidas',
@@ -5131,6 +9976,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'remoção manual',
         durationExpired: 'sua duração expirou',
         markedAsDead: '{name} foi marcado como morto',
+        conditionReorder:
+          'A ordem de turno mudou e {count} linha(s) de condição rastreada(s) pode(m) estar fora do lugar. Clique abaixo para restaurá-las após os tokens atribuídos.',
+        conditionsReordered:
+          'As linhas de condição foram reposicionadas após seus tokens atribuídos.',
       },
       removal: {
         conditionField: 'Condição',
@@ -5222,6 +10071,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Reconciliar estado — remover condições e linhas órfãs',
+          ],
+          [
+            '--reorder-conditions',
+            'Reposicionar manualmente as linhas de condição após os tokens atribuídos na ordem de iniciativa',
           ],
           ['--reinstall-macro', 'Recriar ou atualizar as macros do GM'],
           [
@@ -5336,6 +10189,14 @@ const ConditionTrackerMod = (() => {
         colCondition: 'Condição',
         colMarker: 'Nome do marcador',
       },
+      availableLocales: {
+        heading: 'Traduções disponíveis',
+        intro:
+          'Use a opção de configuração language para definir as mensagens de chat e o livreto de ajuda em qualquer locale suportado. Aliases curtos também são aceitos para en, zh e pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Idioma',
+        colFile: 'Arquivo de tradução',
+      },
     },
   };
 
@@ -5438,28 +10299,427 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} под воздействием {effect} ({source})',
+        advantage:
+          '{emoji} {source} имеет преимущество против {target}{subject}',
+        disadvantage: '{emoji} {source} имеет помеху против {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} от {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} накладывает {effect} на {target}.',
+        advantage: '{source} имеет преимущество против {target}{subject}.',
+        disadvantage: '{source} имеет помеху против {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} больше не находится под воздействием {effect}.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} больше не имеет преимущества против {target}{subject}.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} больше не имеет помехи против {target}{subject}.',
+        noBy: '{target} больше не {past}.',
+        standard: '{target} больше не {past} от {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Выбрать состояние',
+        selectSource: 'Выбрать жетон источника',
+        selectTarget: 'Выбрать жетон цели',
+        selectSubject: 'Выбрать субъект',
+        selectDuration: 'Выбрать длительность',
+        confirmTargetTitle: 'Подтвердить список целей',
+        applyEffectTitle: 'Применить эффект {condition}',
+        noTokens: 'На активной странице не найдено именованных жетонов.',
+        confirmIntro: 'Следующие жетоны получат состояние:',
+        confirmBtn: 'Подтвердить список целей',
+        enterDetails: 'Ввести подробности эффекта',
+        noneBtn: 'Нет',
+        subjectDesc: 'Выберите, кто или что вызывает эффект.',
+        sourceDesc:
+          'Выберите существо, создающее или генерирующее состояние или эффект.',
+        targetDesc: 'Выберите существо, которое получит состояние или эффект.',
+        otherText: 'Произвольный текст состояния',
+        effectDetails: 'Подробности {condition}',
+      },
+      col: {
+        players: 'Игроки',
+        npcs: 'НИП',
+        conditions: 'Состояния',
+        customEffects: 'Пользовательские эффекты',
+        permanentTurnEnd: 'Постоянный / Конец хода',
+        rounds: 'Раунды',
+        command: 'Команда',
+        result: 'Результат',
+        field: 'Поле',
+        value: 'Значение',
+        option: 'Параметр',
+        condition: 'Состояние',
+        marker: 'Маркер',
+        item: 'Элемент',
+        removed: 'Удалено',
+        details: 'Подробности',
+        description: 'Описание',
+        scenario: 'Сценарий',
+      },
+      dur: {
+        untilRemoved: 'До удаления',
+        endOfTargetTurn: 'Конец следующего хода цели',
+        endOfSourceTurn: 'Конец следующего хода источника',
+        round1: '1 раунд',
+        round2: '2 раунда',
+        round3: '3 раунда',
+        round10: '10 раундов',
+        custom: 'Произвольно',
+        customPrompt: 'Количество раундов',
+        untilRemovedDisplay: 'До удаления',
+        turnsRemaining: 'Осталось {n} конец (концов) хода',
+      },
+      btn: {
+        openWizard: 'Открыть мастер',
+        openMultiTarget: 'Открыть мастер нескольких целей',
+        openRemovalList: 'Открыть список удаления',
+        showConfig: 'Показать конфигурацию',
+        runCleanup: 'Запустить очистку',
+        reinstallMacro: 'Переустановить макрос',
+        reinstallHandout: 'Переустановить хэндаут',
+        showHelp: 'Показать справку',
+        reorderConditions: 'Переупорядочить строки состояний',
+      },
+      title: {
+        menu: 'Меню',
+        removalMenu: 'Удаление состояний',
+        config: 'Конфигурация',
+        configTracker: 'Конфигурация Condition Tracker',
+        help: 'Справка',
+        applied: 'Применено',
+        removed: 'Состояние удалено',
+        cleanup: 'Очистка завершена',
+        macroReinstalled: 'Макрос переустановлен',
+        handoutReinstalled: 'Хэндаут переустановлен',
+        warning: 'Предупреждение',
+        error: 'Ошибка',
+        turnOrder: 'Порядок ходов',
+        noConditions: 'Нет состояний',
+        tokenMoved: 'Жетон перемещён',
+        markedDead: 'Помечен как мёртвый',
+        zeroHp: '{name} — 0 ХП',
+        moveToken: '{name} — Переместить жетон?',
+        scriptReady: 'Скрипт готов',
+        conditionReorder: 'Порядок ходов изменён',
+      },
+      heading: {
+        quickActions: 'Быстрые действия',
+        settings: 'Настройки',
+        markerMappings: 'Сопоставления маркеров',
+        result: 'Результат',
+        info: 'Информация',
+        commandOptions: 'Параметры команд',
+        promptUi: 'Интерфейс мастера',
+        examples: 'Примеры',
+        summary: 'Итог',
+      },
+      msg: {
+        noActive: 'Активных состояний не отслеживается.',
+        configReset: 'Конфигурация сброшена до значений по умолчанию модуля.',
+        unknownConfig:
+          'Неизвестный параметр конфигурации. Используйте --config для просмотра поддерживаемых настроек.',
+        macroReinstalled:
+          'Макросы {wizard} и {multiTarget} были переустановлены для всех текущих игроков с ролью ДМ.',
+        handoutReinstalled: 'Справочный хэндаут {handout} был переустановлен.',
+        duplicate:
+          'Точное сочетание источника, субъекта, цели, состояния и произвольного текста уже активно.',
+        noTargets: 'Не указаны жетоны целей для применения к нескольким целям.',
+        noSelection:
+          'Выберите хотя бы один жетон на поле перед использованием --multi-target.',
+        invalidIds:
+          'В текущем выделении не найдено допустимых идентификаторов жетонов.',
+        reSelectTokens:
+          'Ни один из первоначально выбранных жетонов не найден. Выберите жетоны заново и повторите попытку.',
+        conditionNotFound: 'Идентификатор состояния не найден.',
+        gmOnly: 'Команды Condition Tracker доступны только для ДМ.',
+        commandFailed:
+          'Команда не могла быть безопасно выполнена. Проверьте консоль API.',
+        sourceTokenNotFound: 'Жетон источника не найден.',
+        targetTokenNotFound: 'Жетон цели не найден.',
+        subjectTokenNotFound: 'Жетон субъекта не найден.',
+        invalidCondition:
+          'Состояние должно быть одним из предопределённых состояний или Другое.',
+        subjectOnlyCustom:
+          '--subject допустим только для Заклинания, Умения, Преимущества, Помехи и Другого.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass ожидает значение true или false, если значение указано.',
+        customDetailsRequired:
+          'Подробности {condition} обязательны. Используйте --other для их указания.',
+        markerConfigFormat:
+          'Формат конфигурации маркера: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Конфигурация маркера требует предопределённого имени состояния.',
+        markerNameRequired:
+          'Конфигурация маркера требует непустого имени маркера.',
+        markerSet: 'Маркер {condition} установлен на {marker}.',
+        healthBarSet: 'Полоса здоровья установлена на {bar}.',
+        boolSet: '{key} установлено на {value}.',
+        expectedBoolean: 'Ожидалось true или false.',
+        invalidHealthBar:
+          'Полоса здоровья должна быть bar1_value, bar2_value или bar3_value.',
+        markersDisabled: 'Маркеры отключены.',
+        noMarkerConfigured: 'Для данного состояния не настроен маркер.',
+        markerApplied: 'Маркер применён: {marker}',
+        markerPresent: 'Маркер уже присутствует: {marker}',
+        langSet: 'Язык установлен на {locale}.',
+        invalidLocale: 'Недопустимый язык. Поддерживаемые языки: {locales}.',
+        otherDurationRequiresRounds:
+          'Длительность «Другое» требует числового количества раундов, например --duration 5 rounds.',
+        invalidDuration:
+          'Длительность должна быть «До удаления», вариантом конца хода или положительным числом раундов.',
+        zeroHpNoConditions: '{name} достиг 0 ХП и не имеет активных состояний.',
+        zeroHpConditions:
+          '{name} достиг 0 ХП. Выберите состояния для удаления:',
+        removeAllBtn: 'Удалить все состояния для {name}',
+        markIncapacitated: 'Пометить как недееспособного',
+        removeFromTurnOrder: 'Убрать из порядка ходов',
+        alreadyIncapacitated: '{name} уже недееспособен.',
+        tokenRemovedFromTurn: '{name} был убран из порядка ходов.',
+        tokenNotInTurn: '{name} не найден в порядке ходов.',
+        moveTokenPrompt:
+          'Переместить {name} на слой карты, чтобы он оставался видимым, но не мешал другим жетонам?',
+        moveTokenBtn: 'Переместить {name} на слой карты',
+        tokenMoved: '{name} был перемещён на слой карты.',
+        tokenNotFound: 'Жетон не найден.',
+        noActiveConditions: '{name} не имеет активных состояний для удаления.',
+        deadNoConditions:
+          '{name} был помечен как мёртвый. Активных состояний не было.',
+        scriptReady: '{name} активен, вы используете версию {version}.',
+        reachedZeroHp: '{name} достиг 0 ХП',
+        manuallyRemoved: 'было удалено вручную',
+        durationExpired: 'длительность истекла',
+        markedAsDead: '{name} был помечен как мёртвый',
+        conditionReorder:
+          'Порядок ходов изменился, и {count} отслеживаемая (отслеживаемых) строка состояний может быть не на своём месте. Нажмите ниже, чтобы восстановить их после назначенных жетонов.',
+        conditionsReordered:
+          'Строки состояний были перемещены после назначенных им жетонов.',
+      },
+      removal: {
+        conditionField: 'Состояние',
+        reasonField: 'Причина',
+        turnRowField: 'Строка отслеживания ходов',
+        markerField: 'Маркер',
+        notConfigured: 'Не настроено',
+        markerRemoved: 'Удалено ({marker})',
+        markerRetained: 'Сохранено ({marker})',
+        rowRemoved: 'Удалено',
+        rowMissing: 'Уже отсутствует',
+        manualReason: 'Ручное удаление',
+      },
+      cleanup: {
+        orphaned: 'Осиротевшие записи состояний',
+        stale: 'Устаревшие записи состояний',
+        orphanedRows: 'Осиротевшие строки отслеживания ходов',
+        unusedMarkers: 'Неиспользуемые маркеры',
+      },
+      apply: {
+        turnAppended:
+          'Цель не была в порядке ходов; строка состояния добавлена в конец.',
+        turnInserted: 'Строка состояния вставлена ниже жетона цели.',
+      },
+    },
+    handout: {
+      versionLabel: 'Версия',
+      subtitle: 'Менеджер состояний D&D 5e',
+      footerNote:
+        'Этот хэндаут автоматически создаётся и обновляется при каждой загрузке скрипта.',
+      overview: {
+        heading: 'Обзор',
+        body: 'Condition Tracker управляет состояниями D&D 5e и пользовательскими эффектами в виде подписанных строк в Трекере Ходов Roll20. Применяйте состояния к жетонам, отслеживайте длительности по порядку инициативы и автоматически удаляйте истёкшие эффекты в конце хода. Все команды доступны только для ДМ и могут вызываться из чата или через установленные макросы.',
+      },
+      quickStart: {
+        heading: 'Быстрый старт',
+        colCommand: 'Команда',
+        colDesc: 'Описание',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Пошаговый мастер — интерактивно выберите состояние, жетоны и длительность. Также доступен как макрос ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Применить одно состояние к нескольким жетонам одновременно. Также доступен как макрос ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Открыть главное меню управления с кнопками для применения, просмотра или удаления состояний.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Справочник команд',
+        colFlag: 'Флаг',
+        colDesc: 'Описание',
+        rows: [
+          ['--prompt', 'Интерактивный пошаговый мастер'],
+          [
+            '--multi-target',
+            'Применить состояние к нескольким жетонам цели сразу',
+          ],
+          [
+            '--menu',
+            'Показать главное меню (добавить remove для меню удаления)',
+          ],
+          [
+            '--source X --target Y --condition Z',
+            'Применить состояние напрямую без мастера',
+          ],
+          [
+            '--duration &lt;значение&gt;',
+            'Длительность для прямого применения (например, 2 rounds)',
+          ],
+          [
+            '--other &lt;текст&gt;',
+            'Произвольный текст для типов эффектов Заклинание / Умение / Другое',
+          ],
+          [
+            '--remove &lt;ID состояния&gt;',
+            'Удалить конкретное состояние по его уникальному идентификатору',
+          ],
+          [
+            '--config &lt;параметр&gt; &lt;значение&gt;',
+            'Изменить настройки конфигурации (см. раздел Конфигурация ниже)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Переопределить subjectPromptBypass только для этой команды (также поддерживает --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Согласовать состояние — удалить осиротевшие состояния и строки Трекера Ходов',
+          ],
+          [
+            '--reorder-conditions',
+            'Вручную переместить строки условий после назначенных токенов в очереди хода',
+          ],
+          ['--reinstall-macro', 'Пересоздать или обновить макросы ДМ'],
+          [
+            '--reinstall-handout',
+            'Пересоздать или обновить локализованный справочный хэндаут',
+          ],
+          [
+            '--lang &lt;язык&gt;',
+            'Выводить сообщения этой команды на дополнительном языке (двуязычный режим)',
+          ],
+          ['--help', 'Показать краткую справочную карточку в чате'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Стандартные состояния (D&amp;D 5e)',
+        colCondition: 'Состояние',
+      },
+      customEffects: {
+        heading: 'Пользовательские типы эффектов',
+        colType: 'Тип',
+        colNotes: 'Примечания',
+        rows: [
+          [
+            '🔮 Заклинание',
+            'Отслеживать именованный эффект заклинания — вам будет предложено ввести название заклинания',
+          ],
+          [
+            '🎯 Умение',
+            'Отслеживать именованное умение класса или расы — вам будет предложено ввести название',
+          ],
+          [
+            '🍀 Преимущество',
+            'Записать преимущество, предоставленное от одного жетона другому; сгруппировано с источником в инициативе',
+          ],
+          [
+            '⬇️ Помеха',
+            'Записать наложенную помеху; сгруппировано с источником в инициативе',
+          ],
+          [
+            '📝 Другое',
+            'Произвольная пользовательская метка — вам будет предложено ввести описание',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Варианты длительности',
+        intro:
+          'Оставшееся число отображается в столбце pr Трекера Ходов и уменьшается, когда заканчивается ход опорного жетона.',
+        colOption: 'Вариант',
+        colBehaviour: 'Поведение',
+        rows: [
+          [
+            'До удаления',
+            'Постоянное — должно быть удалено вручную через меню или --remove',
+          ],
+          [
+            'Конец следующего хода цели',
+            'Истекает, когда заканчивается следующий ход жетона цели в инициативе',
+          ],
+          [
+            'Конец следующего хода источника',
+            'Истекает, когда заканчивается следующий ход жетона источника в инициативе',
+          ],
+          [
+            '1 / 2 / 3 / 10 раундов',
+            'Фиксированный обратный отсчёт; одно уменьшение за конец хода опорного жетона',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Конфигурация',
+        intro:
+          'Используйте !condition-tracker --config &lt;параметр&gt; &lt;значение&gt; или кнопку Конфигурация в главном меню.',
+        colOption: 'Параметр',
+        colValues: 'Значения',
+        colDesc: 'Описание',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Применять маркеры состояния Roll20 к жетонам при добавлении состояния',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Показывать короткие коды иконок (например, [G]) вместо эмодзи в строках Трекера Ходов',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Пропустить необязательный шаг выбора субъекта для эффектов Заклинание / Умение / Другое',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Наблюдаемая полоса; когда опускается до 0, ДМ предлагается очистить состояния',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Язык вывода для сообщений чата и справочного хэндаута',
+          ],
+          [
+            'marker',
+            '&lt;Состояние&gt;=&lt;имя маркера&gt;',
+            'Переопределить маркер состояния для конкретного состояния (например, marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Маркеры состояний по умолчанию',
+        colCondition: 'Состояние',
+        colMarker: 'Имя маркера',
+      },
+      availableLocales: {
+        heading: 'Доступные переводы',
+        intro:
+          'Используйте параметр конфигурации языка, чтобы задать язык сообщений чата и справочного хэндаута. Короткие псевдонимы также принимаются для en, zh и pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Язык',
+        colFile: 'Файл перевода',
       },
     },
   };
@@ -5648,6 +10908,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: 'Reinstalar macro',
         reinstallHandout: 'Reinstalar folleto',
         showHelp: 'Mostrar ayuda',
+        reorderConditions: 'Reordenar filas de condición',
       },
       title: {
         menu: 'Menú',
@@ -5669,6 +10930,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 PV',
         moveToken: '{name} — ¿Mover ficha?',
         scriptReady: 'Script listo',
+        conditionReorder: 'Orden de turno cambiado',
       },
       heading: {
         quickActions: 'Acciones rápidas',
@@ -5763,6 +11025,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'eliminación manual',
         durationExpired: 'su duración expiró',
         markedAsDead: '{name} fue marcado como muerto',
+        conditionReorder:
+          'El orden de turno ha cambiado y {count} fila(s) de condición rastreada(s) puede(n) estar fuera de lugar. Haz clic abajo para restaurarlas después de sus tokens asignados.',
+        conditionsReordered:
+          'Las filas de condición han sido reposicionadas después de sus tokens asignados.',
       },
       removal: {
         conditionField: 'Condición',
@@ -5855,6 +11121,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Reconciliar estado — eliminar condiciones y filas huérfanas',
+          ],
+          [
+            '--reorder-conditions',
+            'Reposicionar manualmente las filas de condición detrás de sus fichas asignadas en el orden de turno',
           ],
           ['--reinstall-macro', 'Recrear o actualizar las macros del GM'],
           [
@@ -5969,6 +11239,14 @@ const ConditionTrackerMod = (() => {
         colCondition: 'Condición',
         colMarker: 'Nombre del marcador',
       },
+      availableLocales: {
+        heading: 'Traducciones disponibles',
+        intro:
+          'Usa la opción de configuración language para establecer los mensajes de chat y el folleto de ayuda en cualquier idioma compatible. También se aceptan alias cortos para en, zh y pt.',
+        colLocale: 'Configuración regional',
+        colLanguage: 'Idioma',
+        colFile: 'Archivo de traducción',
+      },
     },
   };
 
@@ -6070,28 +11348,421 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
-        disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+        custom: '{emoji} {target} påverkad av {effect} ({source})',
+        advantage: '{emoji} {source} har fördel mot {target}{subject}',
+        disadvantage: '{emoji} {source} har nackdel mot {target}{subject}',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {past} av {source}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
+        custom: '{source} applicerar {effect} på {target}.',
+        advantage: '{source} har fördel mot {target}{subject}.',
+        disadvantage: '{source} har nackdel mot {target}{subject}.',
         withSuffix: '{source} {verb} {target} {suffix}.',
         standard: '{source} {verb} {target}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
-        advantage:
-          '{source} no longer has advantage against {target}{subject}.',
-        disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+        custom: '{target} är inte längre påverkad av {effect}.',
+        advantage: '{source} har inte längre fördel mot {target}{subject}.',
+        disadvantage: '{source} har inte längre nackdel mot {target}{subject}.',
+        noBy: '{target} är inte längre {past}.',
+        standard: '{target} är inte längre {past} av {source}.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Välj tillstånd',
+        selectSource: 'Välj källtoken',
+        selectTarget: 'Välj måltoken',
+        selectSubject: 'Välj subjekt',
+        selectDuration: 'Välj varaktighet',
+        confirmTargetTitle: 'Bekräfta mållista',
+        applyEffectTitle: 'Applicera {condition}-effekt',
+        noTokens: 'Inga namngivna tokens hittades på den aktiva sidan.',
+        confirmIntro: 'Följande tokens kommer att få tillståndet:',
+        confirmBtn: 'Bekräfta mållista',
+        enterDetails: 'Ange effektdetaljer',
+        noneBtn: 'Ingen',
+        subjectDesc: 'Välj vem eller vad som levererar effekten.',
+        sourceDesc:
+          'Välj det väsen som skapar/genererar tillståndet eller effekten.',
+        targetDesc:
+          'Välj det väsen som kommer att ta emot tillståndet eller effekten.',
+        otherText: 'Anpassad tillståndstext',
+        effectDetails: '{condition}-detaljer',
+      },
+      col: {
+        players: 'Spelare',
+        npcs: 'NPC:er',
+        conditions: 'Tillstånd',
+        customEffects: 'Anpassade effekter',
+        permanentTurnEnd: 'Permanent / Rundslutet',
+        rounds: 'Rundor',
+        command: 'Kommando',
+        result: 'Resultat',
+        field: 'Fält',
+        value: 'Värde',
+        option: 'Alternativ',
+        condition: 'Tillstånd',
+        marker: 'Markör',
+        item: 'Post',
+        removed: 'Borttagen',
+        details: 'Detaljer',
+        description: 'Beskrivning',
+        scenario: 'Scenario',
+      },
+      dur: {
+        untilRemoved: 'Tills borttagen',
+        endOfTargetTurn: 'Slutet av målets nästa tur',
+        endOfSourceTurn: 'Slutet av källans nästa tur',
+        round1: '1 runda',
+        round2: '2 rundor',
+        round3: '3 rundor',
+        round10: '10 rundor',
+        custom: 'Anpassad',
+        customPrompt: 'Antal rundor',
+        untilRemovedDisplay: 'Tills borttagen',
+        turnsRemaining: '{n} spårad(e) turslut återstår',
+      },
+      btn: {
+        openWizard: 'Öppna guide',
+        openMultiTarget: 'Öppna guide för flera mål',
+        openRemovalList: 'Öppna borttagningslista',
+        showConfig: 'Visa konfiguration',
+        runCleanup: 'Kör rensning',
+        reinstallMacro: 'Installera om makro',
+        reinstallHandout: 'Installera om handout',
+        showHelp: 'Visa hjälp',
+        reorderConditions: 'Ordna om tillståndsrader',
+      },
+      title: {
+        menu: 'Meny',
+        removalMenu: 'Condition Tracker — borttagning',
+        config: 'Konfiguration',
+        configTracker: 'Condition Tracker — konfiguration',
+        help: 'Hjälp',
+        applied: 'Applicerad',
+        removed: 'Tillstånd borttaget',
+        cleanup: 'Rensning slutförd',
+        macroReinstalled: 'Makro ominstallerat',
+        handoutReinstalled: 'Handout ominstallerat',
+        warning: 'Varning',
+        error: 'Fel',
+        turnOrder: 'Turordning',
+        noConditions: 'Inga tillstånd',
+        tokenMoved: 'Token flyttad',
+        markedDead: 'Markerad som död',
+        zeroHp: '{name} — 0 HP',
+        moveToken: '{name} — Flytta token?',
+        scriptReady: 'Skript redo',
+        conditionReorder: 'Turordning ändrad',
+      },
+      heading: {
+        quickActions: 'Snabbåtgärder',
+        settings: 'Inställningar',
+        markerMappings: 'Markörsmappningar',
+        result: 'Resultat',
+        info: 'Info',
+        commandOptions: 'Kommandoalternativ',
+        promptUi: 'Guide-gränssnitt',
+        examples: 'Exempel',
+        summary: 'Sammanfattning',
+      },
+      msg: {
+        noActive: 'Inga aktiva tillstånd spåras.',
+        configReset: 'Konfigurationen återställd till standardvärden.',
+        unknownConfig:
+          'Okänt konfigurationsalternativ. Använd --config för att visa stödda inställningar.',
+        macroReinstalled:
+          'Makrona {wizard} och {multiTarget} har installerats om för alla nuvarande GM-spelare.',
+        handoutReinstalled: 'Hjälp-handouten {handout} har installerats om.',
+        duplicate:
+          'Exakt den kombinationen av källa, subjekt, mål, tillstånd och anpassad text är redan aktiv.',
+        noTargets: 'Inga måltoken angivna för tillämpning på flera mål.',
+        noSelection:
+          'Välj minst en token på spelplanen innan du använder --multi-target.',
+        invalidIds: 'Inga giltiga token-id:n hittades i det aktuella urvalet.',
+        reSelectTokens:
+          'Ingen av de ursprungligen valda tokenerna kunde hittas. Välj tokens igen och försök på nytt.',
+        conditionNotFound: 'Tillstånds-id hittades inte.',
+        gmOnly: 'Condition Tracker-kommandon är endast för GM:ar.',
+        commandFailed:
+          'Kommandot kunde inte slutföras säkert. Kontrollera API-konsolen för detaljer.',
+        sourceTokenNotFound: 'Källtoken kunde inte hittas.',
+        targetTokenNotFound: 'Måltoken kunde inte hittas.',
+        subjectTokenNotFound: 'Subjekttoken kunde inte hittas.',
+        invalidCondition:
+          'Tillståndet måste vara ett av de fördefinierade tillstånden eller Annat.',
+        subjectOnlyCustom:
+          '--subject är endast giltigt för Besvärjelse, Förmåga, Fördel, Nackdel och Annat.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass förväntar true eller false när ett värde anges.',
+        customDetailsRequired:
+          '{condition}-detaljer krävs. Använd --other för att ange dem.',
+        markerConfigFormat:
+          'Format för markörskonfiguration: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'Markörskonfiguration kräver ett fördefinierat tillståndsnamn.',
+        markerNameRequired:
+          'Markörskonfiguration kräver ett icke-tomt markörnamn.',
+        markerSet: '{condition}-markör inställd på {marker}.',
+        healthBarSet: 'Hälsomätare inställd på {bar}.',
+        boolSet: '{key} inställd på {value}.',
+        expectedBoolean: 'Förväntade true eller false.',
+        invalidHealthBar:
+          'Hälsomätaren måste vara bar1_value, bar2_value eller bar3_value.',
+        markersDisabled: 'Markörer är inaktiverade.',
+        noMarkerConfigured: 'Ingen markör är konfigurerad för detta tillstånd.',
+        markerApplied: 'Markör applicerad: {marker}',
+        markerPresent: 'Markör redan närvarande: {marker}',
+        langSet: 'Språk inställt på {locale}.',
+        invalidLocale: 'Ogiltig locale. Stödda localer: {locales}.',
+        otherDurationRequiresRounds:
+          'Annan varaktighet kräver ett numeriskt antal rundor, till exempel --duration 5 rounds.',
+        invalidDuration:
+          'Varaktigheten måste vara Tills borttagen, ett turslut-alternativ eller ett positivt antal rundor.',
+        zeroHpNoConditions:
+          '{name} har nått 0 HP och har inga aktiva tillstånd.',
+        zeroHpConditions: '{name} har nått 0 HP. Välj tillstånd att ta bort:',
+        removeAllBtn: 'Ta bort alla tillstånd för {name}',
+        markIncapacitated: 'Markera som oskadliggjord',
+        removeFromTurnOrder: 'Ta bort från turordning',
+        alreadyIncapacitated: '{name} är redan oskadliggjord.',
+        tokenRemovedFromTurn: '{name} har tagits bort från turordningen.',
+        tokenNotInTurn: '{name} hittades inte i turordningen.',
+        moveTokenPrompt:
+          'Flytta {name} till kartlagret så att den förblir synlig men inte stör andra tokens?',
+        moveTokenBtn: 'Flytta {name} till kartlagret',
+        tokenMoved: '{name} har flyttats till kartlagret.',
+        tokenNotFound: 'Token hittades inte.',
+        noActiveConditions: '{name} har inga aktiva tillstånd att ta bort.',
+        deadNoConditions:
+          '{name} markerades som död. Inga tillstånd var aktiva.',
+        scriptReady: '{name} är aktiv och du använder version {version}.',
+        reachedZeroHp: '{name} nådde 0 HP',
+        manuallyRemoved: 'manuellt borttagen',
+        durationExpired: 'varaktigheten löpte ut',
+        markedAsDead: '{name} markerades som död',
+        conditionReorder:
+          'Turordningen ändrades och {count} spårad(e) tillståndsrad(er) kan nu vara felplacerade. Klicka nedan för att återställa dem efter sina tilldelade tokens.',
+        conditionsReordered:
+          'Tillståndsrader har ompositionerats efter sina tilldelade tokens.',
+      },
+      removal: {
+        conditionField: 'Tillstånd',
+        reasonField: 'Orsak',
+        turnRowField: 'Turspårningsrad',
+        markerField: 'Markör',
+        notConfigured: 'Ej konfigurerad',
+        markerRemoved: 'Borttagen ({marker})',
+        markerRetained: 'Behållen ({marker})',
+        rowRemoved: 'Borttagen',
+        rowMissing: 'Redan saknad',
+        manualReason: 'Manuell borttagning',
+      },
+      cleanup: {
+        orphaned: 'Övergivna tillståndsposter',
+        stale: 'Inaktuella tillståndsposter',
+        orphanedRows: 'Övergivna turspårningsrader',
+        unusedMarkers: 'Oanvända markörer',
+      },
+      apply: {
+        turnAppended:
+          'Målet var inte i turordningen; tillståndsrad lades till sist.',
+        turnInserted: 'Tillståndsrad infogad under måltoken.',
+      },
+    },
+    handout: {
+      versionLabel: 'Version',
+      subtitle: 'D&D 5e-statuseffekthanterare',
+      footerNote:
+        'Detta handout skapas och uppdateras automatiskt varje gång skriptet laddas.',
+      overview: {
+        heading: 'Översikt',
+        body: 'Condition Tracker hanterar D&D 5e-statustillstånd och anpassade effekter som märkta rader i Roll20:s turspårare. Applicera tillstånd på tokens, spåra varaktigheter efter initiativordning och ta automatiskt bort utgångna effekter när en tur slutar. Alla kommandon är GM-exklusiva och kan utlösas från chatten eller via de installerade makrona.',
+      },
+      quickStart: {
+        heading: 'Snabbstart',
+        colCommand: 'Kommando',
+        colDesc: 'Beskrivning',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Steg-för-steg-guide — välj tillstånd, tokens och varaktighet interaktivt. Finns även som makrot ConditionTrackerWizard.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Applicera ett tillstånd på flera tokens samtidigt. Finns även som makrot ConditionTrackerMultiTarget.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Öppna huvudmenyn med knappar för att applicera, granska eller ta bort tillstånd.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Kommandoreferens',
+        colFlag: 'Flagga',
+        colDesc: 'Beskrivning',
+        rows: [
+          ['--prompt', 'Interaktiv steg-för-steg-guide'],
+          [
+            '--multi-target',
+            'Applicera ett tillstånd på flera måltoken på en gång',
+          ],
+          ['--menu', 'Visa huvudmeny (lägg till remove för borttagningsmenyn)'],
+          [
+            '--source X --target Y --condition Z',
+            'Applicera ett tillstånd direkt utan guiden',
+          ],
+          [
+            '--duration &lt;värde&gt;',
+            'Varaktighet för direkt applicering (t.ex. 2 rounds)',
+          ],
+          [
+            '--other &lt;text&gt;',
+            'Anpassad text för Besvärjelse / Förmåga / Annan effekttyp',
+          ],
+          [
+            '--remove &lt;tillstånds-id&gt;',
+            'Ta bort ett specifikt tillstånd via dess unika id',
+          ],
+          [
+            '--config &lt;alternativ&gt; &lt;värde&gt;',
+            'Justera konfigurationsinställningar (se avsnittet Konfiguration nedan)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            'Åsidosätt subjectPromptBypass enbart för detta kommando (stöder även --subject-prompt-bypass)',
+          ],
+          [
+            '--cleanup',
+            'Stäm av tillstånd — ta bort övergivna tillstånd och turspårningsrader',
+          ],
+          [
+            '--reorder-conditions',
+            'Flytta manuellt tillståndsrader bakom deras tilldelade tokens i turordningen',
+          ],
+          ['--reinstall-macro', 'Återskapa eller uppdatera GM-makrona'],
+          [
+            '--reinstall-handout',
+            'Återskapa eller uppdatera det lokaliserade hjälp-handouten',
+          ],
+          [
+            '--lang &lt;locale&gt;',
+            'Skicka detta kommandos meddelanden på ytterligare en locale (tvåspråkigt läge)',
+          ],
+          ['--help', 'Visa ett kort hjälpkort i chatten'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standardtillstånd (D&amp;D 5e)',
+        colCondition: 'Tillstånd',
+      },
+      customEffects: {
+        heading: 'Anpassade effekttyper',
+        colType: 'Typ',
+        colNotes: 'Anteckningar',
+        rows: [
+          [
+            '🔮 Besvärjelse',
+            'Spåra en namngiven besvärjelseeffekt — du uppmanas att ange besvärjelsens namn',
+          ],
+          [
+            '🎯 Förmåga',
+            'Spåra en namngiven klass- eller rasförmåga — du uppmanas att ange förmågans namn',
+          ],
+          [
+            '🍀 Fördel',
+            'Registrera fördel given från en token till en annan; grupperad med källan i initiativet',
+          ],
+          [
+            '⬇️ Nackdel',
+            'Registrera pålagd nackdel; grupperad med källan i initiativet',
+          ],
+          [
+            '📝 Annat',
+            'Fritext anpassad etikett — du uppmanas att ange en beskrivning',
+          ],
+        ],
+      },
+      durationOptions: {
+        heading: 'Varaktighetsalternativ',
+        intro:
+          'Det återstående antalet visas i pr-kolumnen i turspåraren och minskar när ankertokenens tur slutar.',
+        colOption: 'Alternativ',
+        colBehaviour: 'Beteende',
+        rows: [
+          [
+            'Tills borttagen',
+            'Permanent — måste tas bort manuellt via menyn eller --remove',
+          ],
+          [
+            'Slutet av målets nästa tur',
+            'Löper ut när måltoken:s nästa tur slutar i initiativet',
+          ],
+          [
+            'Slutet av källans nästa tur',
+            'Löper ut när källtoken:s nästa tur slutar i initiativet',
+          ],
+          [
+            '1 / 2 / 3 / 10 rundor',
+            'Fast nedräkning; ett steg per ankertokenens turslut',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Konfiguration',
+        intro:
+          'Använd !condition-tracker --config &lt;alternativ&gt; &lt;värde&gt; eller knappen Konfiguration i huvudmenyn.',
+        colOption: 'Alternativ',
+        colValues: 'Värden',
+        colDesc: 'Beskrivning',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Applicera Roll20-statusmarkörer på tokens när ett tillstånd läggs till',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Visa korta ikonkoder (t.ex. [G]) istället för emoji i turspårningsrader',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Hoppa över det valfria subjektsteget för Besvärjelse / Förmåga / Andra effekter',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            'Token-mätare att bevaka; när den når 0 uppmanas GM att rensa upp tillstånd',
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Utdataspråk för chattmeddelanden och hjälp-handouten',
+          ],
+          [
+            'marker',
+            '&lt;Tillstånd&gt;=&lt;markörnamn&gt;',
+            'Åsidosätt statusmarkören för ett specifikt tillstånd (t.ex. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Standardstatusmarkörer',
+        colCondition: 'Tillstånd',
+        colMarker: 'Markörnamn',
+      },
+      availableLocales: {
+        heading: 'Tillgängliga översättningar',
+        intro:
+          'Använd språkkonfigurationsalternativet för att ställa in chattmeddelanden och hjälp-handouten till en stödd locale. Korta alias accepteras även för en, zh och pt.',
+        colLocale: 'Locale',
+        colLanguage: 'Språk',
+        colFile: 'Översättningsfil',
       },
     },
   };
@@ -6191,28 +11862,417 @@ const ConditionTrackerMod = (() => {
     },
     templates: {
       display: {
-        custom: '{emoji} {target} affected by {effect} ({source})',
-        advantage: '{emoji} {source} has advantage against {target}{subject}',
+        custom: '{emoji} {target} {effect} etkisi altında ({source})',
+        advantage: '{emoji} {source}, {target}{subject} karşısında avantajlı',
         disadvantage:
-          '{emoji} {source} has disadvantage against {target}{subject}',
+          '{emoji} {source}, {target}{subject} karşısında dezavantajlı',
         noBy: '{emoji} {target} {past} ({source})',
-        standard: '{emoji} {target} {past} by {source}',
+        standard: '{emoji} {target} {source} tarafından {past}',
       },
       apply: {
-        custom: '{source} applies {effect} to {target}.',
-        advantage: '{source} has advantage against {target}{subject}.',
-        disadvantage: '{source} has disadvantage against {target}{subject}.',
-        withSuffix: '{source} {verb} {target} {suffix}.',
-        standard: '{source} {verb} {target}.',
+        custom: '{source}, {target} üzerine {effect} etkisi uygular.',
+        advantage: '{source}, {target}{subject} karşısında avantajlıdır.',
+        disadvantage: '{source}, {target}{subject} karşısında dezavantajlıdır.',
+        withSuffix: '{source} {target} {suffix} {verb}.',
+        standard: '{source} {target} {verb}.',
       },
       remove: {
-        custom: '{target} is no longer affected by {effect}.',
+        custom: '{target} artık {effect} etkisi altında değil.',
         advantage:
-          '{source} no longer has advantage against {target}{subject}.',
+          '{source} artık {target}{subject} karşısında avantajlı değil.',
         disadvantage:
-          '{source} no longer has disadvantage against {target}{subject}.',
-        noBy: '{target} no longer {past}.',
-        standard: '{target} is no longer {past} by {source}.',
+          '{source} artık {target}{subject} karşısında dezavantajlı değil.',
+        noBy: '{target} artık {past} değil.',
+        standard: '{target} artık {source} tarafından {past} değil.',
+      },
+    },
+    ui: {
+      wizard: {
+        selectCondition: 'Durum Seç',
+        selectSource: 'Kaynak Token Seç',
+        selectTarget: 'Hedef Token Seç',
+        selectSubject: 'Özne Seç',
+        selectDuration: 'Süre Seç',
+        confirmTargetTitle: 'Hedef Listesini Onayla',
+        applyEffectTitle: '{condition} Etkisi Uygula',
+        noTokens: 'Aktif sayfada adlandırılmış token bulunamadı.',
+        confirmIntro: 'Aşağıdaki tokenlar durumu alacak:',
+        confirmBtn: 'Hedef listesini onayla',
+        enterDetails: 'Etki ayrıntılarını girin',
+        noneBtn: 'Hiçbiri',
+        subjectDesc: 'Etkiyi kimin veya neyin yarattığını seçin.',
+        sourceDesc: 'Durumu veya etkiyi oluşturan yaratığı seçin.',
+        targetDesc: 'Durumu veya etkiyi alacak yaratığı seçin.',
+        otherText: 'Özel durum metni',
+        effectDetails: '{condition} ayrıntıları',
+      },
+      col: {
+        players: 'Oyuncular',
+        npcs: "OYK'lar",
+        conditions: 'Durumlar',
+        customEffects: 'Özel Etkiler',
+        permanentTurnEnd: 'Kalıcı / Tur Sonu',
+        rounds: 'Turlar',
+        command: 'Komut',
+        result: 'Sonuç',
+        field: 'Alan',
+        value: 'Değer',
+        option: 'Seçenek',
+        condition: 'Durum',
+        marker: 'İşaretçi',
+        item: 'Öğe',
+        removed: 'Kaldırıldı',
+        details: 'Ayrıntılar',
+        description: 'Açıklama',
+        scenario: 'Senaryo',
+      },
+      dur: {
+        untilRemoved: 'Kaldırılana kadar',
+        endOfTargetTurn: 'Hedefin sonraki turunun sonu',
+        endOfSourceTurn: 'Kaynağın sonraki turunun sonu',
+        round1: '1 tur',
+        round2: '2 tur',
+        round3: '3 tur',
+        round10: '10 tur',
+        custom: 'Özel',
+        customPrompt: 'Tur sayısı',
+        untilRemovedDisplay: 'Kaldırılana kadar',
+        turnsRemaining: '{n} tur sonu takibi kaldı',
+      },
+      btn: {
+        openWizard: 'Sihirbazı Aç',
+        openMultiTarget: 'Çoklu Hedef Sihirbazını Aç',
+        openRemovalList: 'Kaldırma Listesini Aç',
+        showConfig: 'Yapılandırmayı Göster',
+        runCleanup: 'Temizliği Çalıştır',
+        reinstallMacro: 'Makroyu Yeniden Yükle',
+        reinstallHandout: 'El İlanını Yeniden Yükle',
+        showHelp: 'Yardımı Göster',
+        reorderConditions: 'Durum Satırlarını Yeniden Sırala',
+      },
+      title: {
+        menu: 'Menü',
+        removalMenu: 'Condition Tracker — Kaldırma',
+        config: 'Yapılandırma',
+        configTracker: 'Condition Tracker yapılandırması',
+        help: 'Yardım',
+        applied: 'Uygulandı',
+        removed: 'Durum Kaldırıldı',
+        cleanup: 'Temizlik Tamamlandı',
+        macroReinstalled: 'Makro Yeniden Yüklendi',
+        handoutReinstalled: 'El İlanı Yeniden Yüklendi',
+        warning: 'Uyarı',
+        error: 'Hata',
+        turnOrder: 'Tur Sırası',
+        noConditions: 'Durum Yok',
+        tokenMoved: 'Token Taşındı',
+        markedDead: 'Ölü Olarak İşaretlendi',
+        zeroHp: '{name} — 0 KP',
+        moveToken: '{name} — Token Taşınsın mı?',
+        scriptReady: 'Betik Hazır',
+        conditionReorder: 'Tur Sırası Değişti',
+      },
+      heading: {
+        quickActions: 'Hızlı İşlemler',
+        settings: 'Ayarlar',
+        markerMappings: 'İşaretçi Eşlemeleri',
+        result: 'Sonuç',
+        info: 'Bilgi',
+        commandOptions: 'Komut Seçenekleri',
+        promptUi: 'Sihirbaz Arayüzü',
+        examples: 'Örnekler',
+        summary: 'Özet',
+      },
+      msg: {
+        noActive: 'Takip edilen aktif durum yok.',
+        configReset: 'Yapılandırma mod varsayılanlarına sıfırlandı.',
+        unknownConfig:
+          'Bilinmeyen yapılandırma seçeneği. Desteklenen ayarları görüntülemek için --config kullanın.',
+        macroReinstalled:
+          '{wizard} ve {multiTarget} makroları tüm mevcut GM oyuncuları için yeniden yüklendi.',
+        handoutReinstalled: 'Yardım el ilanı {handout} yeniden yüklendi.',
+        duplicate: 'Aynı kaynak, özne, hedef, durum ve özel metin zaten aktif.',
+        noTargets: 'Çoklu hedef uygulaması için hedef token belirtilmedi.',
+        noSelection:
+          '--multi-target kullanmadan önce tabloda en az bir token seçin.',
+        invalidIds: 'Mevcut seçimde geçerli token kimliği bulunamadı.',
+        reSelectTokens:
+          'Orijinal olarak seçilen tokenların hiçbiri bulunamadı. Tokenları yeniden seçip tekrar deneyin.',
+        conditionNotFound: 'Durum kimliği bulunamadı.',
+        gmOnly: "Condition Tracker komutları yalnızca GM'e özeldir.",
+        commandFailed:
+          'Komut güvenli şekilde tamamlanamadı. Ayrıntılar için API konsolunu kontrol edin.',
+        sourceTokenNotFound: 'Kaynak token bulunamadı.',
+        targetTokenNotFound: 'Hedef token bulunamadı.',
+        subjectTokenNotFound: 'Özne token bulunamadı.',
+        invalidCondition:
+          'Durum, önceden tanımlanmış durumlardan biri veya Diğer olmalıdır.',
+        subjectOnlyCustom:
+          '--subject yalnızca Büyü, Yetenek, Avantaj, Dezavantaj ve Diğer için geçerlidir.',
+        subjectBypassInvalid:
+          '--subjectPromptBypass, bir değer sağlandığında true veya false bekler.',
+        customDetailsRequired:
+          '{condition} ayrıntıları gereklidir. Bunları sağlamak için --other kullanın.',
+        markerConfigFormat:
+          'İşaretçi yapılandırma biçimi: --config marker Grappled=grab',
+        markerPredefinedRequired:
+          'İşaretçi yapılandırması önceden tanımlanmış bir durum adı gerektirir.',
+        markerNameRequired:
+          'İşaretçi yapılandırması boş olmayan bir işaretçi adı gerektirir.',
+        markerSet: '{condition} işaretçisi {marker} olarak ayarlandı.',
+        healthBarSet: 'Sağlık çubuğu {bar} olarak ayarlandı.',
+        boolSet: '{key}, {value} olarak ayarlandı.',
+        expectedBoolean: 'true veya false bekleniyor.',
+        invalidHealthBar:
+          'Sağlık çubuğu bar1_value, bar2_value veya bar3_value olmalıdır.',
+        markersDisabled: 'İşaretçiler devre dışı.',
+        noMarkerConfigured: 'Bu durum için yapılandırılmış işaretçi yok.',
+        markerApplied: 'İşaretçi uygulandı: {marker}',
+        markerPresent: 'İşaretçi zaten mevcut: {marker}',
+        langSet: 'Dil {locale} olarak ayarlandı.',
+        invalidLocale:
+          'Geçersiz yerel ayar. Desteklenen yerel ayarlar: {locales}.',
+        otherDurationRequiresRounds:
+          'Diğer süre, sayısal bir tur sayısı gerektirir; örneğin --duration 5 rounds.',
+        invalidDuration:
+          'Süre; Kaldırılana kadar, bir tur sonu seçeneği veya pozitif bir tur sayısı olmalıdır.',
+        zeroHpNoConditions: "{name} 0 KP'ye ulaştı ve aktif durumu yok.",
+        zeroHpConditions:
+          "{name} 0 KP'ye ulaştı. Kaldırılacak durumları seçin:",
+        removeAllBtn: '{name} için Tüm Durumları Kaldır',
+        markIncapacitated: 'Etkisiz Olarak İşaretle',
+        removeFromTurnOrder: 'Tur Sırasından Kaldır',
+        alreadyIncapacitated: '{name} zaten Etkisiz.',
+        tokenRemovedFromTurn: '{name} tur sırasından kaldırıldı.',
+        tokenNotInTurn: '{name} tur sırasında bulunamadı.',
+        moveTokenPrompt:
+          '{name} görünür kalması ancak diğer tokenlara engel olmaması için harita katmanına taşınsın mı?',
+        moveTokenBtn: '{name} Harita Katmanına Taşı',
+        tokenMoved: '{name} harita katmanına taşındı.',
+        tokenNotFound: 'Token bulunamadı.',
+        noActiveConditions: '{name} kaldırılacak aktif durumu yok.',
+        deadNoConditions: '{name} ölü olarak işaretlendi. Aktif durum yoktu.',
+        scriptReady: '{name} aktif ve {version} sürümünü kullanıyorsunuz.',
+        reachedZeroHp: "{name} 0 KP'ye ulaştı",
+        manuallyRemoved: 'manuel olarak kaldırıldı',
+        durationExpired: 'süresi doldu',
+        markedAsDead: '{name} ölü olarak işaretlendi',
+        conditionReorder:
+          'Tur sırası değişti ve {count} takip edilen durum satırı artık yanlış yerde olabilir. Bunları atanmış tokenlarının arkasına taşımak için aşağıya tıklayın.',
+        conditionsReordered:
+          'Durum satırları atanmış tokenlarının arkasına yeniden konumlandırıldı.',
+      },
+      removal: {
+        conditionField: 'Durum',
+        reasonField: 'Neden',
+        turnRowField: 'Tur Takibi satırı',
+        markerField: 'İşaretçi',
+        notConfigured: 'Yapılandırılmamış',
+        markerRemoved: 'Kaldırıldı ({marker})',
+        markerRetained: 'Tutuldu ({marker})',
+        rowRemoved: 'Kaldırıldı',
+        rowMissing: 'Zaten eksik',
+        manualReason: 'Manuel kaldırma',
+      },
+      cleanup: {
+        orphaned: 'Sahipsiz durum girişleri',
+        stale: 'Eski durum girişleri',
+        orphanedRows: 'Sahipsiz Tur Takibi satırları',
+        unusedMarkers: 'Kullanılmayan işaretçiler',
+      },
+      apply: {
+        turnAppended: 'Hedef tur sırasında değildi; durum satırı sona eklendi.',
+        turnInserted: 'Durum satırı hedef tokenın altına eklendi.',
+      },
+    },
+    handout: {
+      versionLabel: 'Sürüm',
+      subtitle: 'D&D 5e Durum Etkisi Yöneticisi',
+      footerNote:
+        'Bu el ilanı, betik her yüklendiğinde otomatik olarak oluşturulur ve güncellenir.',
+      overview: {
+        heading: 'Genel Bakış',
+        body: "Condition Tracker, D&D 5e durum koşullarını ve özel efektleri Roll20 Tur Takibinde etiketli satırlar olarak yönetir. Tokenlara durum uygulayın, süreleri inisiyatif sırasına göre takip edin ve tur sona erdiğinde süresi dolan efektleri otomatik olarak kaldırın. Tüm komutlar yalnızca GM'e özeldir ve sohbetten veya yüklü makrolar aracılığıyla tetiklenebilir.",
+      },
+      quickStart: {
+        heading: 'Hızlı Başlangıç',
+        colCommand: 'Komut',
+        colDesc: 'Açıklama',
+        rows: [
+          [
+            '!condition-tracker --prompt',
+            'Adım adım sihirbaz — durumu, tokenleri ve süreyi etkileşimli olarak seçin. ConditionTrackerWizard makrosu olarak da kullanılabilir.',
+          ],
+          [
+            '!condition-tracker --multi-target',
+            'Bir durumu aynı anda birden fazla tokena uygulayın. ConditionTrackerMultiTarget makrosu olarak da kullanılabilir.',
+          ],
+          [
+            '!condition-tracker --menu',
+            'Durum uygulamak, incelemek veya kaldırmak için düğmeler içeren ana yönetim menüsünü açın.',
+          ],
+        ],
+      },
+      commandsRef: {
+        heading: 'Komut Referansı',
+        colFlag: 'Bayrak',
+        colDesc: 'Açıklama',
+        rows: [
+          ['--prompt', 'Etkileşimli adım adım sihirbaz arayüzü'],
+          [
+            '--multi-target',
+            'Bir durumu aynı anda birden fazla hedef tokena uygula',
+          ],
+          ['--menu', 'Ana menüyü göster (kaldırma menüsü için remove ekle)'],
+          [
+            '--source X --target Y --condition Z',
+            'Sihirbaz olmadan doğrudan durum uygula',
+          ],
+          [
+            '--duration &lt;değer&gt;',
+            'Doğrudan uygulama için süre (örn. 2 rounds)',
+          ],
+          [
+            '--other &lt;metin&gt;',
+            'Büyü / Yetenek / Diğer etki türleri için özel metin',
+          ],
+          [
+            '--remove &lt;durum-kimliği&gt;',
+            'Belirli bir durumu benzersiz kimliğiyle kaldır',
+          ],
+          [
+            '--config &lt;seçenek&gt; &lt;değer&gt;',
+            'Yapılandırma ayarlarını düzenle (aşağıdaki Yapılandırma bölümüne bakın)',
+          ],
+          [
+            '--prompt --subjectPromptBypass true|false',
+            "Bu komut için subjectPromptBypass'ı geçersiz kıl (--subject-prompt-bypass da desteklenir)",
+          ],
+          [
+            '--cleanup',
+            'Durumu uzlaştır — sahipsiz koşulları ve Tur Takibi satırlarını kaldır',
+          ],
+          [
+            '--reorder-conditions',
+            'Tur sırasındaki koşul satırlarını atanmış tokenlarının arkasına manuel olarak yeniden konumlandır',
+          ],
+          ['--reinstall-macro', 'GM makrolarını yeniden oluştur veya güncelle'],
+          [
+            '--reinstall-handout',
+            'Yerelleştirilmiş yardım el ilanını yeniden oluştur veya güncelle',
+          ],
+          [
+            '--lang &lt;yerel ayar&gt;',
+            'Bu komutun mesajlarını ek bir yerel ayarda çıkart (iki dilli mod)',
+          ],
+          ['--help', 'Sohbette kısa bir yardım kartı göster'],
+        ],
+      },
+      standardConditions: {
+        heading: 'Standart Durumlar (D&amp;D 5e)',
+        colCondition: 'Durum',
+      },
+      customEffects: {
+        heading: 'Özel Efekt Türleri',
+        colType: 'Tür',
+        colNotes: 'Notlar',
+        rows: [
+          [
+            '🔮 Büyü',
+            'Adlandırılmış bir büyü etkisini takip edin — büyü adı sorulacak',
+          ],
+          [
+            '🎯 Yetenek',
+            'Adlandırılmış bir sınıf veya ırk yeteneğini takip edin — yetenek adı sorulacak',
+          ],
+          [
+            '🍀 Avantaj',
+            'Bir tokenden diğerine verilen avantajı kaydedin; inisiyatifte kaynakla gruplandırılır',
+          ],
+          [
+            '⬇️ Dezavantaj',
+            'Uygulanan dezavantajı kaydedin; inisiyatifte kaynakla gruplandırılır',
+          ],
+          ['📝 Diğer', 'Serbest biçimli özel etiket — bir açıklama sorulacak'],
+        ],
+      },
+      durationOptions: {
+        heading: 'Süre Seçenekleri',
+        intro:
+          'Kalan sayı, Tur Takibinin pr sütununda gösterilir ve çapa tokenının turu sona erdiğinde azalır.',
+        colOption: 'Seçenek',
+        colBehaviour: 'Davranış',
+        rows: [
+          [
+            'Kaldırılana kadar',
+            'Kalıcı — menü veya --remove aracılığıyla manuel olarak kaldırılmalıdır',
+          ],
+          [
+            'Hedefin sonraki turunun sonu',
+            'Hedef tokenın inisiyatifteki sonraki turu sona erdiğinde sona erer',
+          ],
+          [
+            'Kaynağın sonraki turunun sonu',
+            'Kaynak tokenın inisiyatifteki sonraki turu sona erdiğinde sona erer',
+          ],
+          [
+            '1 / 2 / 3 / 10 tur',
+            'Sabit geri sayım; çapa token tur sonunda bir azalma',
+          ],
+        ],
+      },
+      configuration: {
+        heading: 'Yapılandırma',
+        intro:
+          '!condition-tracker --config &lt;seçenek&gt; &lt;değer&gt; veya ana menüdeki Yapılandırma düğmesini kullanın.',
+        colOption: 'Seçenek',
+        colValues: 'Değerler',
+        colDesc: 'Açıklama',
+        rows: [
+          [
+            'useMarkers',
+            'true / false',
+            'Bir durum eklendiğinde tokenlara Roll20 durum işaretçileri uygula',
+          ],
+          [
+            'useIcons',
+            'true / false',
+            'Tur Takibi satırlarında emoji yerine kısa simge kodları göster (örn. [G])',
+          ],
+          [
+            'subjectPromptBypass',
+            'true / false',
+            'Büyü / Yetenek / Diğer efektler için isteğe bağlı özne-token adımını atla',
+          ],
+          [
+            'healthBar',
+            'bar1_value / bar2_value / bar3_value',
+            "İzlenecek token çubuğu; 0'a düştüğünde GM'den durumları temizlemesi istenir",
+          ],
+          [
+            'language',
+            'en-US / fr / de / es / pt-BR / ko',
+            'Sohbet mesajları ve yardım el ilanı için çıktı dili',
+          ],
+          [
+            'marker',
+            '&lt;Durum&gt;=&lt;işaretçi adı&gt;',
+            'Belirli bir durum için kullanılan durum işaretçisini geçersiz kıl (örn. marker Grappled=grab)',
+          ],
+        ],
+      },
+      defaultMarkers: {
+        heading: 'Varsayılan Durum İşaretçileri',
+        colCondition: 'Durum',
+        colMarker: 'İşaretçi Adı',
+      },
+      availableLocales: {
+        heading: 'Mevcut Çeviriler',
+        intro:
+          'Sohbet mesajlarını ve yardım el ilanını desteklenen herhangi bir yerel ayara ayarlamak için language yapılandırma seçeneğini kullanın. en, zh ve pt için kısa takma adlar da kabul edilir.',
+        colLocale: 'Yerel Ayar',
+        colLanguage: 'Dil',
+        colFile: 'Çeviri Dosyası',
       },
     },
   };
@@ -6402,6 +12462,7 @@ const ConditionTrackerMod = (() => {
         reinstallMacro: 'Перевстановити макрос',
         reinstallHandout: 'Перевстановити довідник',
         showHelp: 'Показати довідку',
+        reorderConditions: 'Переупорядкувати рядки умов',
       },
       title: {
         menu: 'Меню',
@@ -6423,6 +12484,7 @@ const ConditionTrackerMod = (() => {
         zeroHp: '{name} — 0 HP',
         moveToken: '{name} — перемістити токен?',
         scriptReady: 'Скрипт готовий',
+        conditionReorder: 'Порядок ходів змінено',
       },
       heading: {
         quickActions: 'Швидкі дії',
@@ -6509,6 +12571,10 @@ const ConditionTrackerMod = (() => {
         manuallyRemoved: 'це було видалено вручну',
         durationExpired: 'тривалість завершилася',
         markedAsDead: '{name} позначено як мертвого',
+        conditionReorder:
+          'Порядок ходів змінився, і {count} відстежуваний рядок/рядків умов може бути тепер не на місці. Натисніть нижче, щоб відновити їх після призначених токенів.',
+        conditionsReordered:
+          'Рядки умов були переміщені після призначених токенів.',
       },
       removal: {
         conditionField: 'Стан',
@@ -6600,6 +12666,10 @@ const ConditionTrackerMod = (() => {
           [
             '--cleanup',
             'Узгодити стан — видалити осиротілі стани й рядки Turn Tracker',
+          ],
+          [
+            '--reorder-conditions',
+            'Вручну переставити рядки умов після відповідних токенів у черзі ходу',
           ],
           ['--reinstall-macro', 'Повторно створити або оновити GM-макроси'],
           [
@@ -7148,6 +13218,8 @@ const ConditionTrackerMod = (() => {
     return {
       previousFirstTurnId: '',
       previousTurnSignature: '',
+      previousTokenIds: [],
+      previousMisplacedConditionIds: [],
     };
   }
 
@@ -7520,12 +13592,23 @@ const ConditionTrackerMod = (() => {
    *
    * @param {string} firstTurnId The current first turn id.
    * @param {string} signature The current turn signature.
+   * @param {string[]} [tokenIds] Ordered token ids from the current turn order.
+   * @param {string[]} [misplacedConditionIds] Condition ids currently misplaced in the turn order.
    * @returns {void}
    */
-  function updateTurnRuntime(firstTurnId, signature) {
+  function updateTurnRuntime(
+    firstTurnId,
+    signature,
+    tokenIds,
+    misplacedConditionIds,
+  ) {
     const runtime = ensureState().runtime;
     runtime.previousFirstTurnId = firstTurnId || '';
     runtime.previousTurnSignature = signature || '';
+    runtime.previousTokenIds = Array.isArray(tokenIds) ? tokenIds : [];
+    runtime.previousMisplacedConditionIds = Array.isArray(misplacedConditionIds)
+      ? misplacedConditionIds
+      : [];
   }
 
   const MACRO_DEFINITIONS = [
@@ -9749,6 +15832,83 @@ const ConditionTrackerMod = (() => {
   }
 
   /**
+   * Returns the ids of all token rows (non-custom rows) in turn order sequence.
+   *
+   * @returns {string[]} Token ids in current turn order.
+   */
+  function getTokenRowIds() {
+    return getTurnOrder()
+      .map((row) => getTokenRowId(row))
+      .filter(Boolean);
+  }
+
+  /**
+   * Returns condition ids whose rows appear after the wrong anchor token.
+   *
+   * A condition row is misplaced when the most recent token row before it in the
+   * tracker is not the condition's anchor token, and the anchor token IS present
+   * somewhere in the turn order.
+   *
+   * @returns {string[]} Misplaced condition ids.
+   */
+  function findMisplacedConditionIds() {
+    const rows = getTurnOrder();
+    const anchorLookup = getConditionAnchorLookup();
+    const tokenIdSet = new Set(
+      rows.map((r) => getTokenRowId(r)).filter(Boolean),
+    );
+    const misplaced = [];
+    let currentTokenId = null;
+
+    for (const row of rows) {
+      const tokenId = getTokenRowId(row);
+      if (tokenId) {
+        currentTokenId = tokenId;
+      } else {
+        const conditionId = getConditionIdFromRow(row);
+        if (conditionId) {
+          const expectedAnchor = anchorLookup.get(conditionId);
+          if (
+            expectedAnchor &&
+            tokenIdSet.has(expectedAnchor) &&
+            expectedAnchor !== currentTokenId
+          ) {
+            misplaced.push(conditionId);
+          }
+        }
+      }
+    }
+
+    return misplaced;
+  }
+
+  /**
+   * Strips all condition rows from the turn order and re-inserts them
+   * immediately after their anchor tokens in a single read-write cycle.
+   *
+   * @returns {void}
+   */
+  function reorderAllConditionRows() {
+    const rows = getTurnOrder();
+    const anchorLookup = getConditionAnchorLookup();
+    const activeConditions = ensureState().active;
+
+    const workingRows = rows.filter((row) => !getConditionIdFromRow(row));
+
+    for (const condition of activeConditions) {
+      const anchorTokenId = getConditionAnchorTokenId(condition);
+      const insertIndex = getInsertIndex(
+        workingRows,
+        anchorTokenId,
+        anchorLookup,
+      );
+      workingRows.splice(insertIndex.index, 0, createConditionRow(condition));
+    }
+
+    setTurnOrder(workingRows);
+  }
+
+  /**
    * Returns a Set of all condition ids that currently have a Turn Tracker row.
    *
    * Builds the Set in a single pass so callers avoid O(n) per-condition scans.
@@ -11082,6 +17242,11 @@ const ConditionTrackerMod = (() => {
       return;
     }
 
+    if (args['reorder-conditions'] !== undefined) {
+      handleReorderConditions(msg.playerid);
+      return;
+    }
+
     if (args['reinstall-macro']) {
       handleReinstallMacro(msg.playerid);
       return;
@@ -11664,6 +17829,7 @@ const ConditionTrackerMod = (() => {
     const cmdRemoveMenu = `${COMMAND} --menu remove`;
     const cmdConfig = `${COMMAND} --config`;
     const cmdCleanup = `${COMMAND} --cleanup`;
+    const cmdReorder = `${COMMAND} --reorder-conditions`;
     const cmdReinstall = `${COMMAND} --reinstall-macro`;
     const cmdReinstallHandout = `${COMMAND} --reinstall-handout`;
     const cmdHelp = `${COMMAND} --help`;
@@ -11692,6 +17858,10 @@ const ConditionTrackerMod = (() => {
           [
             code(cmdCleanup),
             buildButton(t('ui.btn.runCleanup', locale), cmdCleanup),
+          ],
+          [
+            code(cmdReorder),
+            buildButton(t('ui.btn.reorderConditions', locale), cmdReorder),
           ],
           [
             code(cmdReinstall),
@@ -12154,6 +18324,22 @@ const ConditionTrackerMod = (() => {
   }
 
   /**
+   * Reorders all condition rows to follow their anchor tokens.
+   *
+   * @param {string} playerId GM player id.
+   * @returns {void}
+   */
+  function handleReorderConditions(playerId) {
+    const locale = getConfig().language;
+    reorderAllConditionRows();
+    whisper(
+      playerId,
+      t('ui.title.conditionReorder', locale),
+      t('ui.msg.conditionsReordered', locale),
+    );
+  }
+
+  /**
    * Reinstalls the ConditionTrackerWizard macro for all current GM players.
    *
    * @param {string} playerId GM player id.
@@ -12197,7 +18383,12 @@ const ConditionTrackerMod = (() => {
     ensureState();
     applyGlobalConfig();
     migrateTurnOrderRows();
-    updateTurnRuntime(getCurrentTurnTokenId(), getTurnSignature());
+    updateTurnRuntime(
+      getCurrentTurnTokenId(),
+      getTurnSignature(),
+      getTokenRowIds(),
+      findMisplacedConditionIds(),
+    );
     installMacro();
     installHandout(getConfig().language);
     log(
@@ -12315,9 +18506,30 @@ const ConditionTrackerMod = (() => {
       }
 
       const previousFirstTurnId = trackerState.runtime.previousFirstTurnId;
+      const previousTokenIds = trackerState.runtime.previousTokenIds || [];
+      const previousMisplacedIds =
+        trackerState.runtime.previousMisplacedConditionIds || [];
       const currentFirstTurnId = getCurrentTurnTokenId();
-      updateTurnRuntime(currentFirstTurnId, currentSignature);
+      const currentTokenIds = getTokenRowIds();
       reconcileActiveConditionsWithTurnOrder();
+      const currentMisplacedIds = findMisplacedConditionIds();
+      updateTurnRuntime(
+        currentFirstTurnId,
+        currentSignature,
+        currentTokenIds,
+        currentMisplacedIds,
+      );
+
+      if (
+        shouldPromptConditionReorder(
+          previousTokenIds,
+          currentTokenIds,
+          previousMisplacedIds,
+          currentMisplacedIds,
+        )
+      ) {
+        promptConditionReorder(getPrimaryGmId(), currentMisplacedIds.length);
+      }
 
       if (!previousFirstTurnId || previousFirstTurnId === currentFirstTurnId) {
         return;
@@ -12332,6 +18544,90 @@ const ConditionTrackerMod = (() => {
     } catch (error) {
       log(`${SCRIPT_NAME} duration error: ${error.message}`);
     }
+  }
+
+  /**
+   * Returns true when a turn-order change should prompt the GM to reorder
+   * condition rows.
+   *
+   * @param {string[]} previousTokenIds Token ids from the previous turn order snapshot.
+   * @param {string[]} currentTokenIds Token ids from the current turn order.
+   * @param {string[]} previousMisplacedIds Previously misplaced condition ids.
+   * @param {string[]} currentMisplacedIds Currently misplaced condition ids.
+   * @returns {boolean} True when a reorder prompt should be whispered.
+   */
+  function shouldPromptConditionReorder(
+    previousTokenIds,
+    currentTokenIds,
+    previousMisplacedIds,
+    currentMisplacedIds,
+  ) {
+    if (currentMisplacedIds.length === 0) {
+      return false;
+    }
+
+    const previousMisplacedSet = new Set(previousMisplacedIds);
+    const newlyMisplaced = currentMisplacedIds.some(
+      (id) => !previousMisplacedSet.has(id),
+    );
+    if (!newlyMisplaced) {
+      return false;
+    }
+
+    if (isSingleTurnAdvance(previousTokenIds, currentTokenIds)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Returns true when token rows changed by the normal next-turn rotation.
+   *
+   * @param {string[]} previousIds Token ids from the previous turn order snapshot.
+   * @param {string[]} currentIds Token ids from the current turn order.
+   * @returns {boolean} True for a one-step left rotation.
+   */
+  function isSingleTurnAdvance(previousIds, currentIds) {
+    if (previousIds.length < 2 || previousIds.length !== currentIds.length) {
+      return false;
+    }
+
+    const rotated = previousIds.slice(1).concat(previousIds[0]);
+    return arraysEqual(rotated, currentIds);
+  }
+
+  /**
+   * Returns true when two string arrays have the same values in the same order.
+   *
+   * @param {string[]} a First array.
+   * @param {string[]} b Second array.
+   * @returns {boolean} True when arrays match.
+   */
+  function arraysEqual(a, b) {
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    return a.every((value, index) => value === b[index]);
+  }
+
+  /**
+   * Whispers a GM prompt asking whether to reorder displaced condition rows.
+   *
+   * @param {string} gmId GM player id.
+   * @param {number} count Number of misplaced condition rows detected.
+   * @returns {void}
+   */
+  function promptConditionReorder(gmId, count) {
+    const locale = getConfig().language;
+    whisper(gmId, t('ui.title.conditionReorder', locale), [
+      t('ui.msg.conditionReorder', locale, { count }),
+      buildButton(
+        t('ui.btn.reorderConditions', locale),
+        `${COMMAND} --reorder-conditions`,
+      ),
+    ]);
   }
 
   /**

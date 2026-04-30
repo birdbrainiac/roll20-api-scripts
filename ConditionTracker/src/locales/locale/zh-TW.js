@@ -181,6 +181,7 @@ const TRANSLATION = {
       reinstallMacro: "重新安裝巨集",
       reinstallHandout: "重新安裝講義",
       showHelp: "顯示說明",
+      reorderConditions: "重新排列狀態列",
     },
     title: {
       menu: "選單",
@@ -202,6 +203,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 HP",
       moveToken: "{name} — 移動 Token？",
       scriptReady: "腳本已就緒",
+      conditionReorder: "行動順序已變更",
     },
     heading: {
       quickActions: "快速動作",
@@ -277,6 +279,10 @@ const TRANSLATION = {
       manuallyRemoved: "已手動移除",
       durationExpired: "持續時間已結束",
       markedAsDead: "{name} 已標記為死亡",
+      conditionReorder:
+        "行動順序已變更，{count} 個追蹤中的狀態列可能已不在正確位置。點擊下方將其還原至指定代幣之後。",
+      conditionsReordered:
+        "狀態列已重新排列至其指定代幣之後。",
     },
     removal: {
       conditionField: "狀態",
@@ -346,6 +352,7 @@ const TRANSLATION = {
           "僅對此指令覆寫 subjectPromptBypass（也支援 --subject-prompt-bypass）",
         ],
         ["--cleanup", "校正狀態 — 移除孤立狀態與回合追蹤列"],
+        ["--reorder-conditions", "手動將狀態列重新排列到輪序中其對應代幣之後"],
         ["--reinstall-macro", "重新建立或更新 GM 巨集"],
         ["--reinstall-handout", "重新建立或更新本地化說明講義"],
         ["--lang &lt;locale&gt;", "以額外語言環境輸出此指令訊息（雙語模式）"],

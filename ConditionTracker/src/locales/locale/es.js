@@ -180,6 +180,7 @@ const TRANSLATION = {
       reinstallMacro: "Reinstalar macro",
       reinstallHandout: "Reinstalar folleto",
       showHelp: "Mostrar ayuda",
+      reorderConditions: "Reordenar filas de condición",
     },
     title: {
       menu: "Menú",
@@ -201,6 +202,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 PV",
       moveToken: "{name} — ¿Mover ficha?",
       scriptReady: "Script listo",
+      conditionReorder: "Orden de turno cambiado",
     },
     heading: {
       quickActions: "Acciones rápidas",
@@ -292,6 +294,10 @@ const TRANSLATION = {
       manuallyRemoved: "eliminación manual",
       durationExpired: "su duración expiró",
       markedAsDead: "{name} fue marcado como muerto",
+      conditionReorder:
+        "El orden de turno ha cambiado y {count} fila(s) de condición rastreada(s) puede(n) estar fuera de lugar. Haz clic abajo para restaurarlas después de sus tokens asignados.",
+      conditionsReordered:
+        "Las filas de condición han sido reposicionadas después de sus tokens asignados.",
     },
     removal: {
       conditionField: "Condición",
@@ -383,6 +389,10 @@ const TRANSLATION = {
         [
           "--cleanup",
           "Reconciliar estado — eliminar condiciones y filas huérfanas",
+        ],
+        [
+          "--reorder-conditions",
+          "Reposicionar manualmente las filas de condición detrás de sus fichas asignadas en el orden de turno",
         ],
         ["--reinstall-macro", "Recrear o actualizar las macros del GM"],
         [
@@ -496,6 +506,14 @@ const TRANSLATION = {
       heading: "Marcadores de estado predeterminados",
       colCondition: "Condición",
       colMarker: "Nombre del marcador",
+    },
+    availableLocales: {
+      heading: "Traducciones disponibles",
+      intro:
+        "Usa la opción de configuración language para establecer los mensajes de chat y el folleto de ayuda en cualquier idioma compatible. También se aceptan alias cortos para en, zh y pt.",
+      colLocale: "Configuración regional",
+      colLanguage: "Idioma",
+      colFile: "Archivo de traducción",
     },
   },
 };

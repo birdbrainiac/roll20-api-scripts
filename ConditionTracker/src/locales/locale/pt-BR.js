@@ -179,7 +179,9 @@ const TRANSLATION = {
       showConfig: "Mostrar configuração",
       runCleanup: "Executar limpeza",
       reinstallMacro: "Reinstalar macro",
+      reinstallHandout: "Reinstalar livreto",
       showHelp: "Mostrar ajuda",
+      reorderConditions: "Reordenar linhas de condição",
     },
     title: {
       menu: "Menu",
@@ -201,6 +203,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 PV",
       moveToken: "{name} — Mover ficha?",
       scriptReady: "Script pronto",
+      conditionReorder: "Ordem de turno alterada",
     },
     heading: {
       quickActions: "Ações rápidas",
@@ -287,6 +290,10 @@ const TRANSLATION = {
       manuallyRemoved: "remoção manual",
       durationExpired: "sua duração expirou",
       markedAsDead: "{name} foi marcado como morto",
+      conditionReorder:
+        "A ordem de turno mudou e {count} linha(s) de condição rastreada(s) pode(m) estar fora do lugar. Clique abaixo para restaurá-las após os tokens atribuídos.",
+      conditionsReordered:
+        "As linhas de condição foram reposicionadas após seus tokens atribuídos.",
     },
     removal: {
       conditionField: "Condição",
@@ -376,6 +383,7 @@ const TRANSLATION = {
           "Substituir subjectPromptBypass somente para este comando (também aceita --subject-prompt-bypass)",
         ],
         ["--cleanup", "Reconciliar estado — remover condições e linhas órfãs"],
+        ["--reorder-conditions", "Reposicionar manualmente as linhas de condição após os tokens atribuídos na ordem de iniciativa"],
         ["--reinstall-macro", "Recriar ou atualizar as macros do GM"],
         [
           "--reinstall-handout",
@@ -488,6 +496,14 @@ const TRANSLATION = {
       heading: "Marcadores de status padrão",
       colCondition: "Condição",
       colMarker: "Nome do marcador",
+    },
+    availableLocales: {
+      heading: "Traduções disponíveis",
+      intro:
+        "Use a opção de configuração language para definir as mensagens de chat e o livreto de ajuda em qualquer locale suportado. Aliases curtos também são aceitos para en, zh e pt.",
+      colLocale: "Locale",
+      colLanguage: "Idioma",
+      colFile: "Arquivo de tradução",
     },
   },
 };

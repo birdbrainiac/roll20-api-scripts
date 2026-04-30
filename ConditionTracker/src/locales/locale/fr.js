@@ -183,6 +183,7 @@ const TRANSLATION = {
       reinstallMacro: "Réinstaller la macro",
       reinstallHandout: "Réinstaller le livret",
       showHelp: "Afficher l’aide",
+      reorderConditions: "Réorganiser les lignes de condition",
     },
     title: {
       menu: "Menu",
@@ -204,6 +205,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 PV",
       moveToken: "{name} — Déplacer le jeton ?",
       scriptReady: "Script prêt",
+      conditionReorder: "Ordre de tour modifié",
     },
     heading: {
       quickActions: "Actions rapides",
@@ -294,6 +296,10 @@ const TRANSLATION = {
       manuallyRemoved: "suppression manuelle",
       durationExpired: "sa durée a expiré",
       markedAsDead: "{name} a été marqué comme mort",
+      conditionReorder:
+        "L'ordre de tour a changé et {count} ligne(s) de condition suivie(s) peut être mal placée. Cliquez ci-dessous pour les restaurer après leurs tokens assignés.",
+      conditionsReordered:
+        "Les lignes de condition ont été repositionnées après leurs tokens assignés.",
     },
     removal: {
       conditionField: "Condition",
@@ -385,6 +391,10 @@ const TRANSLATION = {
         [
           "--cleanup",
           "Nettoyer l’état — supprimer les conditions et lignes orphelines",
+        ],
+        [
+          "--reorder-conditions",
+          "Repositionner manuellement les lignes de condition après leurs jetons assignés dans l’ordre d’initiative",
         ],
         ["--reinstall-macro", "Recréer ou mettre à jour les macros MJ"],
         [
@@ -498,6 +508,14 @@ const TRANSLATION = {
       heading: "Marqueurs de statut par défaut",
       colCondition: "Condition",
       colMarker: "Nom du marqueur",
+    },
+    availableLocales: {
+      heading: "Traductions disponibles",
+      intro:
+        "Utilisez l'option de configuration language pour définir les messages de chat et le livret d'aide sur n'importe quelle locale prise en charge. Les alias courts sont également acceptés pour en, zh et pt.",
+      colLocale: "Locale",
+      colLanguage: "Langue",
+      colFile: "Fichier de traduction",
     },
   },
 };

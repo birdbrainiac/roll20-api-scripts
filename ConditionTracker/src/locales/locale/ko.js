@@ -181,6 +181,7 @@ const TRANSLATION = {
       reinstallMacro: "매크로 재설치",
       reinstallHandout: "유인물 재설치",
       showHelp: "도움말 표시",
+      reorderConditions: "조건 행 재정렬",
     },
     title: {
       menu: "메뉴",
@@ -202,6 +203,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 HP",
       moveToken: "{name} — 토큰을 이동하시겠습니까?",
       scriptReady: "스크립트 준비됨",
+      conditionReorder: "턴 순서 변경됨",
     },
     heading: {
       quickActions: "빠른 작업",
@@ -289,6 +291,10 @@ const TRANSLATION = {
       manuallyRemoved: "수동으로 제거됨",
       durationExpired: "지속 시간이 만료됨",
       markedAsDead: "{name} 이(가) 사망으로 표시됨",
+      conditionReorder:
+        "턴 순서가 변경되어 {count}개의 추적된 조건 행이 잘못된 위치에 있을 수 있습니다. 아래를 클릭하여 지정된 토큰 뒤에 복원하세요.",
+      conditionsReordered:
+        "조건 행이 지정된 토큰 뒤로 재배치되었습니다.",
     },
     removal: {
       conditionField: "상태",
@@ -365,6 +371,7 @@ const TRANSLATION = {
           "이 명령어에 대해서만 subjectPromptBypass 재정의 (--subject-prompt-bypass 도 지원)",
         ],
         ["--cleanup", "상태 조정 — 연결이 끊긴 상태 및 턴 추적기 행 제거"],
+        ["--reorder-conditions", "턴 순서에서 조건 행을 할당된 토큰 뒤로 수동으로 재배치"],
         ["--reinstall-macro", "GM 매크로 재생성 또는 업데이트"],
         ["--reinstall-handout", "현지화된 도움말 유인물 재생성 또는 업데이트"],
         [
@@ -474,6 +481,14 @@ const TRANSLATION = {
       heading: "기본 상태 마커",
       colCondition: "상태",
       colMarker: "마커 이름",
+    },
+    availableLocales: {
+      heading: "사용 가능한 번역",
+      intro:
+        "language 설정 옵션을 사용하여 채팅 메시지와 도움말 유인물을 지원되는 locale로 설정하세요. en, zh, pt에 대한 짧은 별칭도 허용됩니다.",
+      colLocale: "로케일",
+      colLanguage: "언어",
+      colFile: "번역 파일",
     },
   },
 };

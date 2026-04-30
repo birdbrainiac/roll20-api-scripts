@@ -183,6 +183,7 @@ const TRANSLATION = {
       reinstallMacro: "Reinstall Macro",
       reinstallHandout: "Reinstall Handout",
       showHelp: "Show Help",
+      reorderConditions: "Reorder Condition Rows",
     },
     title: {
       menu: "Menu",
@@ -204,6 +205,7 @@ const TRANSLATION = {
       zeroHp: "{name} — 0 HP",
       moveToken: "{name} — Move Token?",
       scriptReady: "Script Ready",
+      conditionReorder: "Turn Order Changed",
     },
     heading: {
       quickActions: "Quick Actions",
@@ -290,6 +292,10 @@ const TRANSLATION = {
       manuallyRemoved: "it was manually removed",
       durationExpired: "its duration expired",
       markedAsDead: "{name} was marked as dead",
+      conditionReorder:
+        "The turn order changed and {count} tracked condition row(s) may now be out of place. Click below to restore them after their assigned tokens.",
+      conditionsReordered:
+        "Condition rows have been repositioned after their assigned tokens.",
     },
     removal: {
       conditionField: "Condition",
@@ -380,6 +386,10 @@ const TRANSLATION = {
         [
           "--cleanup",
           "Reconcile state — remove orphaned conditions and Turn Tracker rows",
+        ],
+        [
+          "--reorder-conditions",
+          "Manually reposition condition rows after their assigned tokens in the Turn Tracker",
         ],
         ["--reinstall-macro", "Recreate or update the GM macros"],
         [

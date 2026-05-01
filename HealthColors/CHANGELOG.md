@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [2.1.0] – 2026-04-25
+## [2.1.0] – 2026-05-01
 
 ### Added
 - Added a palette system for health colors with `default` and `colorblind` options.

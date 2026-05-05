@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.1.0] – 2026-05-01
+
+### Added
+- Added a palette system for health colors with `default` and `colorblind` options.
+- Added `!aura palette ?{Palette|default|colorblind}` command and matching menu control (palette switching forces existing tokens to refresh immediately).
+
+### Changed
+- Switched health color mapping from a fixed red/green calculation to palette-based low/mid/high interpolation.
+- Added an explicit `dead` color stop to each palette and mapped exactly 0% HP to black (`#000000`).
+- Updated default `AuraSize` from `0.7` to `0.35` and aligned docs/menu wording to describe radius in feet from token edge.
+- Updated menu/settings output to include the active palette.
+
+### Fixed
+- Fixed dead-state visuals at 0 HP so dead color behavior remains consistent.
+- Fixed missed updates when tokens are resized by treating width/height changes as a visual refresh trigger.
+
 ## [2.0.1] – 2026-04-20
 
 ### Fixed

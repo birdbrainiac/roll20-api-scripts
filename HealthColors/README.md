@@ -6,7 +6,8 @@
 
 ## Features
 
-- **Dynamic Color Shifting**: Automatically transitions from Green (Healthy) to Red (Critical) as health drops.
+- **Palette-Based Color Shifting**: Automatically transitions across a 3-stop health gradient with a dedicated dead color at 0 HP.
+- **Built-In Palettes**: Choose between `default` and `colorblind` palettes for clearer table visibility.
 - **Aura & Tint Modes**: Choose between a glowing health ring (Aura 1) or a full token color overlay (Tint).
 - **Aura 1 Exclusive Management**: The script only manages Aura 1. You are free to manually use Aura 2 for range indicators, light sources, or status markers without script interference.
 - **Aura 1 & Aura 2 Details in Output**: Settings output includes Aura 1 Shape/Tint and Aura 2 Radius/Shape/Tint rows using state-backed defaults for clear reference.
@@ -42,7 +43,8 @@ When a command changes a setting, HealthColors posts a single read-only settings
 | `!aura forceall`            | Forces a visual sync for every token on the current map.                           |
 | `!aura on/off`              | Enables or disables the script globally.                                           |
 | `!aura tint`                | Toggles between **Aura 1** mode and **Tint** mode.                                 |
-| `!aura size <n>`            | Sets the default radius for Aura 1 (e.g., `!aura size 0.7`).                       |
+| `!aura palette <name>`      | Sets the health palette (`default` or `colorblind`) and auto-refreshes all tokens. |
+| `!aura size <n>`            | Sets Aura 1 radius in feet from token edge (e.g., `!aura size 0.35`).              |
 | `!aura a1shape <shape>`     | Sets Aura 1 display shape (`Circle`, `Square`).                                    |
 | `!aura a1tint <hex>`        | Sets Aura 1 display tint color (e.g., `!aura a1tint 00FF00`).                      |
 | `!aura a2size <n>`          | Sets Aura 2 display radius (e.g., `!aura a2size 5`).                               |
@@ -59,12 +61,20 @@ When a command changes a setting, HealthColors posts a single read-only settings
 | `!aura reset-fx`            | Rebuilds `-DefaultHeal` and `-DefaultHurt` custom FX objects.                      |
 | `!aura reset-all`           | Restores all settings to `DEFAULTS`, rebuilds default FX, and force-syncs tokens.  |
 
+### Health Palettes
+
+- `default`: High = Green, Mid = Yellow, Low = Red, Dead = Black.
+- `colorblind`: High = Cyan, Mid = Orange, Low = Magenta, Dead = Black.
+- At exactly 0 HP, the script uses the palette dead color (`#000000`) for clear knockout state.
+- If HP is above 100%, the script still uses blue (`#0000FF`) for overflow/temporary HP visualization.
+
 ---
 
 ## Tips & Troubleshooting
 
-- **Aura Visibility**: If you are using a 5ft grid and set the Aura 1 radius to `0.7`, it may be hidden by the token image. Increase the radius (e.g., `3.0`) if you want the health ring to be visible outside the token's edge.
+- **Aura Visibility**: Aura 1 radius is measured in feet from the token edge. The default is `0.35`, which can appear subtle on some maps. Increase it (e.g., `3.0`) if you want a more obvious health ring.
 - **Manual Changes**: If you manually change a token's aura color or radius in the Roll20 dialog, it will stay that way as long as the token's health doesn't change. Once health is updated, the script will re-sync the visuals to the calculated health color.
+- **Palette Changes**: Switching palettes from the menu or with `!aura palette ...` immediately runs a full refresh of tokens (equivalent to a force update).
 - **One-Off Tokens**: You can toggle "One-Offs" in the settings to enable health tracking for tokens that are not linked to a character sheet.
 - **FX Rendering Variance**: Some Roll20 sandbox/client combinations can render `spawnFxWithDefinition` colors inaccurately. HealthColors uses a fallback that updates default custom FX objects and spawns by FX ID to keep heal/hurt colors consistent.
 - **Missing Max HP**: If the configured health bar has no `max` value on a token, HealthColors now clears that token's aura/tint until a max value is set.
@@ -74,4 +84,4 @@ When a command changes a setting, HealthColors posts a single read-only settings
 ## Credits
 
 Original Author: DXWarlock
-Refactored and Modernized for v2.0.0 by MidNiteShadow7
+Refactored and Modernized for v2 by MidNiteShadow7

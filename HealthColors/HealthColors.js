@@ -1,5 +1,5 @@
 // ===========================
-// === HealthColors v2.1.0 ===
+// === HealthColors v2.1.1 ===
 // ===========================
 
 // AUTHORS:
@@ -8,14 +8,14 @@
 
 /* global createObj TokenMod spawnFxWithDefinition spawnFx getObj state playerIsGM sendChat findObjs log on */
 
-(() => {
-  "use strict";
+const HealthColors = (() => {
+  'use strict';
 
   // ————— CONSTANTS —————
-  const VERSION = "2.1.0";
-  const SCRIPT_NAME = "HealthColors";
-  const SCHEMA_VERSION = "1.1.0";
-  const UPDATED = "2026-04-25 07:30 UTC";
+  const VERSION = '2.1.1';
+  const SCRIPT_NAME = 'HealthColors';
+  const SCHEMA_VERSION = '1.1.0';
+  const UPDATED = '2026-04-25 07:30 UTC';
 
   // ————— DEFAULTS —————
   /**
@@ -51,7 +51,7 @@
    */
   const DEFAULTS = {
     auraColorOn: true,
-    auraBar: "bar1",
+    auraBar: 'bar1',
     auraTint: false,
     auraPercPC: 100,
     auraPerc: 100,
@@ -59,22 +59,22 @@
     NPCAura: true,
     auraDeadPC: true,
     auraDead: true,
-    GM_PCNames: "Yes",
-    PCNames: "Yes",
-    GM_NPCNames: "Yes",
-    NPCNames: "Yes",
+    GM_PCNames: 'Yes',
+    PCNames: 'Yes',
+    GM_NPCNames: 'Yes',
+    NPCNames: 'Yes',
     AuraSize: 0.35,
-    Aura1Shape: "Circle",
-    Aura1Color: "00FF00",
+    Aura1Shape: 'Circle',
+    Aura1Color: '00FF00',
     Aura2Size: 5,
-    Aura2Shape: "Square",
-    Aura2Color: "806600",
+    Aura2Shape: 'Square',
+    Aura2Color: '806600',
     OneOff: false,
     FX: true,
-    HealFX: "FDDC5C",
-    HurtFX: "FF0000",
-    auraDeadFX: "None",
-    colorPalette: "default",
+    HealFX: 'FDDC5C',
+    HurtFX: 'FF0000',
+    auraDeadFX: 'None',
+    colorPalette: 'default',
   };
 
   const COLOR_PALETTES = {
@@ -223,8 +223,8 @@
    */
   function percentToHex(pct) {
     const normalizedPct = Math.max(0, Number(pct) || 0);
-    if (normalizedPct > 100) return "#0000FF";
-    const paletteName = state?.HealthColors?.colorPalette || "default";
+    if (normalizedPct > 100) return '#0000FF';
+    const paletteName = state?.HealthColors?.colorPalette || 'default';
     const { high, mid, low, dead } =
       COLOR_PALETTES[paletteName] || COLOR_PALETTES.default;
     const rgbToHex = (rgb) =>
@@ -252,7 +252,7 @@
    * @returns {number[]} Array of [r, g, b, a] where a is always 1.0 on success.
    */
   function hexToRgb(hex) {
-    const cleanHex = (hex || "").replace("#", "").trim();
+    const cleanHex = (hex || '').replace('#', '').trim();
     const parts = /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/.exec(
       cleanHex,
     );
@@ -285,7 +285,7 @@
    * @returns {string} Uppercase 6-digit hex.
    */
   function normalizeHex6(value, fallback) {
-    const cleaned = (value || "").replace("#", "").trim().toUpperCase();
+    const cleaned = (value || '').replace('#', '').trim().toUpperCase();
     return /^[0-9A-F]{6}$/.test(cleaned) ? cleaned : fallback;
   }
 
@@ -296,9 +296,9 @@
    * @returns {string} One of Circle|Square.
    */
   function normalizeShape(value, fallback) {
-    const shape = (value || "").trim().toUpperCase();
-    if (shape === "CIRCLE") return "Circle";
-    if (shape === "SQUARE") return "Square";
+    const shape = (value || '').trim().toUpperCase();
+    if (shape === 'CIRCLE') return 'Circle';
+    if (shape === 'SQUARE') return 'Square';
     return fallback;
   }
 
@@ -309,7 +309,7 @@
    * @returns {string} A valid palette key from COLOR_PALETTES.
    */
   function normalizePalette(value, fallback) {
-    const p = (value || "").trim().toLowerCase();
+    const p = (value || '').trim().toLowerCase();
     return COLOR_PALETTES[p] ? p : fallback;
   }
 
@@ -320,17 +320,17 @@
    */
   function gmWhisper(text) {
     const style = [
-      "width:100%",
-      "border-radius:4px",
-      "box-shadow:1px 1px 1px #707070",
-      "text-align:center",
-      "vertical-align:middle",
-      "padding:3px 0px",
-      "margin:0px auto",
-      "border:1px solid #000",
-      "color:#000",
-      "background-image:-webkit-linear-gradient(-45deg,#a7c7dc 0%,#85b2d3 100%)",
-    ].join(";");
+      'width:100%',
+      'border-radius:4px',
+      'box-shadow:1px 1px 1px #707070',
+      'text-align:center',
+      'vertical-align:middle',
+      'padding:3px 0px',
+      'margin:0px auto',
+      'border:1px solid #000',
+      'color:#000',
+      'background-image:-webkit-linear-gradient(-45deg,#a7c7dc 0%,#85b2d3 100%)',
+    ].join(';');
     sendChat(SCRIPT_NAME, `/w GM <div style='${style}'><b>${text}</b></div>`);
   }
 
@@ -347,48 +347,48 @@
    */
   function makeSmartAttrCache(attribute, options = {}) {
     const cache = {};
-    const defaultValue = options.default || "YES";
+    const defaultValue = options.default || 'YES';
     const validator = options.validation || (() => true);
 
-    on("change:attribute", (attr) => {
-      if (attr.get("name") !== attribute) return;
-      if (!validator(attr.get("current"))) attr.set("current", defaultValue);
-      cache[attr.get("characterid")] = attr.get("current");
-      findObjs({ type: "graphic" })
-        .filter((o) => o.get("represents") === attr.get("characterid"))
+    on('change:attribute', (attr) => {
+      if (attr.get('name') !== attribute) return;
+      if (!validator(attr.get('current'))) attr.set('current', defaultValue);
+      cache[attr.get('characterid')] = attr.get('current');
+      findObjs({ type: 'graphic' })
+        .filter((o) => o.get('represents') === attr.get('characterid'))
         .forEach((obj) => {
           const prev = JSON.parse(JSON.stringify(obj));
-          handleToken(obj, prev, "YES");
+          handleToken(obj, prev, 'YES');
         });
     });
 
-    on("destroy:attribute", (attr) => {
-      if (attr.get("name") === attribute) delete cache[attr.get("characterid")];
+    on('destroy:attribute', (attr) => {
+      if (attr.get('name') === attribute) delete cache[attr.get('characterid')];
     });
 
     return function (character) {
       let attr =
         findObjs(
-          { type: "attribute", name: attribute, characterid: character.id },
+          { type: 'attribute', name: attribute, characterid: character.id },
           { caseInsensitive: true },
         )[0] ||
-        createObj("attribute", {
+        createObj('attribute', {
           name: attribute,
           characterid: character.id,
           current: defaultValue,
         });
 
-      if (!cache[character.id] || cache[character.id] !== attr.get("current")) {
-        if (!validator(attr.get("current"))) attr.set("current", defaultValue);
-        cache[character.id] = attr.get("current");
+      if (!cache[character.id] || cache[character.id] !== attr.get('current')) {
+        if (!validator(attr.get('current'))) attr.set('current', defaultValue);
+        cache[character.id] = attr.get('current');
       }
       return cache[character.id];
     };
   }
 
-  const lookupUseBlood = makeSmartAttrCache("USEBLOOD", { default: "DEFAULT" });
-  const lookupUseColor = makeSmartAttrCache("USECOLOR", {
-    default: "YES",
+  const lookupUseBlood = makeSmartAttrCache('USEBLOOD', { default: 'DEFAULT' });
+  const lookupUseColor = makeSmartAttrCache('USECOLOR', {
+    default: 'YES',
     validation: (o) => Boolean(o.match(/YES|NO/)),
   });
 
@@ -405,7 +405,7 @@
       obj.set({ tint_color: percentToHex(100) });
     } else {
       obj.set({
-        tint_color: "transparent",
+        tint_color: 'transparent',
         aura1_color: percentToHex(100),
         aura1_radius: state.HealthColors.AuraSize,
         showplayers_aura1: true,
@@ -420,8 +420,8 @@
    */
   function clearAuras(obj) {
     obj.set({
-      tint_color: "transparent",
-      aura1_color: "transparent",
+      tint_color: 'transparent',
+      aura1_color: 'transparent',
       aura1_radius: 0,
     });
   }
@@ -440,7 +440,7 @@
       obj.set({ tint_color: markerColor });
     } else {
       obj.set({
-        tint_color: "transparent",
+        tint_color: 'transparent',
         aura1_radius: sizeSet,
         aura1_color: markerColor,
         showplayers_aura1: true,
@@ -456,8 +456,8 @@
    * @param {object} obj - Roll20 token object.
    */
   function setShowNames(gm, pc, obj) {
-    if (gm !== "Off" && gm !== "") obj.set({ showname: gm === "Yes" });
-    if (pc !== "Off" && pc !== "") obj.set({ showplayers_name: pc === "Yes" });
+    if (gm !== 'Off' && gm !== '') obj.set({ showname: gm === 'Yes' });
+    if (pc !== 'Off' && pc !== '') obj.set({ showplayers_name: pc === 'Yes' });
   }
 
   // ————— FX —————
@@ -468,9 +468,9 @@
    */
   function playDeath(trackname) {
     const list =
-      trackname.indexOf(",") > 0 ? trackname.split(",") : [trackname];
+      trackname.indexOf(',') > 0 ? trackname.split(',') : [trackname];
     const resolvedName = list[Math.floor(Math.random() * list.length)];
-    const track = findObjs({ type: "jukeboxtrack", title: resolvedName })[0];
+    const track = findObjs({ type: 'jukeboxtrack', title: resolvedName })[0];
     if (track) {
       track.set({ playing: false, softstop: false, volume: 50 });
       track.set({ playing: true });
@@ -505,23 +505,23 @@
       return undefined;
     };
     const startKeys = [
-      "startColour",
-      "startColor",
-      "startcolour",
-      "startcolor",
+      'startColour',
+      'startColor',
+      'startcolour',
+      'startcolor',
     ];
-    const endKeys = ["endColour", "endColor", "endcolour", "endcolor"];
+    const endKeys = ['endColour', 'endColor', 'endcolour', 'endcolor'];
     const startRndKeys = [
-      "startColourRandom",
-      "startColorRandom",
-      "startcolourrandom",
-      "startcolorrandom",
+      'startColourRandom',
+      'startColorRandom',
+      'startcolourrandom',
+      'startcolorrandom',
     ];
     const endRndKeys = [
-      "endColourRandom",
-      "endColorRandom",
-      "endcolourrandom",
-      "endcolorrandom",
+      'endColourRandom',
+      'endColorRandom',
+      'endcolourrandom',
+      'endcolorrandom',
     ];
     const startClr = pick(fx, startKeys) ?? pick(m, startKeys);
     const endClr = pick(fx, endKeys) ?? pick(m, endKeys);
@@ -566,10 +566,10 @@
   function getFxDefinition(fxObj) {
     if (!fxObj) return null;
 
-    const raw = fxObj.get("definition");
+    const raw = fxObj.get('definition');
     if (!raw) return null;
 
-    if (typeof raw === "string") {
+    if (typeof raw === 'string') {
       try {
         return JSON.parse(raw);
       } catch (err) {
@@ -578,7 +578,7 @@
       }
     }
 
-    if (typeof raw === "object") {
+    if (typeof raw === 'object') {
       return JSON.parse(JSON.stringify(raw));
     }
 
@@ -606,28 +606,28 @@
       state.HealthColors.colorPalette,
       DEFAULTS.colorPalette,
     );
-    if (typeof TokenMod !== "undefined" && TokenMod.ObserveTokenChange) {
+    if (typeof TokenMod !== 'undefined' && TokenMod.ObserveTokenChange) {
       TokenMod.ObserveTokenChange(handleToken);
     }
     const fxHurt = findObjs(
-      { _type: "custfx", name: "-DefaultHurt" },
+      { _type: 'custfx', name: '-DefaultHurt' },
       { caseInsensitive: true },
     )[0];
     const fxHeal = findObjs(
-      { _type: "custfx", name: "-DefaultHeal" },
+      { _type: 'custfx', name: '-DefaultHeal' },
       { caseInsensitive: true },
     )[0];
     if (!fxHurt) {
-      gmWhisper("Creating Default Hurt FX");
-      createObj("custfx", {
-        name: "-DefaultHurt",
+      gmWhisper('Creating Default Hurt FX');
+      createObj('custfx', {
+        name: '-DefaultHurt',
         definition: DEFAULT_HURT_FX,
       });
     }
     if (!fxHeal) {
-      gmWhisper("Creating Default Heal FX");
-      createObj("custfx", {
-        name: "-DefaultHeal",
+      gmWhisper('Creating Default Heal FX');
+      createObj('custfx', {
+        name: '-DefaultHeal',
         definition: DEFAULT_HEAL_FX,
       });
     }
@@ -685,11 +685,11 @@
    */
   function syncDefaultFxObjects() {
     const fxHurt = findObjs(
-      { _type: "custfx", name: "-DefaultHurt" },
+      { _type: 'custfx', name: '-DefaultHurt' },
       { caseInsensitive: true },
     )[0];
     const fxHeal = findObjs(
-      { _type: "custfx", name: "-DefaultHeal" },
+      { _type: 'custfx', name: '-DefaultHeal' },
       { caseInsensitive: true },
     )[0];
     if (fxHeal) {
@@ -708,11 +708,11 @@
    */
   function resetDefaultFxObjects() {
     const existing = findObjs(
-      { _type: "custfx" },
+      { _type: 'custfx' },
       { caseInsensitive: true },
-    ).filter((fx) => /-Default(Hurt|Heal)/i.test(fx.get("name") || ""));
+    ).filter((fx) => /-Default(Hurt|Heal)/i.test(fx.get('name') || ''));
     existing.forEach((fx) => fx.remove());
-    gmWhisper("Recreating Default Hurt/Heal FX");
+    gmWhisper('Recreating Default Hurt/Heal FX');
     checkInstall();
   }
 
@@ -733,7 +733,7 @@
    */
   function runResetAllFlow() {
     resetAllSettingsToDefaults();
-    gmWhisper("RESET ALL: defaults restored + default FX + force update");
+    gmWhisper('RESET ALL: defaults restored + default FX + force update');
     resetDefaultFxObjects();
     menuForceUpdate();
   }
@@ -751,13 +751,13 @@
    */
   function getBarHealth(obj, prev, update) {
     const barUsed = state.HealthColors.auraBar;
-    if (obj.get(`${barUsed}_max`) === "" && obj.get(`${barUsed}_value`) === "")
+    if (obj.get(`${barUsed}_max`) === '' && obj.get(`${barUsed}_value`) === '')
       return null;
     const maxValue = Number.parseInt(obj.get(`${barUsed}_max`), 10);
     const curValue = Number.parseInt(obj.get(`${barUsed}_value`), 10);
     const prevValue = prev[`${barUsed}_value`];
     if (Number.isNaN(maxValue) || Number.isNaN(curValue)) return null;
-    if (update !== "YES" && Number.isNaN(Number.parseInt(prevValue, 10)))
+    if (update !== 'YES' && Number.isNaN(Number.parseInt(prevValue, 10)))
       return null;
     const percReal = Math.max(
       0,
@@ -774,7 +774,7 @@
    *             showDead: boolean, pColor: string }}
    */
   function resolveTypeConfig(oCharacter) {
-    const isPlayer = oCharacter && oCharacter.get("controlledby") !== "";
+    const isPlayer = oCharacter && oCharacter.get('controlledby') !== '';
     if (isPlayer) {
       return {
         gm: state.HealthColors.GM_PCNames,
@@ -802,13 +802,13 @@
    */
   function applyDeadStatus(obj, curValue, prevValue) {
     if (curValue > 0) {
-      obj.set("status_dead", false);
+      obj.set('status_dead', false);
       return;
     }
     const deadSfx = state.HealthColors.auraDeadFX;
-    if (deadSfx !== "None" && curValue !== Number(prevValue))
+    if (deadSfx !== 'None' && curValue !== Number(prevValue))
       playDeath(deadSfx);
-    obj.set("status_dead", true);
+    obj.set('status_dead', true);
   }
 
   /**
@@ -824,15 +824,17 @@
     const { isTypeOn, percentOn, showDead } = typeConfig;
     const useAura = oCharacter ? lookupUseColor(oCharacter) : undefined;
     const useTint = state.HealthColors.auraTint;
-    const colorType = useTint ? "tint" : "aura1";
+    const colorType = useTint ? 'tint' : 'aura1';
 
     if (showDead) applyDeadStatus(obj, curValue, prevValue);
 
-    if (isTypeOn && useAura !== "NO") {
-      if (curValue === 0) {
+    if (isTypeOn && useAura !== 'NO') {
+      if (curValue <= 0) {
         tokenSet(obj, state.HealthColors.AuraSize, markerColor);
-      } else if (percReal >= percentOn) {
-        applyDefaultAura(obj);
+      } else if (percentOn <= 0) {
+        clearAuras(obj);
+      } else if (percReal > percentOn) {
+        clearAuras(obj);
       } else {
         tokenSet(obj, state.HealthColors.AuraSize, markerColor);
       }
@@ -852,7 +854,7 @@
 
     if (isHeal) {
       const aFX = findObjs(
-        { _type: "custfx", name: "-DefaultHeal" },
+        { _type: 'custfx', name: '-DefaultHeal' },
         { caseInsensitive: true },
       )[0];
       const def = getFxDefinition(aFX);
@@ -874,14 +876,14 @@
     }
 
     const aFX = findObjs(
-      { _type: "custfx", name: "-DefaultHurt" },
+      { _type: 'custfx', name: '-DefaultHurt' },
       { caseInsensitive: true },
     )[0];
     const def = getFxDefinition(aFX);
 
     if (!def) return fxArray;
 
-    if (useBlood === "DEFAULT" || useBlood === undefined) {
+    if (useBlood === 'DEFAULT' || useBlood === undefined) {
       const hurtRgb = hexToRgb(state.HealthColors.HurtFX);
       def.startColour = hurtRgb;
       def.startColor = hurtRgb;
@@ -906,9 +908,9 @@
         def.endColorRandom = [0, 0, 0, 0];
         fxArray.push(def);
       } else {
-        useBlood.split(",").forEach((fxName) => {
+        useBlood.split(',').forEach((fxName) => {
           const custom = findObjs(
-            { _type: "custfx", name: fxName.trim() },
+            { _type: 'custfx', name: fxName.trim() },
             { caseInsensitive: true },
           )[0];
           const customDef = getFxDefinition(custom);
@@ -936,15 +938,15 @@
    * @returns {boolean} True when the fallback path handled spawning.
    */
   function spawnDefaultFxById(obj, isHeal, useBlood) {
-    if (!(useBlood === "DEFAULT" || useBlood === undefined)) return false;
-    const fxName = isHeal ? "-DefaultHeal" : "-DefaultHurt";
+    if (!(useBlood === 'DEFAULT' || useBlood === undefined)) return false;
+    const fxName = isHeal ? '-DefaultHeal' : '-DefaultHurt';
     const aFX = findObjs(
-      { _type: "custfx", name: fxName },
+      { _type: 'custfx', name: fxName },
       { caseInsensitive: true },
     )[0];
     if (!aFX) return false;
 
-    spawnFx(obj.get("left"), obj.get("top"), aFX.id, obj.get("pageid"));
+    spawnFx(obj.get('left'), obj.get('top'), aFX.id, obj.get('pageid'));
     return true;
   }
 
@@ -965,14 +967,14 @@
     maxValue,
     update,
   ) {
-    if (curValue === Number(prevValue) || prevValue === "" || update === "YES")
+    if (curValue === Number(prevValue) || prevValue === '' || update === 'YES')
       return;
     const useBlood = oCharacter ? lookupUseBlood(oCharacter) : undefined;
-    if (!state.HealthColors.FX || useBlood === "OFF" || useBlood === "NO")
+    if (!state.HealthColors.FX || useBlood === 'OFF' || useBlood === 'NO')
       return;
     const isHeal = curValue > Number(prevValue);
     const amount = Math.abs(curValue - Number(prevValue));
-    const scale = obj.get("height") / 70;
+    const scale = obj.get('height') / 70;
     const hitSize =
       Math.max(Math.min((amount / maxValue) * 4, 1), 0.2) *
       (randomInt(60, 100) / 100);
@@ -981,10 +983,10 @@
       spawnFX(
         scale,
         hitSize,
-        obj.get("left"),
-        obj.get("top"),
+        obj.get('left'),
+        obj.get('top'),
         fx,
-        obj.get("pageid"),
+        obj.get('pageid'),
       ),
     );
   }
@@ -1005,13 +1007,13 @@
     }
     if (
       state.HealthColors.auraColorOn !== true ||
-      obj.get("layer") !== "objects"
+      obj.get('layer') !== 'objects'
     )
       return;
-    if (obj.get("represents") === "" && state.HealthColors.OneOff !== true)
+    if (obj.get('represents') === '' && state.HealthColors.OneOff !== true)
       return;
     const barUsed = state.HealthColors.auraBar;
-    if (obj.get(`${barUsed}_max`) === "") {
+    if (obj.get(`${barUsed}_max`) === '') {
       clearAuras(obj);
       return;
     }
@@ -1021,14 +1023,14 @@
 
     const { maxValue, curValue, prevValue } = health;
     const sizeChanged =
-      prev.width !== obj.get("width") || prev.height !== obj.get("height");
+      prev.width !== obj.get('width') || prev.height !== obj.get('height');
 
     // Only proceed if health changed, token was resized, or this is a forced update.
     // The size check ensures aura is re-applied when a token is resized, even without an HP change.
-    if (curValue === Number(prevValue) && update !== "YES" && !sizeChanged)
+    if (curValue === Number(prevValue) && update !== 'YES' && !sizeChanged)
       return;
 
-    const oCharacter = getObj("character", obj.get("represents"));
+    const oCharacter = getObj('character', obj.get('represents'));
     const typeConfig = resolveTypeConfig(oCharacter);
 
     applyAuraAndDead(obj, oCharacter, typeConfig, health);
@@ -1044,19 +1046,19 @@
    */
   function menuForceUpdate() {
     const workQueue = findObjs({
-      type: "graphic",
-      subtype: "token",
-      layer: "objects",
+      type: 'graphic',
+      subtype: 'token',
+      layer: 'objects',
     });
-    sendChat("Fixing Tokens", `/w gm Fixing ${workQueue.length} Tokens`);
+    sendChat('Fixing Tokens', `/w gm Fixing ${workQueue.length} Tokens`);
     const drainQueue = () => {
       const token = workQueue.shift();
       if (token) {
         const prev = JSON.parse(JSON.stringify(token));
-        handleToken(token, prev, "YES");
+        handleToken(token, prev, 'YES');
         setTimeout(drainQueue, 0);
       } else {
-        sendChat("Fixing Tokens", "/w gm Finished Fixing Tokens");
+        sendChat('Fixing Tokens', '/w gm Finished Fixing Tokens');
       }
     };
     drainQueue();
@@ -1069,11 +1071,11 @@
    */
   function manUpdate(msg) {
     const allNames = msg.selected.reduce((acc, obj) => {
-      const token = getObj("graphic", obj._id);
+      const token = getObj('graphic', obj._id);
       const prev = JSON.parse(JSON.stringify(token));
-      handleToken(token, prev, "YES");
-      return `${acc}${token.get("name")}<br>`;
-    }, "");
+      handleToken(token, prev, 'YES');
+      return `${acc}${token.get('name')}<br>`;
+    }, '');
     gmWhisper(allNames);
   }
 
@@ -1085,19 +1087,19 @@
    * @param {string} [extraStyle=''] - Additional inline CSS to append to the base style.
    * @returns {string} An HTML anchor string ready for sendChat.
    */
-  function makeBtn(label, href, extraStyle = "") {
+  function makeBtn(label, href, extraStyle = '') {
     const base = [
-      "padding-top:1px",
-      "text-align:center",
-      "font-size:9pt",
-      "width:48px",
-      "height:14px",
-      "border:1px solid black",
-      "margin:1px",
-      "background-color:#6FAEC7",
-      "border-radius:4px",
-      "box-shadow:1px 1px 1px #707070",
-    ].join(";");
+      'padding-top:1px',
+      'text-align:center',
+      'font-size:9pt',
+      'width:48px',
+      'height:14px',
+      'border:1px solid black',
+      'margin:1px',
+      'background-color:#6FAEC7',
+      'border-radius:4px',
+      'box-shadow:1px 1px 1px #707070',
+    ].join(';');
     return `<a style="${base};${extraStyle}" href="${href}">${label}</a>`;
   }
 
@@ -1107,23 +1109,23 @@
    * @param {string} [extraStyle=''] - Additional inline CSS to append to base style.
    * @returns {string} A styled span element.
    */
-  function makePill(label, extraStyle = "") {
+  function makePill(label, extraStyle = '') {
     const base = [
-      "display:inline-block",
-      "padding-top:1px",
-      "text-align:center",
-      "font-size:9pt",
-      "min-width:48px",
-      "height:14px",
-      "border:1px solid black",
-      "margin:1px",
-      "background-color:#6FAEC7",
-      "border-radius:4px",
-      "box-shadow:1px 1px 1px #707070",
-      "line-height:14px",
-      "padding-left:4px",
-      "padding-right:4px",
-    ].join(";");
+      'display:inline-block',
+      'padding-top:1px',
+      'text-align:center',
+      'font-size:9pt',
+      'min-width:48px',
+      'height:14px',
+      'border:1px solid black',
+      'margin:1px',
+      'background-color:#6FAEC7',
+      'border-radius:4px',
+      'box-shadow:1px 1px 1px #707070',
+      'line-height:14px',
+      'padding-left:4px',
+      'padding-right:4px',
+    ].join(';');
     return `<span style="${base};${extraStyle}">${label}</span>`;
   }
 
@@ -1134,8 +1136,8 @@
    * @returns {string} An HTML anchor string.
    */
   function toggleBtn(value, href) {
-    const style = value === true ? "" : "background-color:#A84D4D";
-    return makeBtn(value === true ? "Yes" : "No", href, style);
+    const style = value === true ? '' : 'background-color:#A84D4D';
+    return makeBtn(value === true ? 'Yes' : 'No', href, style);
   }
 
   /**
@@ -1145,9 +1147,9 @@
    * @returns {string} An HTML anchor string.
    */
   function nameBtn(value, href) {
-    let style = "";
-    if (value === "No") style = "background-color:#A84D4D";
-    if (value === "Off") style = "background-color:#D6D6D6";
+    let style = '';
+    if (value === 'No') style = 'background-color:#A84D4D';
+    if (value === 'Off') style = 'background-color:#D6D6D6';
     return makeBtn(value, href, style);
   }
 
@@ -1160,17 +1162,17 @@
     const s = state.HealthColors;
     const hr = `<hr style='background-color:#000;margin:5px;border-width:0;color:#000;height:1px;'/>`;
     const wrapStyle = [
-      "border-radius:8px",
-      "padding:5px",
-      "font-size:9pt",
-      "text-shadow:-1px -1px #222,1px -1px #222,-1px 1px #222,1px 1px #222,2px 2px #222",
-      "box-shadow:3px 3px 1px #707070",
-      "background-image:-webkit-linear-gradient(left,#76ADD6 0%,#a7c7dc 100%)",
-      "color:#FFF",
-      "border:2px solid black",
-      "text-align:right",
-      "vertical-align:middle",
-    ].join(";");
+      'border-radius:8px',
+      'padding:5px',
+      'font-size:9pt',
+      'text-shadow:-1px -1px #222,1px -1px #222,-1px 1px #222,1px 1px #222,2px 2px #222',
+      'box-shadow:3px 3px 1px #707070',
+      'background-image:-webkit-linear-gradient(left,#76ADD6 0%,#a7c7dc 100%)',
+      'color:#FFF',
+      'border:2px solid black',
+      'text-align:right',
+      'vertical-align:middle',
+    ].join(';');
 
     const percLabel = `${s.auraPercPC}/${s.auraPerc}`;
     const healBtnStyle = `background-color:#${s.HealFX}`;
@@ -1182,37 +1184,37 @@
       `<div style="${wrapStyle}">`,
       `<u><big>HealthColors Version: ${VERSION}</u></big><br>`,
       hr,
-      `Is On: ${toggleBtn(s.auraColorOn, "!aura on")}<br>`,
-      `Health Bar: ${makeBtn(s.auraBar, "!aura bar ?{Bar|1|2|3}")}<br>`,
-      `Use Tint: ${toggleBtn(s.auraTint, "!aura tint")}<br>`,
-      `Palette: ${makeBtn(s.colorPalette, "!aura palette ?{Palette|default|colorblind}", "width:80px")} (auto refreshes all tokens)<br>`,
-      `Percentage(PC/NPC): ${makeBtn(percLabel, "!aura perc ?{PCPercent?|100} ?{NPCPercent?|100}")}<br>`,
+      `Is On: ${toggleBtn(s.auraColorOn, '!aura on')}<br>`,
+      `Health Bar: ${makeBtn(s.auraBar, '!aura bar ?{Bar|1|2|3}')}<br>`,
+      `Use Tint: ${toggleBtn(s.auraTint, '!aura tint')}<br>`,
+      `Palette: ${makeBtn(s.colorPalette, '!aura palette ?{Palette|default|colorblind}', 'width:80px')} (auto refreshes all tokens)<br>`,
+      `Percentage(PC/NPC): ${makeBtn(percLabel, '!aura perc ?{PCPercent?|100} ?{NPCPercent?|100}')}<br>`,
       hr,
-      `Show PC Health: ${toggleBtn(s.PCAura, "!aura pc")}<br>`,
-      `Show NPC Health: ${toggleBtn(s.NPCAura, "!aura npc")}<br>`,
-      `Show Dead PC: ${toggleBtn(s.auraDeadPC, "!aura deadPC")}<br>`,
-      `Show Dead NPC: ${toggleBtn(s.auraDead, "!aura dead")}<br>`,
+      `Show PC Health: ${toggleBtn(s.PCAura, '!aura pc')}<br>`,
+      `Show NPC Health: ${toggleBtn(s.NPCAura, '!aura npc')}<br>`,
+      `Show Dead PC: ${toggleBtn(s.auraDeadPC, '!aura deadPC')}<br>`,
+      `Show Dead NPC: ${toggleBtn(s.auraDead, '!aura dead')}<br>`,
       hr,
-      `GM Sees all PC Names: ${nameBtn(s.GM_PCNames, "!aura gmpc ?{Setting|Yes|No|Off}")}<br>`,
-      `GM Sees all NPC Names: ${nameBtn(s.GM_NPCNames, "!aura gmnpc ?{Setting|Yes|No|Off}")}<br>`,
+      `GM Sees all PC Names: ${nameBtn(s.GM_PCNames, '!aura gmpc ?{Setting|Yes|No|Off}')}<br>`,
+      `GM Sees all NPC Names: ${nameBtn(s.GM_NPCNames, '!aura gmnpc ?{Setting|Yes|No|Off}')}<br>`,
       hr,
-      `PC Sees all PC Names: ${nameBtn(s.PCNames, "!aura pcpc ?{Setting|Yes|No|Off}")}<br>`,
-      `PC Sees all NPC Names: ${nameBtn(s.NPCNames, "!aura pcnpc ?{Setting|Yes|No|Off}")}<br>`,
+      `PC Sees all PC Names: ${nameBtn(s.PCNames, '!aura pcpc ?{Setting|Yes|No|Off}')}<br>`,
+      `PC Sees all NPC Names: ${nameBtn(s.NPCNames, '!aura pcnpc ?{Setting|Yes|No|Off}')}<br>`,
       hr,
-      `Aura 1 Radius (ft): ${makeBtn(s.AuraSize, "!aura size ?{Size?|0.35}")}<br>`,
-      `Aura 1 Shape: ${makeBtn(s.Aura1Shape, "!aura a1shape ?{Shape?|Circle|Square}")}<br>`,
-      `Aura 1 Color: ${makeBtn(s.Aura1Color, "!aura a1tint ?{Color?|00FF00}", aura1Style)}<br>`,
-      `Aura 2 Radius (ft): ${makeBtn(String(s.Aura2Size), "!aura a2size ?{Size?|5}")}<br>`,
-      `Aura 2 Shape: ${makeBtn(s.Aura2Shape, "!aura a2shape ?{Shape?|Square|Circle}")}<br>`,
-      `Aura 2 Color: ${makeBtn(s.Aura2Color, "!aura a2tint ?{Color?|806600}", aura2Style)}<br>`,
-      `One Offs: ${toggleBtn(s.OneOff, "!aura ONEOFF")}<br>`,
-      `FX: ${toggleBtn(s.FX, "!aura FX")}<br>`,
-      `HealFX Color: ${makeBtn(s.HealFX, "!aura HEAL ?{Color?|FDDC5C}", healBtnStyle)}<br>`,
-      `HurtFX Color: ${makeBtn(s.HurtFX, "!aura HURT ?{Color?|FF0000}", hurtBtnStyle)}<br>`,
+      `Aura 1 Radius (ft): ${makeBtn(s.AuraSize, '!aura size ?{Size?|0.35}')}<br>`,
+      `Aura 1 Shape: ${makeBtn(s.Aura1Shape, '!aura a1shape ?{Shape?|Circle|Square}')}<br>`,
+      `Aura 1 Color: ${makeBtn(s.Aura1Color, '!aura a1tint ?{Color?|00FF00}', aura1Style)}<br>`,
+      `Aura 2 Radius (ft): ${makeBtn(String(s.Aura2Size), '!aura a2size ?{Size?|5}')}<br>`,
+      `Aura 2 Shape: ${makeBtn(s.Aura2Shape, '!aura a2shape ?{Shape?|Square|Circle}')}<br>`,
+      `Aura 2 Color: ${makeBtn(s.Aura2Color, '!aura a2tint ?{Color?|806600}', aura2Style)}<br>`,
+      `One Offs: ${toggleBtn(s.OneOff, '!aura ONEOFF')}<br>`,
+      `FX: ${toggleBtn(s.FX, '!aura FX')}<br>`,
+      `HealFX Color: ${makeBtn(s.HealFX, '!aura HEAL ?{Color?|FDDC5C}', healBtnStyle)}<br>`,
+      `HurtFX Color: ${makeBtn(s.HurtFX, '!aura HURT ?{Color?|FF0000}', hurtBtnStyle)}<br>`,
       `DeathSFX: ${makeBtn(s.auraDeadFX.substring(0, 4), deadFxCmd)}<br>`,
       hr,
       `</div>`,
-    ].join("");
+    ].join('');
 
     sendChat(SCRIPT_NAME, `/w GM <b><br>${html}`);
   }
@@ -1225,25 +1227,25 @@
     const s = state.HealthColors;
     const hr = `<hr style='background-color:#000;margin:5px;border-width:0;color:#000;height:1px;'/>`;
     const wrapStyle = [
-      "border-radius:8px",
-      "padding:5px",
-      "font-size:9pt",
-      "text-shadow:-1px -1px #222,1px -1px #222,-1px 1px #222,1px 1px #222,2px 2px #222",
-      "box-shadow:3px 3px 1px #707070",
-      "background-image:-webkit-linear-gradient(left,#76ADD6 0%,#a7c7dc 100%)",
-      "color:#FFF",
-      "border:2px solid black",
-      "text-align:right",
-      "vertical-align:middle",
-    ].join(";");
+      'border-radius:8px',
+      'padding:5px',
+      'font-size:9pt',
+      'text-shadow:-1px -1px #222,1px -1px #222,-1px 1px #222,1px 1px #222,2px 2px #222',
+      'box-shadow:3px 3px 1px #707070',
+      'background-image:-webkit-linear-gradient(left,#76ADD6 0%,#a7c7dc 100%)',
+      'color:#FFF',
+      'border:2px solid black',
+      'text-align:right',
+      'vertical-align:middle',
+    ].join(';');
 
     const percLabel = `${s.auraPercPC}/${s.auraPerc}`;
-    const noStyle = "background-color:#A84D4D";
-    const offStyle = "background-color:#D6D6D6";
+    const noStyle = 'background-color:#A84D4D';
+    const offStyle = 'background-color:#D6D6D6';
     const pickNameStyle = (value) => {
-      if (value === "No") return noStyle;
-      if (value === "Off") return offStyle;
-      return "";
+      if (value === 'No') return noStyle;
+      if (value === 'Off') return offStyle;
+      return '';
     };
     const healStyle = `background-color:#${s.HealFX}`;
     const hurtStyle = `background-color:#${s.HurtFX}`;
@@ -1253,16 +1255,16 @@
       `<div style="${wrapStyle}">`,
       `<u><big>HealthColors Settings: ${VERSION}</u></big><br>`,
       hr,
-      `Is On: ${makePill(s.auraColorOn ? "Yes" : "No", s.auraColorOn ? "" : "background-color:#A84D4D")}<br>`,
+      `Is On: ${makePill(s.auraColorOn ? 'Yes' : 'No', s.auraColorOn ? '' : 'background-color:#A84D4D')}<br>`,
       `Bar: ${makePill(s.auraBar)}<br>`,
-      `Use Tint: ${makePill(s.auraTint ? "Yes" : "No", s.auraTint ? "" : "background-color:#A84D4D")}<br>`,
+      `Use Tint: ${makePill(s.auraTint ? 'Yes' : 'No', s.auraTint ? '' : 'background-color:#A84D4D')}<br>`,
       `Palette: ${makePill(s.colorPalette)}<br>`,
       `Percentage(PC/NPC): ${makePill(percLabel)}<br>`,
       hr,
-      `Show PC Health: ${makePill(s.PCAura ? "Yes" : "No", s.PCAura ? "" : "background-color:#A84D4D")}<br>`,
-      `Show NPC Health: ${makePill(s.NPCAura ? "Yes" : "No", s.NPCAura ? "" : "background-color:#A84D4D")}<br>`,
-      `Show Dead PC: ${makePill(s.auraDeadPC ? "Yes" : "No", s.auraDeadPC ? "" : "background-color:#A84D4D")}<br>`,
-      `Show Dead NPC: ${makePill(s.auraDead ? "Yes" : "No", s.auraDead ? "" : "background-color:#A84D4D")}<br>`,
+      `Show PC Health: ${makePill(s.PCAura ? 'Yes' : 'No', s.PCAura ? '' : 'background-color:#A84D4D')}<br>`,
+      `Show NPC Health: ${makePill(s.NPCAura ? 'Yes' : 'No', s.NPCAura ? '' : 'background-color:#A84D4D')}<br>`,
+      `Show Dead PC: ${makePill(s.auraDeadPC ? 'Yes' : 'No', s.auraDeadPC ? '' : 'background-color:#A84D4D')}<br>`,
+      `Show Dead NPC: ${makePill(s.auraDead ? 'Yes' : 'No', s.auraDead ? '' : 'background-color:#A84D4D')}<br>`,
       hr,
       `GM Sees all PC Names: ${makePill(s.GM_PCNames, pickNameStyle(s.GM_PCNames))}<br>`,
       `GM Sees all NPC Names: ${makePill(s.GM_NPCNames, pickNameStyle(s.GM_NPCNames))}<br>`,
@@ -1276,14 +1278,14 @@
       `Aura 2 Radius: ${makePill(String(s.Aura2Size))}<br>`,
       `Aura 2 Shape: ${makePill(s.Aura2Shape)}<br>`,
       `Aura 2 Color: ${makePill(s.Aura2Color, aura2Style)}<br>`,
-      `One Offs: ${makePill(s.OneOff ? "Yes" : "No", s.OneOff ? "" : "background-color:#A84D4D")}<br>`,
-      `FX: ${makePill(s.FX ? "Yes" : "No", s.FX ? "" : "background-color:#A84D4D")}<br>`,
+      `One Offs: ${makePill(s.OneOff ? 'Yes' : 'No', s.OneOff ? '' : 'background-color:#A84D4D')}<br>`,
+      `FX: ${makePill(s.FX ? 'Yes' : 'No', s.FX ? '' : 'background-color:#A84D4D')}<br>`,
       `HealFX Color: ${makePill(s.HealFX, healStyle)}<br>`,
       `HurtFX Color: ${makePill(s.HurtFX, hurtStyle)}<br>`,
       `DeathSFX: ${makePill(s.auraDeadFX)}<br>`,
       hr,
       `</div>`,
-    ].join("");
+    ].join('');
 
     sendChat(SCRIPT_NAME, `<b><br>${html}`);
   }
@@ -1293,9 +1295,9 @@
    * Processes incoming Roll20 chat messages to handle !aura commands.
    * GM-only: non-GMs receive an access-denied whisper.
    * Routes each subcommand (ON/OFF, BAR, TINT, PERC, PC, NPC, etc.) to the
-  * appropriate state mutation then refreshes the menu. BAR validates 1/2/3,
-  * whispers confirmation, and triggers immediate full sync. PALETTE also
-  * triggers immediate full sync so existing tokens update right away.
+   * appropriate state mutation then refreshes the menu. BAR validates 1/2/3,
+   * whispers confirmation, and triggers immediate full sync. PALETTE also
+   * triggers immediate full sync so existing tokens update right away.
    * When a setting changes, also posts a read-only settings snapshot to game chat.
    * Use `!aura settings` to output the current settings snapshot on demand.
    * @param {object} msg - Roll20 chat message object.
@@ -1303,7 +1305,7 @@
   function handleInput(msg) {
     const parts = msg.content.split(/\s+/);
     const command = parts[0].toUpperCase();
-    if (msg.type !== "api" || !command.includes("!AURA")) return;
+    if (msg.type !== 'api' || !command.includes('!AURA')) return;
 
     if (!playerIsGM(msg.playerid)) {
       sendChat(
@@ -1313,26 +1315,26 @@
       return;
     }
 
-    const option = (parts[1] || "MENU").toUpperCase();
+    const option = (parts[1] || 'MENU').toUpperCase();
     let changedSetting = false;
-    if (option !== "MENU") gmWhisper("UPDATING TOKENS...");
+    if (option !== 'MENU') gmWhisper('UPDATING TOKENS...');
 
     switch (option) {
-      case "MENU":
+      case 'MENU':
         break;
-      case "SETTINGS":
+      case 'SETTINGS':
         showSettingsInGameChat();
         return;
-      case "ON":
+      case 'ON':
         state.HealthColors.auraColorOn = true;
         changedSetting = true;
         break;
-      case "OFF":
+      case 'OFF':
         state.HealthColors.auraColorOn = false;
         changedSetting = true;
         break;
-      case "BAR":
-        if (/^[123]$/.test(parts[2] || "")) {
+      case 'BAR':
+        if (/^[123]$/.test(parts[2] || '')) {
           state.HealthColors.auraBar = `bar${parts[2]}`;
           changedSetting = true;
           gmWhisper(
@@ -1341,92 +1343,92 @@
           menuForceUpdate();
         } else {
           gmWhisper(
-            `Invalid bar "${parts[2] || ""}". Use !aura bar 1, !aura bar 2, or !aura bar 3.`,
+            `Invalid bar "${parts[2] || ''}". Use !aura bar 1, !aura bar 2, or !aura bar 3.`,
           );
         }
         break;
-      case "TINT":
+      case 'TINT':
         state.HealthColors.auraTint = !state.HealthColors.auraTint;
         changedSetting = true;
         break;
-      case "PERC":
+      case 'PERC':
         state.HealthColors.auraPercPC = Number.parseInt(parts[2], 10);
         state.HealthColors.auraPerc = Number.parseInt(parts[3], 10);
         changedSetting = true;
         break;
-      case "PC":
+      case 'PC':
         state.HealthColors.PCAura = !state.HealthColors.PCAura;
         changedSetting = true;
         break;
-      case "NPC":
+      case 'NPC':
         state.HealthColors.NPCAura = !state.HealthColors.NPCAura;
         changedSetting = true;
         break;
-      case "GMNPC":
+      case 'GMNPC':
         state.HealthColors.GM_NPCNames = parts[2];
         changedSetting = true;
         break;
-      case "GMPC":
+      case 'GMPC':
         state.HealthColors.GM_PCNames = parts[2];
         changedSetting = true;
         break;
-      case "PCNPC":
+      case 'PCNPC':
         state.HealthColors.NPCNames = parts[2];
         changedSetting = true;
         break;
-      case "PCPC":
+      case 'PCPC':
         state.HealthColors.PCNames = parts[2];
         changedSetting = true;
         break;
-      case "DEAD":
+      case 'DEAD':
         state.HealthColors.auraDead = !state.HealthColors.auraDead;
         changedSetting = true;
         break;
-      case "DEADPC":
+      case 'DEADPC':
         state.HealthColors.auraDeadPC = !state.HealthColors.auraDeadPC;
         changedSetting = true;
         break;
-      case "DEADFX":
+      case 'DEADFX':
         state.HealthColors.auraDeadFX = parts[2];
         changedSetting = true;
         break;
-      case "SIZE":
+      case 'SIZE':
         state.HealthColors.AuraSize = Number.parseFloat(parts[2]);
         changedSetting = true;
         break;
-      case "A1SHAPE":
+      case 'A1SHAPE':
         state.HealthColors.Aura1Shape = normalizeShape(
           parts[2],
           state.HealthColors.Aura1Shape,
         );
         changedSetting = true;
         break;
-      case "A1TINT":
+      case 'A1TINT':
         state.HealthColors.Aura1Color = normalizeHex6(
           parts[2],
           state.HealthColors.Aura1Color,
         );
         changedSetting = true;
         break;
-      case "A2SIZE":
+      case 'A2SIZE':
         state.HealthColors.Aura2Size = Number.parseFloat(parts[2]);
         changedSetting = true;
         break;
-      case "A2SHAPE":
+      case 'A2SHAPE':
         state.HealthColors.Aura2Shape = normalizeShape(
           parts[2],
           state.HealthColors.Aura2Shape,
         );
         changedSetting = true;
         break;
-      case "A2TINT":
+      case 'A2TINT':
         state.HealthColors.Aura2Color = normalizeHex6(
           parts[2],
           state.HealthColors.Aura2Color,
         );
         changedSetting = true;
         break;
-      case "PALETTE":
+      case 'PALETTE':
         state.HealthColors.colorPalette = normalizePalette(
           parts[2],
           state.HealthColors.colorPalette,
@@ -1434,41 +1436,41 @@
         menuForceUpdate();
         changedSetting = true;
         break;
-      case "ONEOFF":
+      case 'ONEOFF':
         state.HealthColors.OneOff = !state.HealthColors.OneOff;
         changedSetting = true;
         break;
-      case "FX":
+      case 'FX':
         state.HealthColors.FX = !state.HealthColors.FX;
         changedSetting = true;
         break;
-      case "HEAL":
+      case 'HEAL':
         state.HealthColors.HealFX = parts[2].toUpperCase();
         syncDefaultFxObjects();
         changedSetting = true;
         break;
-      case "HURT":
+      case 'HURT':
         state.HealthColors.HurtFX = parts[2].toUpperCase();
         syncDefaultFxObjects();
         changedSetting = true;
         break;
-      case "RESET":
+      case 'RESET':
         delete state.HealthColors;
-        gmWhisper("STATE RESET");
+        gmWhisper('STATE RESET');
         checkInstall();
         changedSetting = true;
         break;
-      case "RESET-FX":
+      case 'RESET-FX':
         resetDefaultFxObjects();
         break;
-      case "RESET-ALL":
+      case 'RESET-ALL':
         runResetAllFlow();
         changedSetting = true;
         break;
-      case "FORCEALL":
+      case 'FORCEALL':
         menuForceUpdate();
         return;
-      case "UPDATE":
+      case 'UPDATE':
         manUpdate(msg);
         return;
     }
@@ -1488,10 +1490,10 @@
    * @param {object} prev - Previous attribute snapshot (passed through to handleToken).
    */
   function updateToken(obj, prev) {
-    if (obj.get("type") === "graphic") {
+    if (obj.get('type') === 'graphic') {
       handleToken(obj, prev);
     } else {
-      gmWhisper("Script sent non-Token to be updated!");
+      gmWhisper('Script sent non-Token to be updated!');
     }
   }
 
@@ -1503,13 +1505,13 @@
    * - add:token     → handleToken  (with 400ms delay to allow token data to settle)
    */
   function registerEventHandlers() {
-    on("chat:message", handleInput);
-    on("change:graphic", handleToken);
-    on("add:token", (t) => {
+    on('chat:message', handleInput);
+    on('change:graphic', handleToken);
+    on('add:token', (t) => {
       setTimeout(() => {
-        const token = getObj("graphic", t.id);
+        const token = getObj('graphic', t.id);
         const prev = JSON.parse(JSON.stringify(token));
-        handleToken(token, prev, "YES");
+        handleToken(token, prev, 'YES');
       }, 400);
     });
   }
@@ -1522,7 +1524,7 @@
     registerEventHandlers,
   };
 
-  on("ready", () => {
+  on('ready', () => {
     gmWhisper(`MOD READY (v${VERSION})`);
     checkInstall();
     registerEventHandlers();

@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.1.1] – 2026-05-07 · [Milestone](https://github.com/steverobertsuk/roll20-api-scripts/milestone/1)
+
+### Fixed
+- Fixed aura visibility threshold (`Percentage PC/NPC`): tokens at or above the configured HP threshold were incorrectly shown a green default aura instead of having the aura hidden. Changed comparison from `>=` to `>` and replaced `applyDefaultAura()` with `clearAuras()` in the above-threshold branch so the aura correctly disappears when a token's HP is not below the threshold. Also added a guard so a threshold of `0` clears the aura rather than treating it as "always show". ([#1](https://github.com/steverobertsuk/roll20-api-scripts/issues/1))
+- Fixed `!aura` settings menu after a change: clicking a button and submitting the dialog caused a non-interactive read-only panel (using `<span>` pills) to appear in public chat instead of re-displaying the interactive GM-whispered menu. Root cause was `handleInput` calling `showSettingsInGameChat()` on every setting change instead of `showMenu()`. The interactive GM menu is now always shown after a change; the read-only public snapshot remains available via the explicit `!aura settings` command. ([#3](https://github.com/steverobertsuk/roll20-api-scripts/issues/3), [#4](https://github.com/steverobertsuk/roll20-api-scripts/issues/4))
+- Fixed `!aura perc` not refreshing tokens already on the map: changing the HP threshold now immediately re-evaluates all existing tokens via `menuForceUpdate()`, so tokens that were visible under the old threshold are correctly cleared (or revealed) without requiring a token move.
+
+### Changed
+- Removed orphaned `applyDefaultAura` function — it was superseded by `clearAuras()` in the threshold fix but never deleted.
+- Removed unused `changedSetting` variable from `handleInput` — it was assigned in ~20 places but never read, as `showMenu()` was always called unconditionally at the end of the function.
+- Token refresh progress messages updated: sender changed from a hardcoded string to `SCRIPT_NAME`; text changed from `"Fixing N Tokens"` / `"Finished Fixing Tokens"` to `"Refreshing N Tokens"` / `"Finished Refreshing Tokens"`.
+- `handleInput` command dispatch refactored — 27 switch cases reduced to 5 dispatch-table lookups (`TOGGLES`, `STRINGS`, `FLOATS`, `SHAPES`, `HEXES`) plus a 13-case switch for commands with unique behaviour, removing ~100 lines of repetitive boilerplate.
+
+---
+
 ## [2.1.0] – 2026-05-01
 
 ### Added
@@ -44,7 +59,7 @@ Major modernization and stability refactor of the entire script, consolidating p
 - **JSDoc Documentation** — every function is now fully documented with parameter types, return values, and behavioral descriptions to improve maintainability.
 - **Centralized Configuration** — all default state values, FX definitions, and internal parameters are now managed via unified constants.
 - **FX Recovery Commands** — added `!aura reset-fx` (rebuild default heal/hurt custom FX objects) and `!aura reset-all` (restore all settings to defaults + rebuild default FX + force update).
-- **Public Settings Snapshot** — setting-changing `!aura` commands now post a read-only settings panel to game chat for table visibility.
+- **Public Settings Snapshot** — added `!aura settings` to post a read-only settings panel to game chat on demand.
 - **Aura Detail Commands** — added `!aura a1shape`, `!aura a1tint`, `!aura a2size`, `!aura a2shape`, and `!aura a2tint` to adjust displayed Aura 1/Aura 2 detail values from chat.
 - **Settings Output Command** — added `!aura settings` to post the current settings snapshot to game chat on demand.
 
@@ -68,7 +83,7 @@ Major modernization and stability refactor of the entire script, consolidating p
 - `!aura bar` now validates `1|2|3`, whispers confirmation on change, and immediately runs a full sync to apply the new bar selection.
 - Tokens with no `max` value on the configured bar now have aura/tint cleared, preventing stale health indicators.
 - Configuration output now explicitly includes Aura 2 detail rows in both the GM menu and public settings snapshot.
-- Prevented duplicate settings output: setting-changing commands now publish a single game-chat snapshot instead of both GM and public panels.
+- Prevented duplicate settings output: setting-changing commands re-display the GM menu instead of posting to both GM and public chat.
 - Aura 2 output values are now sourced from state-backed defaults (`Aura2Size`, `Aura2Shape`, `Aura2Color`) instead of hardcoded labels.
 - Added Aura 1 Shape/Tint rows to settings output and backed them with default state values (`Aura1Shape`, `Aura1Color`).
 - Default heal/hurt custom FX definitions are now synchronized proactively on install/reset and when FX colors change, preventing delayed/stale visual updates after color edits or token lifecycle events.
